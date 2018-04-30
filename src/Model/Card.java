@@ -5,13 +5,21 @@ package Model;
  */
 public abstract class Card {
 
+    int cardID;
     int manaCost;
     CardPlace cardPlace;
+    String name;
+
+    public int getCardID() {
+        return cardID;
+    }
+    public void setCardID(int cardID) {
+        this.cardID = cardID;
+    }
 
     public void setManaCost(int manaCost) {
         this.manaCost = manaCost;
     }
-
     public int getManaCost(){
         return manaCost;
     }
@@ -19,10 +27,17 @@ public abstract class Card {
     public void setCardPlace(CardPlace cardPlace) {
         this.cardPlace = cardPlace;
     }
-
     public CardPlace getCardPlace(){
         return cardPlace;
     }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;
