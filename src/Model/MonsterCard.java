@@ -18,4 +18,9 @@ public abstract class MonsterCard extends Card {
         this.isNimble = isNimble;
         this.isDefender = isDefender;
     }
+
+    public void Attack(MonsterCard monsterCard){
+        // defender magic case || secrets
+
+    }
 }
