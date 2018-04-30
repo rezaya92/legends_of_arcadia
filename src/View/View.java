@@ -7,6 +7,10 @@ abstract public class View {
         System.out.println("3. Next: To go to deck and amulet customization");
     }
 
+    public static void afterMatchHelp(){
+        afterMatch();
+    }
+
     public static void shopEnter(){
         System.out.println("Remaining Gil: " + Controller.Main.human.getGil() + " Gil");
         System.out.println("1. Card Shop");
