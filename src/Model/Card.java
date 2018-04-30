@@ -9,6 +9,7 @@ public abstract class Card {
     int manaCost;
     CardPlace cardPlace;
     String name;
+    Tribe tribe;
 
     public int getCardID() {
         return cardID;
