@@ -6,7 +6,7 @@ package Model;
 public abstract class Card {
 
     int manaCost;
-    public CardPlace cardPlace;
+    CardPlace cardPlace;
 
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;

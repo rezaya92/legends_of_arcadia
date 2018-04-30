@@ -10,7 +10,6 @@ public class Main {
 
         int numberOfCards = 40;
         Card[] cards = new Card[numberOfCards];
-        System.out.println("Reza Ready");
         //todo: new cards
 
         // sout cards
@@ -22,7 +21,6 @@ public class Main {
         // while scanner != EndTurn    add max mp & a card to hand    scanner scans a card by id     hand to field || spell card || monsterField to enemy || spellCaster spell || use an Item
 
         // random play of opposite player(bot)
-
 
     }
 }
