@@ -8,7 +8,6 @@ public class Player {
     public Card[] getCards() {
         return cards;
     }
-
     public void setCards(Card[] cards) {
         this.cards = cards;
     }
@@ -16,7 +15,6 @@ public class Player {
     public Shop getShop() {
         return shop;
     }
-
     public void setShop(Shop shop) {
         this.shop = shop;
     }
@@ -24,7 +22,6 @@ public class Player {
     public int getGil() {
         return gil;
     }
-
     public void setGil(int gil) {
         this.gil = gil;
     }
