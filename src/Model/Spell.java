@@ -1,7 +1,7 @@
 package Model;
 
-/**
- * Created by msi-pc on 4/27/2018.
- */
-public class Spell {
+class Spell {
+    CardPlace[] effectedArea = new CardPlace[6];
+    CardType[] effectedCard = new CardType[6];
+    SpellChoiceType choiceType;
 }
