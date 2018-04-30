@@ -1,15 +1,57 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Player {
-    private Card[] cards;
+    private ArrayList<Card> inventoryCards;
+    private ArrayList<Card> deckCards;
+    private Card[] monsterFieldCards = new Card[5];
+    private Card[] spellFieldCards = new Card[3];
+    private ArrayList<Card> graveyardCards;
+    private ArrayList<Card> handCards;
     private Shop shop;
     private int gil;
 
-    public Card[] getCards() {
-        return cards;
+    public ArrayList<Card> getInventoryCards() {
+        return inventoryCards;
     }
-    public void setCards(Card[] cards) {
-        this.cards = cards;
+    public void setInventoryCards(ArrayList<Card> inventoryCards) {
+        this.inventoryCards = inventoryCards;
+    }
+
+    public ArrayList<Card> getDeckCards() {
+        return deckCards;
+    }
+    public void setDeckCards(ArrayList<Card> deckCards) {
+        this.deckCards = deckCards;
+    }
+
+    public Card[] getMonsterFieldCards() {
+        return monsterFieldCards;
+    }
+    public void setMonsterFieldCards(Card[] monsterFieldCards) {
+        this.monsterFieldCards = monsterFieldCards;
+    }
+
+    public Card[] getSpellFieldCards() {
+        return spellFieldCards;
+    }
+    public void setSpellFieldCards(Card[] spellFieldCards) {
+        this.spellFieldCards = spellFieldCards;
+    }
+
+    public ArrayList<Card> getGraveyardCards() {
+        return graveyardCards;
+    }
+    public void setGraveyardCards(ArrayList<Card> graveyardCards) {
+        this.graveyardCards = graveyardCards;
+    }
+
+    public ArrayList<Card> getHandCards() {
+        return handCards;
+    }
+    public void setHandCards(ArrayList<Card> handCards) {
+        this.handCards = handCards;
     }
 
     public Shop getShop() {
