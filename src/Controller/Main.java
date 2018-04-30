@@ -6,6 +6,8 @@ import Model.*;
  * Created by msi-pc on 4/27/2018.
  */
 public class Main {
+    static public Player human;
+
     public static void main(String[] args) {
 
         int numberOfCards = 40;
