@@ -5,12 +5,13 @@ package Model;
  */
 public abstract class Card {
 
-    int cardID;
-    int manaCost;
-    CardPlace cardPlace;
-    String name;
-    Tribe tribe;
-    Player owner;  // initialize
+    private int cardID;
+    private int manaCost;
+    private int price;
+    private CardPlace cardPlace;
+    private String name;
+    private Tribe tribe;
+    private Player owner;
 
     public int getCardID() {
         return cardID;
@@ -38,6 +39,27 @@ public abstract class Card {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Tribe getTribe() {
+        return tribe;
+    }
+    public void setTribe(Tribe tribe) {
+        this.tribe = tribe;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
 
