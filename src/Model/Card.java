@@ -5,13 +5,13 @@ package Model;
  */
 public abstract class Card {
 
-    private int cardID;
-    private int manaCost;
-    private int price;
-    private CardPlace cardPlace;
-    private String name;
-    private Tribe tribe;
-    private Player owner;
+    int cardID;
+    int manaCost;
+    int price;
+    CardPlace cardPlace;
+    String name;
+    Tribe tribe;
+    Player owner;
 
     public int getCardID() {
         return cardID;
