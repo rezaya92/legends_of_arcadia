@@ -10,6 +10,7 @@ public abstract class Card {
     CardPlace cardPlace;
     String name;
     Tribe tribe;
+    Player owner;
 
     public int getCardID() {
         return cardID;

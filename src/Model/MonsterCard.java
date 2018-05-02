@@ -21,6 +21,21 @@ public abstract class MonsterCard extends Card {
 
     public void Attack(MonsterCard monsterCard){
         // defender magic case || secrets
+        monsterCard.hp -= ap;
+        hp -= monsterCard.ap;
+        this.checkAlive();
+        monsterCard.checkAlive();
+    }
 
+    public void checkAlive(){
+        // how about the player
+        if (hp <= 0){
+            for (int i = 0; i < 5; i++){
+                if (owner.getMonsterFieldCards()[i].equals(this)){
+                    owner.getMonsterFieldCards()[i] = null;
+                    owner.getGraveyardCards().add(this); // cut to "die" in cards?
+                }
+            }
+        }
     }
 }
