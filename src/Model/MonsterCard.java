@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by msi-pc on 4/27/2018.
  */
@@ -38,8 +40,8 @@ public abstract class MonsterCard extends Card {
                 //todo will.use();
             }
             for (int i = 0; i < 5; i++){
-                if (owner.getMonsterFieldCards()[i].equals(this)){
-                    owner.getMonsterFieldCards()[i] = null;
+                if (owner.getMonsterFieldCards()[i] == this){
+                    owner.setMonsterFieldCards(null, i);
                     owner.getGraveyardCards().add(this); // cut to "die" in cards?
                 }
             }
@@ -47,10 +49,12 @@ public abstract class MonsterCard extends Card {
     }
 
     @Override
-    public void play(int slotNumber){
-        if (manaCost <= owner.getMana()){ //todo add mana to palyer
-
-            //owner.setMana();
+    public void play(int slotNumber){ // must be < 5
+        if (manaCost <= owner.getMana() && owner.getMonsterFieldCards()[slotNumber] == null){
+            if (owner.getHandCards().remove(this)) {
+                owner.setMonsterFieldCards(this, slotNumber);
+                owner.setMana(owner.getMana() - manaCost);
+            }
         }
     }
 

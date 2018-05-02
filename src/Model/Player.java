@@ -31,8 +31,8 @@ public class Player {
     public Card[] getMonsterFieldCards() {
         return monsterFieldCards;
     }
-    public void setMonsterFieldCards(Card[] monsterFieldCards) {
-        this.monsterFieldCards = monsterFieldCards;
+    public void setMonsterFieldCards(Card monsterFieldCard, int slotNumber) {
+        monsterFieldCards[slotNumber] = monsterFieldCard;
     }
 
     public Card[] getSpellFieldCards() {
