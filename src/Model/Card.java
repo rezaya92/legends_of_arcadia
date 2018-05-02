@@ -10,7 +10,7 @@ public abstract class Card {
     CardPlace cardPlace;
     String name;
     Tribe tribe;
-    Player owner;
+    Player owner;  // initialize
 
     public int getCardID() {
         return cardID;
@@ -40,6 +40,8 @@ public abstract class Card {
         this.name = name;
     }
 
+
+    public abstract void play(int slotNumber);
 
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;

@@ -11,6 +11,8 @@ public class Player {
     private ArrayList<Card> handCards;
     private Shop shop;
     private int gil;
+    private int mana;
+    private int maxMana;
 
     public ArrayList<Card> getInventoryCards() {
         return inventoryCards;
@@ -67,4 +69,19 @@ public class Player {
     public void setGil(int gil) {
         this.gil = gil;
     }
+
+    public int getMana() {
+        return mana;
+    }
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
 }
