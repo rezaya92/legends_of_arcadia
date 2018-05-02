@@ -1,6 +1,7 @@
 package Model.Card;
 
 import Model.CardPlace;
+import Model.Spell.Spell;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,7 @@
 package Model.Card;
 
 import Model.CardPlace;
+import Model.Player;
 import Model.Tribe;
 
 /**
@@ -70,9 +71,5 @@ public abstract class Card {
 
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;
-    }
-
-    public Tribe getTribe() {
-        return tribe;
     }
 }
