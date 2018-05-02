@@ -1,14 +1,15 @@
 package Model;
 
 import Model.Card.Card;
+import Model.Card.MonsterCard;
 
 import java.util.ArrayList;
 
 public class Player {
     private ArrayList<Card> inventoryCards;
     private ArrayList<Card> deckCards;
-    private Card[] monsterFieldCards = new Card[5];
-    private Card[] spellFieldCards = new Card[3];
+    private MonsterCard[] monsterFieldCards = new MonsterCard[5];
+    private Card[] spellFieldCards = new Card[3];    //todo replace SpellCard
     private ArrayList<Card> graveyardCards;
     private ArrayList<Card> handCards;
     private Shop shop;
@@ -30,10 +31,10 @@ public class Player {
         this.deckCards = deckCards;
     }
 
-    public Card[] getMonsterFieldCards() {
+    public MonsterCard[] getMonsterFieldCards() {
         return monsterFieldCards;
     }
-    public void setMonsterFieldCards(Card monsterFieldCard, int slotNumber) {
+    public void setMonsterFieldCards(MonsterCard monsterFieldCard, int slotNumber) {
         monsterFieldCards[slotNumber] = monsterFieldCard;
     }
 
@@ -86,4 +87,10 @@ public class Player {
         this.maxMana = maxMana;
     }
 
+    public boolean isDefenderPresent(){
+        for (MonsterCard monsterCard: monsterFieldCards)
+            if (monsterCard != null && monsterCard.isDefender())
+                return true;
+        return false;
+    }
 }

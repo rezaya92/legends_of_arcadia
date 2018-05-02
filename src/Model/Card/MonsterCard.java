@@ -8,16 +8,24 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class MonsterCard extends Card {
+public abstract class MonsterCard extends Card{
     
     boolean isNimble;
     boolean isDefender;
+    boolean isAwake = false;
     int ap;
     int hp;
     Spell battleCry;
     Spell spellCast;
     Spell will;
     //todo set in constructor
+
+    public boolean isNimble(){
+        return isNimble;
+    }
+    public boolean isDefender(){
+        return isDefender;
+    }
 
     public MonsterCard(int manaCost, int hp, int ap, CardPlace cardPlace, boolean isNimble, boolean isDefender) {
         this.manaCost = manaCost;
@@ -30,10 +38,12 @@ public abstract class MonsterCard extends Card {
 
     public void Attack(MonsterCard monsterCard){
         // defender magic case || secrets
-        monsterCard.hp -= ap;
-        hp -= monsterCard.ap;
-        this.checkAlive();
-        monsterCard.checkAlive();
+        if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
+            monsterCard.hp -= ap;
+            hp -= monsterCard.ap;
+            this.checkAlive();
+            monsterCard.checkAlive();
+        }
     }
 
     public void checkAlive(){
@@ -53,10 +63,12 @@ public abstract class MonsterCard extends Card {
 
     @Override
     public void play(int slotNumber){ // must be < 5
+        // todo battle cry
         if (manaCost <= owner.getMana() && owner.getMonsterFieldCards()[slotNumber] == null){
             if (owner.getHandCards().remove(this)) {
                 owner.setMonsterFieldCards(this, slotNumber);
                 owner.setMana(owner.getMana() - manaCost);
+
             }
         }
     }
