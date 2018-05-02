@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import Model.Card.Card;
 import View.View;
 
 import java.lang.reflect.Method;

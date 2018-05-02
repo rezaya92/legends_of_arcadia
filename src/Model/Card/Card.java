@@ -1,4 +1,7 @@
-package Model;
+package Model.Card;
+
+import Model.CardPlace;
+import Model.Tribe;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -42,5 +45,9 @@ public abstract class Card {
 
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;
+    }
+
+    public Tribe getTribe() {
+        return tribe;
     }
 }
