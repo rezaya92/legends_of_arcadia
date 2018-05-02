@@ -13,6 +13,8 @@ public class Player {
     private ArrayList<Card> handCards;
     private Shop shop;
     private int gil;
+    private int mana;
+    private int maxMana;
 
     public ArrayList<Card> getInventoryCards() {
         return inventoryCards;
@@ -31,8 +33,8 @@ public class Player {
     public Card[] getMonsterFieldCards() {
         return monsterFieldCards;
     }
-    public void setMonsterFieldCards(Card[] monsterFieldCards) {
-        this.monsterFieldCards = monsterFieldCards;
+    public void setMonsterFieldCards(Card monsterFieldCard, int slotNumber) {
+        monsterFieldCards[slotNumber] = monsterFieldCard;
     }
 
     public Card[] getSpellFieldCards() {
@@ -69,4 +71,19 @@ public class Player {
     public void setGil(int gil) {
         this.gil = gil;
     }
+
+    public int getMana() {
+        return mana;
+    }
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
 }
