@@ -6,13 +6,13 @@ import Model.Card.MonsterCard;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<Card> inventoryCards;
-    private ArrayList<Card> deckCards;
+    private ArrayList<Card> inventoryCards = new ArrayList<>();
+    private ArrayList<Card> deckCards = new ArrayList<>();
     private MonsterCard[] monsterFieldCards = new MonsterCard[5];
     private Card[] spellFieldCards = new Card[3];    //todo replace SpellCard
     private ArrayList<Card> graveyardCards;
     private ArrayList<Card> handCards;
-    private Shop shop;
+    private Shop shop = new Shop();
     private int gil;
     private int mana;
     private int maxMana;
@@ -92,5 +92,34 @@ public class Player {
             if (monsterCard != null && monsterCard.isDefender())
                 return true;
         return false;
+    }
+    public String inventoryToString(){
+        String output = " Card Inventory:\n";
+        ArrayList<Card> uniqueCards = new ArrayList<>();
+        ArrayList<Integer> numberOfCards = new ArrayList<>();
+        ArrayList<Integer> numberOnDeck = new ArrayList<>();
+        myLabel1:
+        for(Card card : inventoryCards){
+            for(int i=0; i<uniqueCards.size(); i++){
+                if(card.equalsInName(uniqueCards.get(i))){//todo equals card
+                    numberOfCards.set(i, numberOfCards.get(i) + 1);
+                    continue myLabel1;
+                }
+            }
+            uniqueCards.add(card);
+            numberOfCards.add(1);
+            numberOnDeck.add(0);
+            for(Card cardInDeck : deckCards) {
+                if(card.equalsInName(cardInDeck)){
+                    numberOnDeck.set(numberOnDeck.size() - 1, numberOnDeck.get(numberOnDeck.size() - 1) + 1);
+                }
+            }
+        }
+
+        for(int i=0; i<uniqueCards.size(); i++){
+            output += i + 1 + ". " + numberOfCards.get(i) + " " + uniqueCards.get(i).getName() + " / " + numberOnDeck.get(i) + " on deck\n";
+        }
+
+        return output;
     }
 }
