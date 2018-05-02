@@ -63,6 +63,8 @@ public abstract class Card {
     }
 
 
+    public abstract void play(int slotNumber);
+
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;
     }

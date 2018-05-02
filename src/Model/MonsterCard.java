@@ -9,6 +9,10 @@ public abstract class MonsterCard extends Card {
     boolean isDefender;
     int ap;
     int hp;
+    Spell battleCry;
+    Spell spellCast;
+    Spell will;
+    //todo set in constructor
 
     public MonsterCard(int manaCost, int hp, int ap, CardPlace cardPlace, boolean isNimble, boolean isDefender) {
         this.manaCost = manaCost;
@@ -30,6 +34,9 @@ public abstract class MonsterCard extends Card {
     public void checkAlive(){
         // how about the player
         if (hp <= 0){
+            if (will != null){
+                //todo will.use();
+            }
             for (int i = 0; i < 5; i++){
                 if (owner.getMonsterFieldCards()[i].equals(this)){
                     owner.getMonsterFieldCards()[i] = null;
@@ -38,4 +45,14 @@ public abstract class MonsterCard extends Card {
             }
         }
     }
+
+    @Override
+    public void play(int slotNumber){
+        if (manaCost <= owner.getMana()){ //todo add mana to palyer
+
+            //owner.setMana();
+        }
+    }
+
+    // to consider sleeping
 }
