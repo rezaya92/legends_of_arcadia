@@ -31,8 +31,9 @@ public class Main {
     }
 
     private static void afterMatch() throws Exception{
+        //TODO player saveHuman = heman.clone(); (for hourGlass)
         View.afterMatch();
-        action = scanner.next();
+        action = scanner.nextLine();//todo nextLine?
         lastViewMethod = Class.forName("View.View").getMethod("afterMatch");
         helpHandler(lastViewMethod);
         switch (action){
@@ -40,13 +41,18 @@ public class Main {
                 enterShop();
                 break;
             case "2":
-
+                break;
+            case "3":
+                break;
+                default:
+                    View.invalidCommand();
+                    afterMatch();
         }
     }
 
     private static void enterShop() throws Exception{
         View.enterShop();
-        action = scanner.next();
+        action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("enterShop");
         helpHandler(lastViewMethod);
         switch (action){
@@ -70,7 +76,7 @@ public class Main {
 
     private static void cardShop() throws Exception{
         View.cardShop();
-        action = scanner.next();
+        action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("cardShop");
         helpHandler(lastViewMethod);
         switch (action){
@@ -111,7 +117,7 @@ public class Main {
                 case "Again":
                     lastViewMethod.invoke(null);
             }
-            action = scanner.next();
+            action = scanner.nextLine();
         }
     }
 }

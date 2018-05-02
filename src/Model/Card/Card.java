@@ -72,4 +72,10 @@ public abstract class Card {
     public void Die(){
         cardPlace = CardPlace.GRAVEYARD;
     }
+
+    public boolean equalsInName(Object arg0){
+        if(!(arg0 instanceof Card))
+            return false;
+        return (this.name.equals(((Card) arg0).name));
+    }
 }
