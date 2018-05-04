@@ -79,24 +79,39 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("cardShop");
         helpHandler(lastViewMethod);
-        switch (action){
-            case "1":
-                //cardShop();
-                break;
-            case "2":
-                //itemShop();
-                break;
-            case "3":
-                //amuletShop();
-                break;
-            case "4":
-                //afterMatch();
-                break;
-            case "5":
-                enterShop();
-            default:
-                View.invalidCommand();
-                cardShop();
+        try {
+            if (action.startsWith("Buy ") || action.startsWith("buy ")) {
+                int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
+                if(numberToBuy <= 0)
+                    throw new Exception();//TODO check if executes correctly
+                String cardName = action.split(" - ")[0].substring(4);
+                int status = human.buyCard(cardName, numberToBuy);
+                switch (status){
+                    case -1:
+                        View.insufficientGil();
+                        break;
+                    case 0:
+                        View.notAvailableInShop();
+                        break;
+                    case 1:
+                        View.successfulBuy(cardName, numberToBuy);
+                }
+            } else if(action.startsWith("Sell ") || action.startsWith("sell ")){
+                int numberToSell = Integer.parseInt(action.split(" - ")[1]);
+                if(numberToSell <= 0)
+                    throw new Exception();//TODO check if executes correctly
+                String cardName = action.split(" - ")[0].substring(5);
+                if(human.sellCard(cardName, numberToSell))
+                    View.successfulSell(cardName, numberToSell);
+                else
+                    View.notEnoughCards();
+            } else if(action.startsWith("Info ") || action.startsWith("info ")){
+                String cardName = action.substring(5);
+                //TODO this case
+            }//TODO other cases
+        } catch (Exception e){
+            View.invalidCommand();
+            cardShop();
         }
     }
 
