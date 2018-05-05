@@ -80,6 +80,22 @@ public abstract class MonsterCard extends Card{
             //spellCast.use();
     }
 
+    @Override
+    public String toString(){
+        String output = this.name + " Info:\n";
+        String cardType = this.getClass().getName();
+        cardType = cardType.substring(0, cardType.length()-4);// not perfect
+        output += "Name: " + this.name + "\n";
+        output += "HP: " + this.hp + "\n";
+        output += "AP: " + this.ap + "\n";
+        output += "MP cost: " + this.manaCost + "\n";
+        output += "Card Type: " + cardType + "\n";
+        output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
+        output += "Is Defencive: " + isDefender + "\n";
+        output += "Is Nimble: " + isNimble + "\n";
+        return output;
+    }
+
     public void getAwake(){
         isAwake = true;
     }
