@@ -77,7 +77,7 @@ public abstract class MonsterCard extends Card{
 
     public void castSpell(){
         if (spellCast != null)
-            spellCast.use();
+            //spellCast.use();
     }
 
     public void getAwake(){
