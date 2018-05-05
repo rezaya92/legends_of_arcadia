@@ -8,16 +8,24 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class MonsterCard extends Card {
+public abstract class MonsterCard extends Card{
     
     boolean isNimble;
     boolean isDefender;
+    boolean isAwake = false;
     int ap;
     int hp;
     Spell battleCry;
     Spell spellCast;
     Spell will;
     //todo set in constructor
+
+    public boolean isNimble(){
+        return isNimble;
+    }
+    public boolean isDefender(){
+        return isDefender;
+    }
 
     public MonsterCard(int manaCost, int hp, int ap, CardPlace cardPlace, boolean isNimble, boolean isDefender) {
         this.manaCost = manaCost;
@@ -30,17 +38,19 @@ public abstract class MonsterCard extends Card {
 
     public void Attack(MonsterCard monsterCard){
         // defender magic case || secrets
-        monsterCard.hp -= ap;
-        hp -= monsterCard.ap;
-        this.checkAlive();
-        monsterCard.checkAlive();
+        if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
+            monsterCard.hp -= ap;
+            hp -= monsterCard.ap;
+            this.checkAlive();
+            monsterCard.checkAlive();
+        }
     }
 
     public void checkAlive(){
         // how about the player
         if (hp <= 0){
             if (will != null){
-                //todo will.use();
+                will.use(); // todo consider
             }
             for (int i = 0; i < 5; i++){
                 if (owner.getMonsterFieldCards()[i] == this){
@@ -57,8 +67,17 @@ public abstract class MonsterCard extends Card {
             if (owner.getHandCards().remove(this)) {
                 owner.setMonsterFieldCards(this, slotNumber);
                 owner.setMana(owner.getMana() - manaCost);
+                if (isNimble)
+                    getAwake();
+                if (battleCry != null)
+                    battleCry.use(); // todo consider
             }
         }
+    }
+
+    public void castSpell(){
+        if (spellCast != null)
+            //spellCast.use();
     }
 
     public int getAp() {
@@ -77,5 +96,24 @@ public abstract class MonsterCard extends Card {
         this.hp = hp;
     }
 
+    @Override
+    public String toString(){
+        String output = this.name + " Info:\n";
+        String cardType = this.getClass().getName();
+        cardType = cardType.substring(0, cardType.length()-4);// not perfect
+        output += "Name: " + this.name + "\n";
+        output += "HP: " + this.hp + "\n";
+        output += "AP: " + this.ap + "\n";
+        output += "MP cost: " + this.manaCost + "\n";
+        output += "Card Type: " + cardType + "\n";
+        output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
+        output += "Is Defencive: " + isDefender + "\n";
+        output += "Is Nimble: " + isNimble + "\n";
+        return output;
+    }
+
+    public void getAwake(){
+        isAwake = true;
+    }
     // to consider sleeping
 }
