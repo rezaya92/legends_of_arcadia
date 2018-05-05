@@ -39,6 +39,26 @@ abstract public class View {
         System.out.println("5. Exit: To return to shop menu");
     }
 
+    public static void insufficientGil(){
+        System.out.println("Not enough Gil!");
+    }
+
+    public static void notAvailableInShop(){
+        System.out.println("Wanted stuff not available in shop.");
+    }
+
+    public static void successfulBuy(String boughtThingName, int numberToBuy){
+        System.out.println("Successfully bought " + numberToBuy + " of " + boughtThingName + "!");
+    }
+
+    public static void notEnoughCards(){
+        System.out.println("Not enough cards!");
+    }
+
+    public static void successfulSell(String soldThingName, int numberToSell){
+        System.out.println("Successfully sold " + numberToSell + " of " + soldThingName + "!");
+    }
+
     public static void invalidCommand(){
         System.out.println("Invalid command. Type Help for more information.");
     }

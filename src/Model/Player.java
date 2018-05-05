@@ -87,6 +87,54 @@ public class Player {
         this.maxMana = maxMana;
     }
 
+    public int buyCard(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
+        ArrayList<Card> shopCards = shop.getCards();
+        int numberOfThatCardInShop = 0;
+        int priceOfThatCard = 0;
+        for(Card card : shopCards){
+            if(card.getName().equals(name)){
+                numberOfThatCardInShop ++;
+                priceOfThatCard = card.getPrice();
+            }
+        }
+        if(numberOfThatCardInShop < numberToBuy)
+            return 0;
+        if(priceOfThatCard * numberToBuy > gil)
+            return -1;
+        for(Card card : shopCards) {
+            if (card.getName().equals(name) && numberToBuy > 0) {
+                shop.remove(card);
+                inventoryCards.add(card);
+                numberToBuy--;
+            }
+        }
+        gil -= priceOfThatCard * numberToBuy;
+        return 1;
+    }
+
+    public boolean sellCard(String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
+        ArrayList<Card> shopCards = shop.getCards();
+        int availableNumberOfThatCard = 0;
+        int priceOfThatCard = 0;
+        for(Card card : inventoryCards){
+            if(card.getName().equals(name) && !deckCards.contains(card)){
+                availableNumberOfThatCard ++;
+                priceOfThatCard = card.getPrice();
+            }
+        }
+        if(availableNumberOfThatCard < numberToSell)
+            return false;
+        for(Card card : inventoryCards){
+            if(card.getName().equals(name) && !deckCards.contains(card) && numberToSell > 0){
+                shop.add(card);
+                inventoryCards.remove(card);
+                numberToSell --;
+            }
+        }
+        gil += priceOfThatCard * numberToSell;
+        return true;
+    }
+
     public boolean isDefenderPresent(){
         for (MonsterCard monsterCard: monsterFieldCards)
             if (monsterCard != null && monsterCard.isDefender())
