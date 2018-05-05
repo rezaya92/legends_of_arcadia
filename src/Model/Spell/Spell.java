@@ -21,7 +21,7 @@ public abstract class Spell {
         this.choiceType = choiceType;
     }
 
-    void setEffectableCard(){
+    public boolean setEffectableCards(){
         effectableCard = new ArrayList<>();
         for (ArrayList<Card> cardArray: effectableArea) {
             for (Card card:cardArray) {
@@ -35,26 +35,31 @@ public abstract class Spell {
                 }
             }
         }
+        return choose();
     }
 
-    void choose(){
+    private boolean choose(){
         switch (choiceType){
             case ALL:
-                break;
+                return true;
             case RANDOM:
                 Random random = new Random();
                 int index = random.nextInt(effectableCard.size());
                 Card choice = effectableCard.get(index);
                 effectableCard.clear();
                 effectableCard.add(choice);
-                break;
+                return true;
             case SELECT:
-                
-                break;
+                return false;
         }
+        return false;
     }
 
-    abstract boolean use();
+    boolean use(){ return false; }
 
-    abstract void deuse();
+    void deuse(){}
+
+    public ArrayList<Card> getEffectableCard() {
+        return effectableCard;
+    }
 }

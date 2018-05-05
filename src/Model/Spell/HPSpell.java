@@ -1,12 +1,14 @@
 package Model.Spell;
 
 import Model.Card.Card;
+import Model.Card.MonsterCard;
 import Model.CardPlace;
 import Model.Spell.Spell;
 import Model.SpellChoiceType;
 import Model.Tribe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HPSpell extends Spell {
     int changeAmount;
@@ -18,7 +20,22 @@ public class HPSpell extends Spell {
 
     @Override
     boolean use() {
-        return false;
+        boolean flag = false;
+        for (Card card: effectableCard) {
+            flag = true;
+            if (card instanceof MonsterCard) {
+                MonsterCard current = (MonsterCard) card;
+                current.setHp(current.getHp() + changeAmount);
+            }
+            /*else if (card instanceof  PlayerCard){
+                PlayerCard current = (PlayerCard) card;
+                current.setHp(current.getHp() + changeAmount);
+            }*/
+            //TODO PlayerCard needed
+            else
+                return false;
+        }
+        return flag;
     }
 
     @Override

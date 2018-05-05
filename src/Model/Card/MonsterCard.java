@@ -61,5 +61,21 @@ public abstract class MonsterCard extends Card {
         }
     }
 
+    public int getAp() {
+        return ap;
+    }
+
+    public void setAp(int ap) {
+        this.ap = ap;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
     // to consider sleeping
 }
