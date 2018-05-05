@@ -50,7 +50,7 @@ public abstract class MonsterCard extends Card{
         // how about the player
         if (hp <= 0){
             if (will != null){
-                will.use(); // todo consider
+                //will.use(); // todo consider
             }
             for (int i = 0; i < 5; i++){
                 if (owner.getMonsterFieldCards()[i] == this){
@@ -69,14 +69,14 @@ public abstract class MonsterCard extends Card{
                 owner.setMana(owner.getMana() - manaCost);
                 if (isNimble)
                     getAwake();
-                if (battleCry != null)
-                    battleCry.use(); // todo consider
+                if (battleCry != null);
+                    //battleCry.use(); // todo consider
             }
         }
     }
 
     public void castSpell(){
-        if (spellCast != null)
+        if (spellCast != null);
             //spellCast.use();
     }
 

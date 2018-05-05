@@ -13,6 +13,7 @@ public abstract class Spell {
     Tribe[] effectableTribe;
     SpellChoiceType choiceType;
     ArrayList<Card> effectableCard = new ArrayList<>();
+    ArrayList<Card> effectedCard = new ArrayList<>();
 
     public Spell(ArrayList<ArrayList<Card>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType) {
         this.effectableArea = effectedArea;
@@ -35,10 +36,10 @@ public abstract class Spell {
                 }
             }
         }
-        return choose();
+        return effectableCard.size() != 0;
     }
 
-    private boolean choose(){
+    boolean choose(){
         switch (choiceType){
             case ALL:
                 return true;
@@ -55,11 +56,20 @@ public abstract class Spell {
         return false;
     }
 
-    public boolean use(){ return false; }
+    abstract boolean use();
+    abstract boolean use(Card choice);
 
-    void deuse(){}
+    abstract void deuse();
 
     public ArrayList<Card> getEffectableCard() {
         return effectableCard;
+    }
+
+    public SpellChoiceType getChoiceType() {
+        return choiceType;
+    }
+
+    public ArrayList<Card> getEffectedCard() {
+        return effectedCard;
     }
 }

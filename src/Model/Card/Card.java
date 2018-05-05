@@ -4,6 +4,8 @@ import Model.CardPlace;
 import Model.Player;
 import Model.Tribe;
 
+import java.util.Comparator;
+
 /**
  * Created by msi-pc on 4/27/2018.
  */
@@ -79,3 +81,4 @@ public abstract class Card {
         return (this.name.equals(((Card) arg0).name));
     }
 }
+

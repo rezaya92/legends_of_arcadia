@@ -19,6 +19,8 @@ public class APSpell extends Spell {
 
     @Override
     boolean use() {
+        setEffectableCards();
+        choose();
         boolean flag = false;
         for (Card card: effectableCard) {
             flag = true;
@@ -28,11 +30,36 @@ public class APSpell extends Spell {
             } else
                 return false;
         }
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
+        return flag;
+    }
+
+    @Override
+    boolean use(Card choice) {
+        effectableCard = new ArrayList<Card>(1);
+        effectableCard.add(choice);
+        boolean flag = false;
+        for (Card card: effectableCard) {
+            flag = true;
+            if (card instanceof MonsterCard) {
+                MonsterCard current = (MonsterCard) card;
+                current.setAp(current.getAp() + changeAmount);
+            } else
+                return false;
+        }
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
         return flag;
     }
 
     @Override
     void deuse() {
-
+        for (Card card: effectableCard) {
+            MonsterCard current = (MonsterCard) card;
+            current.setAp(current.getAp() - changeAmount);
+        }
+        effectedCard.clear();
+        effectableCard.clear();
     }
 }

@@ -20,12 +20,15 @@ public class HPSpell extends Spell {
 
     @Override
     boolean use() {
+        setEffectableCards();
+        choose();
         boolean flag = false;
         for (Card card: effectableCard) {
             flag = true;
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setHp(current.getHp() + changeAmount);
+                current.checkAlive();
             }
             /*else if (card instanceof  PlayerCard){
                 PlayerCard current = (PlayerCard) card;
@@ -35,11 +38,51 @@ public class HPSpell extends Spell {
             else
                 return false;
         }
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
+        return flag;
+    }
+
+    @Override
+    boolean use(Card choice) {
+        effectableCard = new ArrayList<Card>(1);
+        effectableCard.add(choice);
+        boolean flag = false;
+        for (Card card: effectableCard) {
+            flag = true;
+            if (card instanceof MonsterCard) {
+                MonsterCard current = (MonsterCard) card;
+                current.setHp(current.getHp() + changeAmount);
+                current.checkAlive();
+            }
+            /*else if (card instanceof  PlayerCard){
+                PlayerCard current = (PlayerCard) card;
+                current.setHp(current.getHp() + changeAmount);
+            }*/
+            //TODO PlayerCard needed
+            else
+                return false;
+        }
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
         return flag;
     }
 
     @Override
     void deuse() {
-
+        for (Card card: effectableCard) {
+            if (card instanceof MonsterCard) {
+                MonsterCard current = (MonsterCard) card;
+                current.setHp(current.getHp() - changeAmount);
+                current.checkAlive();
+            }
+            /*else if (card instanceof  PlayerCard){
+                PlayerCard current = (PlayerCard) card;
+                current.setHp(current.getHp() - changeAmount);
+            }*/
+            //TODO PlayerCard needed
+        }
+        effectedCard.clear();
+        effectableCard.clear();
     }
 }
