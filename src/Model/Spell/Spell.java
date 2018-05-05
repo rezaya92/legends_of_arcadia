@@ -55,7 +55,7 @@ public abstract class Spell {
         return false;
     }
 
-    boolean use(){ return false; }
+    public boolean use(){ return false; }
 
     void deuse(){}
 

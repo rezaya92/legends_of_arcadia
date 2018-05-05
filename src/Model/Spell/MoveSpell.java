@@ -80,7 +80,7 @@ public class MoveSpell extends Spell {
                 case MONSTERFIELD:
                     for (int i = 0; i < 5; i++) {
                         if (destinationPlayer.getMonsterFieldCards()[i] == null) {
-                            destinationPlayer.getMonsterFieldCards()[i] = card;
+                            destinationPlayer.getMonsterFieldCards()[i] = (MonsterCard) card;
                             card.setCardPlace(CardPlace.SPELLFIELD);
                             break;
                         }
