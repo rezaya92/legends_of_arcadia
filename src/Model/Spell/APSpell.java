@@ -2,12 +2,9 @@ package Model.Spell;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.Spell.Spell;
-import Model.SpellChoiceType;
 import Model.Tribe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class APSpell extends Spell {
     int changeAmount;

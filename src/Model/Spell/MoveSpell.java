@@ -2,14 +2,11 @@ package Model.Spell;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.CardPlace;
+import Model.Card.CardPlace;
 import Model.Player;
-import Model.Spell.Spell;
-import Model.SpellChoiceType;
 import Model.Tribe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MoveSpell extends Spell {
     CardPlace destination;

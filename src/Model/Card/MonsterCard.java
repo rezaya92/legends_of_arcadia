@@ -1,9 +1,6 @@
 package Model.Card;
 
-import Model.CardPlace;
-import Model.Spell.Spell;
-
-import java.util.ArrayList;
+import Model.Spell.GeneralizedSpell;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -15,9 +12,9 @@ public abstract class MonsterCard extends Card{
     boolean isAwake = false;
     int ap;
     int hp;
-    Spell battleCry;
-    Spell spellCast;
-    Spell will;
+    GeneralizedSpell battleCry;
+    GeneralizedSpell spellCast;
+    GeneralizedSpell will;
     //todo set in constructor
 
     public boolean isNimble(){

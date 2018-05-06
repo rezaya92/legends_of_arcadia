@@ -1,8 +1,5 @@
 package Model.Card;
 
-import Model.Card.MonsterCard;
-import Model.CardPlace;
-
 /**
  * Created by msi-pc on 4/27/2018.
  */

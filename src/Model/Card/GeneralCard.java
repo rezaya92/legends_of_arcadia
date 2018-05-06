@@ -1,7 +1,5 @@
 package Model.Card;
 
-import Model.Card.MonsterCard;
-import Model.CardPlace;
 import Model.Spell.GeneralizedSpell;
 
 /**

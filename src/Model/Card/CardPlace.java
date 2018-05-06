@@ -1,4 +1,4 @@
-package Model;
+package Model.Card;
 
 /**
  * Created by msi-pc on 4/27/2018.

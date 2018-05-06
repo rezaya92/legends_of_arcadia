@@ -1,10 +1,7 @@
 package Model.Card;
 
-import Model.CardPlace;
 import Model.Player;
 import Model.Tribe;
-
-import java.util.Comparator;
 
 /**
  * Created by msi-pc on 4/27/2018.
