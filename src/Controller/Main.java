@@ -4,6 +4,7 @@ import Model.*;
 import Model.Card.Card;
 import View.*;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -14,6 +15,7 @@ public class Main {
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
+    private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
 
     public static void main(String[] args) throws Exception{
         int numberOfCards = 40;
@@ -31,7 +33,7 @@ public class Main {
     }
 
     private static void afterMatch() throws Exception{
-        //TODO player saveHuman = heman.clone(); (for hourGlass)
+        //TODO player saveHuman = human.clone(); (for hourGlass)
         View.afterMatch();
         action = scanner.nextLine();//todo nextLine?
         lastViewMethod = Class.forName("View.View").getMethod("afterMatch");
@@ -39,11 +41,13 @@ public class Main {
         switch (action){
             case "1":
                 enterShop();
-                break;
+                return;
             case "2":
-                break;
+                //TODO
+                return;
             case "3":
-                break;
+                //TODO
+                return;
                 default:
                     View.invalidCommand();
                     afterMatch();
@@ -58,16 +62,16 @@ public class Main {
         switch (action){
             case "1":
                 cardShop();
-                break;
+                return;
             case "2":
                 itemShop();
-                break;
+                return;
             case "3":
                 amuletShop();
-                break;
+                return;
             case "4":
                 afterMatch();
-                break;
+                return;
                 default:
                     View.invalidCommand();
                     enterShop();
@@ -79,6 +83,10 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("cardShop");
         helpHandler(lastViewMethod);
+        if(action.equals("5") || action.equals("Exit") || action.equals("exit")) {
+            enterShop();
+            return;
+        }
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy ")) {
                 int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
@@ -107,12 +115,18 @@ public class Main {
                     View.notEnoughCards();
             } else if(action.startsWith("Info ") || action.startsWith("info ")){
                 String cardName = action.substring(5);
-                //TODO this case
-            }//TODO other cases
+                if(!infoCard(cardName)){
+                    throw new Exception();
+                }
+            } else if(action.equals("4") || action.equals("Edit deck") || action.equals("edit deck")){
+                editDeck();
+            }
         } catch (Exception e){
             View.invalidCommand();
             cardShop();
+            return;
         }
+        cardShop();
     }
 
     private static void itemShop() throws Exception{
@@ -123,13 +137,33 @@ public class Main {
 
     }
 
+    private static void editDeck() throws Exception{
+        View.editDeck();
+        action = scanner.nextLine();
+        lastViewMethod = Class.forName("View.View").getMethod("editDeck");
+        helpHandler(lastViewMethod);
+        //TODO
+    }
+
+    private static boolean infoCard(String cardName){
+        for(Card card : allCards){
+            if(card.getName().equals(cardName)){
+                View.printCardInfo(card);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void helpHandler(Method lastViewMethod) throws Exception{
-        while(action.equals("Help") || action.equals("Again")){
+        while(action.equals("Help") || action.equals("help") || action.equals("Again") || action.equals("again")){
             switch (action) {
                 case "Help":
+                case "help":
                     Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help").invoke(null);
                     break;
                 case "Again":
+                case "again":
                     lastViewMethod.invoke(null);
             }
             action = scanner.nextLine();

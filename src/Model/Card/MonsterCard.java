@@ -113,9 +113,9 @@ public abstract class MonsterCard extends Card{
         String cardType = this.getClass().getName();
         cardType = cardType.substring(0, cardType.length()-4);// not perfect
         output += "Name: " + this.name + "\n";
-        output += "HP: " + this.hp + "\n";
-        output += "AP: " + this.ap + "\n";
-        output += "MP cost: " + this.manaCost + "\n";
+        output += "HP: " + this.defualtHP + "\n";
+        output += "AP: " + this.defaultAP + "\n";
+        output += "MP cost: " + this.defaultManaCost + "\n";
         output += "Card Type: " + cardType + "\n";
         output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
         output += "Is Defencive: " + isDefender + "\n";

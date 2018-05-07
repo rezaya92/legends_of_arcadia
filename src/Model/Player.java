@@ -6,8 +6,10 @@ import Model.Card.MonsterCard;
 import java.util.ArrayList;
 
 public class Player {
+    private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> deckCards = new ArrayList<>();
+    private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();
     private MonsterCard[] monsterFieldCards = new MonsterCard[5];
     private Card[] spellFieldCards = new Card[3];    //todo replace SpellCard
     private ArrayList<Card> graveyardCards;
@@ -19,6 +21,8 @@ public class Player {
     private String name;
     private PlayerHero playerHero;
     private Player opponent;
+
+    public Player(){} //for now (human)
 
     public Player(String name, int playerHeroDefaultHP){
         this.name = name;
@@ -165,15 +169,29 @@ public class Player {
         return false;
     }
 
+    public String deckToString(){
+        String output = "";
+        for(int i=1; i<deckCapacity + 1; i++){
+            output += "Slot " + i + ": ";
+            int indexOfWantedCard = deckCardsSlotNumber.indexOf(i);
+            if(indexOfWantedCard == -1) {
+                output += "Empty\n";
+                continue;
+            }
+            output += deckCards.get(indexOfWantedCard) + "\n";
+        }
+        return output;
+    }
+
     public String inventoryToString(){
-        String output = " Card Inventory:\n";
+        String output = "";
         ArrayList<Card> uniqueCards = new ArrayList<>();
         ArrayList<Integer> numberOfCards = new ArrayList<>();
         ArrayList<Integer> numberOnDeck = new ArrayList<>();
         myLabel1:
         for(Card card : inventoryCards){
             for(int i=0; i<uniqueCards.size(); i++){
-                if(card.equalsInName(uniqueCards.get(i))){//todo equals card
+                if(card.equalsInName(uniqueCards.get(i))){
                     numberOfCards.set(i, numberOfCards.get(i) + 1);
                     continue myLabel1;
                 }
