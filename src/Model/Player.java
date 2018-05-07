@@ -2,6 +2,7 @@ package Model;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.Card.SpellCard;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ public class Player {
     private String name;
     private PlayerHero playerHero;
     private Player opponent;
+    private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
+    private ArrayList<SpellCard> continuousSpellCards = new ArrayList<>();
 
     public Player(){} //for now (human)
 
@@ -113,6 +116,33 @@ public class Player {
     public void setOpponent(Player opponent) {
         this.opponent = opponent;
     }
+
+    //---------------------------------------------------------------------------------------------------------------
+    public void addSleepingPlayedCard(MonsterCard sleepingPlayedCard){
+        sleepingPlayedCards.add(sleepingPlayedCard);
+    }
+
+    public void awakeSleepingPlayedCards(){   // must be called when turn ends   "also consider being empty when next game starts"
+        for (MonsterCard sleepingPlayedCard: sleepingPlayedCards){
+            sleepingPlayedCard.getAwake();
+        }
+        sleepingPlayedCards.clear();
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    public void addContinuousSpellCard(SpellCard continuousSpellCard){
+        continuousSpellCards.add(continuousSpellCard);
+    }
+
+    public void useContinuousSpellCards(){   // must be called when turn starts
+        for (SpellCard continuousSpellCard: continuousSpellCards)
+            continuousSpellCard.useSpell();
+    }
+
+    public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
+        continuousSpellCards.remove(continuousSpellCard);
+    }
+    //---------------------------------------------------------------------------------------------------------------
 
     public int buyCard(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
         ArrayList<Card> shopCards = shop.getCards();

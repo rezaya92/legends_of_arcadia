@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero {
+public class PlayerHero { // todo amulet
     private int defaultHP;
     private int hp;
     private ArrayList<GeneralizedSpell> items;

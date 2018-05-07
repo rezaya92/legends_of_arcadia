@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class MonsterCard extends Card{
+public class MonsterCard extends Card{
     
     final boolean isNimble;
     final boolean isDefender;
@@ -75,12 +75,14 @@ public abstract class MonsterCard extends Card{
     @Override
     public void play(int slotNumber){ // must be < 5
         if (manaCost <= owner.getMana() && owner.getMonsterFieldCards()[slotNumber] == null){
-            if (owner.getHandCards().remove(this)) {
+            if (owner.getHandCards().remove(this)) {      // todo card may get played from deck --> fix this
                 owner.setMonsterFieldCards(this, slotNumber);
                 owner.setMana(owner.getMana() - manaCost);
                 if (isNimble)
                     getAwake();
-                if (battleCry != null);
+                else
+                    owner.addSleepingPlayedCard(this);
+                if (battleCry != null)
                     battleCry.use();
             }
         }
@@ -126,5 +128,4 @@ public abstract class MonsterCard extends Card{
     public void getAwake(){
         isAwake = true;
     }
-    // to consider sleeping
 }

@@ -73,9 +73,7 @@ public abstract class Card {
 
     public abstract void play(int slotNumber);
 
-    public void Die(){
-        cardPlace = CardPlace.GRAVEYARD;
-    }
+    //public abstract void destroy();
 
     public boolean equalsInName(Object arg0){
         if(!(arg0 instanceof Card))
