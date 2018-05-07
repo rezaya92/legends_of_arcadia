@@ -1,16 +1,13 @@
 package Model.Spell;
 
-import Model.Card.Card;
-import Model.Card.MonsterCard;
-import Model.Card.CardPlace;
+import Model.Card.*;
 import Model.Player;
-import Model.Tribe;
 
 import java.util.ArrayList;
 
 public class MoveSpell extends Spell {
-    CardPlace destination;
-    Player destinationPlayer;
+    private CardPlace destination;
+    private Player destinationPlayer;
 
     //TODO initial health needed
 
@@ -21,12 +18,10 @@ public class MoveSpell extends Spell {
     }
 
     @Override
-    boolean use() {
+    void use() {
         setEffectableCards();
         choose();
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             switch (card.getCardPlace()){
                 case DECK:
                     card.getOwner().getDeckCards().remove(card);
@@ -73,7 +68,6 @@ public class MoveSpell extends Spell {
                             break;
                         }
                         else if (i == 4){
-                            flag = false;
                             break;
                         }
                     }
@@ -86,25 +80,25 @@ public class MoveSpell extends Spell {
                             break;
                         }
                         else if (i == 4){
-                            flag = false;
                             break;
                         }
                     }
                     break;
             }
+            if (card instanceof MonsterCard){
+                ((MonsterCard) card).setHp(((MonsterCard) card).getDefualtHP());
+                ((MonsterCard) card).setAp(((MonsterCard) card).getDefaultAP());
+            }
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override
-    boolean use(Card choice) {
-        effectableCard = new ArrayList<Card>(1);
+    void use(Card choice) {
+        effectableCard = new ArrayList<>(1);
         effectableCard.add(choice);
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             switch (card.getCardPlace()){
                 case DECK:
                     card.getOwner().getDeckCards().remove(card);
@@ -151,7 +145,6 @@ public class MoveSpell extends Spell {
                             break;
                         }
                         else if (i == 4){
-                            flag = false;
                             break;
                         }
                     }
@@ -164,16 +157,18 @@ public class MoveSpell extends Spell {
                             break;
                         }
                         else if (i == 4){
-                            flag = false;
                             break;
                         }
                     }
                     break;
             }
+            if (card instanceof MonsterCard){
+                ((MonsterCard) card).setHp(((MonsterCard) card).getDefualtHP());
+                ((MonsterCard) card).setAp(((MonsterCard) card).getDefaultAP());
+            }
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override

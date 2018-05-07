@@ -2,12 +2,12 @@ package Model.Spell;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.Tribe;
+import Model.Card.Tribe;
 
 import java.util.ArrayList;
 
 public class APSpell extends Spell {
-    int changeAmount;
+    private int changeAmount;
 
     public APSpell(ArrayList<ArrayList<Card>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType, int changeAmount) {
         super(effectedArea, effectableCardType, effectedTribe, choiceType);
@@ -15,39 +15,33 @@ public class APSpell extends Spell {
     }
 
     @Override
-    boolean use() {
+    void use() {
         setEffectableCards();
         choose();
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setAp(current.getAp() + changeAmount);
             } else
-                return false;
+                return;
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override
-    boolean use(Card choice) {
-        effectableCard = new ArrayList<Card>(1);
+    void use(Card choice) {
+        effectableCard = new ArrayList<>(1);
         effectableCard.add(choice);
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setAp(current.getAp() + changeAmount);
             } else
-                return false;
+                return;
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override

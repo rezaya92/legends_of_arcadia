@@ -128,4 +128,12 @@ public class MonsterCard extends Card{
     public void getAwake(){
         isAwake = true;
     }
+
+    public int getDefualtHP() {
+        return defualtHP;
+    }
+
+    public int getDefaultAP() {
+        return defaultAP;
+    }
 }

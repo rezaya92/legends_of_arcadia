@@ -1,5 +1,7 @@
-package Model;
+package Model.Card;
 
+import Model.Card.Card;
+import Model.Player;
 import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero { // todo amulet
+public class PlayerHero extends Card { // todo amulet
     private int defaultHP;
     private int hp;
     private ArrayList<GeneralizedSpell> items;

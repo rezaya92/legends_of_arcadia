@@ -2,6 +2,7 @@ package Model;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.Card.PlayerHero;
 import Model.Card.SpellCard;
 
 import java.util.ArrayList;

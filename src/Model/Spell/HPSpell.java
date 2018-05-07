@@ -2,66 +2,59 @@ package Model.Spell;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.Tribe;
+import Model.Card.PlayerHero;
+import Model.Card.Tribe;
 
 import java.util.ArrayList;
 
 public class HPSpell extends Spell {
-    int changeAmount;
+    private int changeAmount;
 
-    public HPSpell(ArrayList<ArrayList<Card>> effectedArea, String[] effectedCard, Tribe[] effectedTribe, SpellChoiceType choiceType, int changeAmount) {
-        super(effectedArea, effectedCard, effectedTribe, choiceType);
+    public HPSpell(ArrayList<ArrayList<Card>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType, int changeAmount) {
+        super(effectableArea,effectableCardType,effectableTribe,choiceType);
         this.changeAmount = changeAmount;
     }
 
     @Override
-    boolean use() {
+    void use() {
         setEffectableCards();
         choose();
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setHp(current.getHp() + changeAmount);
                 current.checkAlive();
             }
-            /*else if (card instanceof  PlayerCard){
-                PlayerCard current = (PlayerCard) card;
+            else if (card instanceof PlayerHero){
+                PlayerHero current = (PlayerHero) card;
                 current.setHp(current.getHp() + changeAmount);
-            }*/
-            //TODO PlayerCard needed
+            }
             else
-                return false;
+                return;
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override
-    boolean use(Card choice) {
-        effectableCard = new ArrayList<Card>(1);
+    void use(Card choice) {
+        effectableCard = new ArrayList<>(1);
         effectableCard.add(choice);
-        boolean flag = false;
         for (Card card: effectableCard) {
-            flag = true;
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setHp(current.getHp() + changeAmount);
                 current.checkAlive();
             }
-            /*else if (card instanceof  PlayerCard){
-                PlayerCard current = (PlayerCard) card;
+            else if (card instanceof PlayerHero){
+                PlayerHero current = (PlayerHero) card;
                 current.setHp(current.getHp() + changeAmount);
-            }*/
-            //TODO PlayerCard needed
+            }
             else
-                return false;
+                return;
         }
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
-        return flag;
     }
 
     @Override
@@ -72,11 +65,10 @@ public class HPSpell extends Spell {
                 current.setHp(current.getHp() - changeAmount);
                 current.checkAlive();
             }
-            /*else if (card instanceof  PlayerCard){
-                PlayerCard current = (PlayerCard) card;
-                current.setHp(current.getHp() - changeAmount);
-            }*/
-            //TODO PlayerCard needed
+            else if (card instanceof PlayerHero){
+                PlayerHero current = (PlayerHero) card;
+                current.setHp(current.getHp() + changeAmount);
+            }
         }
         effectedCard.clear();
         effectableCard.clear();

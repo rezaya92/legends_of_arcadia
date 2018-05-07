@@ -1,7 +1,6 @@
 package Model.Card;
 
 import Model.Player;
-import Model.Tribe;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -71,7 +70,7 @@ public abstract class Card {
     }
 
 
-    public abstract void play(int slotNumber);
+    public void play(int slotNumber){}
 
     //public abstract void destroy();
 

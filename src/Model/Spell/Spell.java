@@ -1,27 +1,27 @@
 package Model.Spell;
 
 import Model.Card.Card;
-import Model.Tribe;
+import Model.Card.Tribe;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Spell {
-    ArrayList<ArrayList<Card>> effectableArea;
-    String[] effectableCardType;
-    Tribe[] effectableTribe;
+    private ArrayList<ArrayList<Card>> effectableArea;
+    private String[] effectableCardType;
+    private Tribe[] effectableTribe;
     SpellChoiceType choiceType;
     ArrayList<Card> effectableCard = new ArrayList<>();
     ArrayList<Card> effectedCard = new ArrayList<>();
 
-    public Spell(ArrayList<ArrayList<Card>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType) {
-        this.effectableArea = effectedArea;
+    public Spell(ArrayList<ArrayList<Card>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType) {
+        this.effectableArea = effectableArea;
         this.effectableCardType = effectableCardType;
-        this.effectableTribe = effectedTribe;
+        this.effectableTribe = effectableTribe;
         this.choiceType = choiceType;
     }
 
-    public boolean setEffectableCards(){
+    void setEffectableCards(){
         effectableCard = new ArrayList<>();
         for (ArrayList<Card> cardArray: effectableArea) {
             for (Card card:cardArray) {
@@ -35,28 +35,26 @@ public abstract class Spell {
                 }
             }
         }
-        return effectableCard.size() != 0;
+        effectableCard.size();
     }
 
-    boolean choose(){
+    void choose(){
         switch (choiceType){
             case ALL:
-                return true;
+                return;
             case RANDOM:
                 Random random = new Random();
                 int index = random.nextInt(effectableCard.size());
                 Card choice = effectableCard.get(index);
                 effectableCard.clear();
                 effectableCard.add(choice);
-                return true;
+                return;
             case SELECT:
-                return false;
         }
-        return false;
     }
 
-    abstract boolean use();
-    abstract boolean use(Card choice);
+    abstract void use();
+    abstract void use(Card choice);
 
     abstract void deuse();
 
