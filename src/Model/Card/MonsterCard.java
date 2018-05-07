@@ -7,13 +7,15 @@ import Model.Spell.GeneralizedSpell;
  */
 public abstract class MonsterCard extends Card{
     
-    boolean isNimble;
-    boolean isDefender;
+    final boolean isNimble;
+    final boolean isDefender;
     boolean isAwake = false;
+    final int defualtHP;
+    final int defaultAP;
     int ap;
     int hp;
     GeneralizedSpell battleCry;
-    GeneralizedSpell spellCast;
+    GeneralizedSpell spellCasterSpell;
     GeneralizedSpell will;
     //todo set in constructor
 
@@ -24,10 +26,10 @@ public abstract class MonsterCard extends Card{
         return isDefender;
     }
 
-    public MonsterCard(int manaCost, int hp, int ap, CardPlace cardPlace, boolean isNimble, boolean isDefender) {
-        this.manaCost = manaCost;
-        this.hp = hp;
-        this.ap = ap;
+    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, CardPlace cardPlace, boolean isNimble, boolean isDefender) {
+        this.manaCost = this.defaultManaCost = defaultManaCost;
+        this.hp = this.defualtHP = defaultHP;
+        this.ap = this.defaultAP = defaultAP;
         this.cardPlace = cardPlace;
         this.isNimble = isNimble;
         this.isDefender = isDefender;
@@ -47,7 +49,7 @@ public abstract class MonsterCard extends Card{
         // how about the player
         if (hp <= 0){
             if (will != null){
-                //will.use(); // todo consider
+                will.use();
             }
             for (int i = 0; i < 5; i++){
                 if (owner.getMonsterFieldCards()[i] == this){
@@ -67,14 +69,14 @@ public abstract class MonsterCard extends Card{
                 if (isNimble)
                     getAwake();
                 if (battleCry != null);
-                    //battleCry.use(); // todo consider
+                    battleCry.use();
             }
         }
     }
 
     public void castSpell(){
-        if (spellCast != null);
-            //spellCast.use();
+        if (spellCasterSpell != null);
+            spellCasterSpell.use();   // else ??
     }
 
     public int getAp() {

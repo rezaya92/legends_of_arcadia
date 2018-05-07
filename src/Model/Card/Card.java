@@ -9,12 +9,17 @@ import Model.Tribe;
 public abstract class Card {
 
     int cardID;
+    int defaultManaCost; // todo set final and initialize
     int manaCost;
     int price;
     CardPlace cardPlace;
     String name;
     Tribe tribe;
     Player owner;
+
+    public int getDefaultManaCost() {
+        return defaultManaCost;
+    }
 
     public int getCardID() {
         return cardID;
