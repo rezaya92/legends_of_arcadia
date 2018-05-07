@@ -1,5 +1,6 @@
 package Model.Card;
 
+import Model.Player;
 import Model.Spell.GeneralizedSpell;
 
 /**
@@ -35,13 +36,24 @@ public abstract class MonsterCard extends Card{
         this.isDefender = isDefender;
     }
 
-    public void Attack(MonsterCard monsterCard){
+    public void Attack(MonsterCard monsterCard){   // todo return string
         // defender magic case || secrets
         if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
             monsterCard.hp -= ap;
             hp -= monsterCard.ap;
             this.checkAlive();
             monsterCard.checkAlive();
+        }
+    }
+
+    public void AttackOpponentHero(){   // todo return string
+        if (isAwake){
+            Player opponent = this.owner.getOpponent();
+            if (!opponent.isDefenderPresent()){
+                opponent.getPlayerHero().setHp(opponent.getPlayerHero().getHp() - ap);
+                opponent.getPlayerHero().checkAlive();
+                // this.checkAlive in case of weapon for playerHero
+            }
         }
     }
 

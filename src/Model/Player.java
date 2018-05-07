@@ -16,6 +16,18 @@ public class Player {
     private int gil;
     private int mana;
     private int maxMana;
+    private String name;
+    private PlayerHero playerHero;
+    private Player opponent;
+
+    public Player(String name, int playerHeroDefaultHP){
+        this.name = name;
+        playerHero = new PlayerHero(playerHeroDefaultHP, this);
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public ArrayList<Card> getInventoryCards() {
         return inventoryCards;
@@ -85,6 +97,17 @@ public class Player {
     }
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
+    }
+
+    public PlayerHero getPlayerHero() {
+        return playerHero;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 
     public int buyCard(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
