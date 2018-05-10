@@ -30,13 +30,13 @@ public class PlayerHero extends Card { // todo amulet
 
     public Player getOwner(){return owner;}
 
-    public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
-        item.use();
-    }
-
     public void checkAlive(){
         if (hp <= 0){
             // todo game ends
         }
+    }
+
+    public ArrayList<GeneralizedSpell> getItems() {
+        return items;
     }
 }

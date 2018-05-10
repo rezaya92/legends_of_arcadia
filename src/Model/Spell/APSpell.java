@@ -16,9 +16,7 @@ public class APSpell extends Spell {
     }
 
     @Override
-    void use() {
-        setEffectableCards();
-        choose();
+    void apply() {
         for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
@@ -26,23 +24,6 @@ public class APSpell extends Spell {
             } else
                 return;
         }
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
-    }
-
-    @Override
-    void use(Card choice) {
-        effectableCard = new ArrayList<SpellCastable>(1);
-        effectableCard.add(choice);
-        for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setAp(current.getAp() + changeAmount);
-            } else
-                return;
-        }
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
     }
 
     @Override

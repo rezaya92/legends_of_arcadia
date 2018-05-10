@@ -17,9 +17,7 @@ public class HPSpell extends Spell {
     }
 
     @Override
-    void use() {
-        setEffectableCards();
-        choose();
+    void apply() {
         for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
@@ -34,30 +32,7 @@ public class HPSpell extends Spell {
             else
                 return;
         }
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
-    }
 
-    @Override
-    void use(Card choice) {
-        effectableCard = new ArrayList<SpellCastable>(1);
-        effectableCard.add(choice);
-        for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else if (card instanceof PlayerHero){
-                PlayerHero current = (PlayerHero) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else
-                return;
-        }
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
     }
 
     @Override

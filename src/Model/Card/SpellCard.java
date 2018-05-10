@@ -26,8 +26,8 @@ public class SpellCard extends Card {
         }
     }
 
-    public void useSpell(){
-        spell.use();
+    public GeneralizedSpell getSpell(){
+        return spell;
     }
 
     @Override
@@ -38,5 +38,9 @@ public class SpellCard extends Card {
         output += "Card Type: " + spellCardType.name() + "\n";//TODO check to execute correctly
         output += "Spell Details: " + spell.getDetail() + "\n";
         return output;
+    }
+
+    public SpellCardType getSpellCardType() {
+        return spellCardType;
     }
 }

@@ -54,8 +54,21 @@ public abstract class Spell {
         }
     }
 
-    abstract void use();
-    abstract void use(Card choice);
+    void use(){
+        setEffectableCards();
+        choose();
+        apply();
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
+    }
+    void use(Card choice){
+        effectableCard = new ArrayList<SpellCastable>(1);
+        effectableCard.add(choice);
+        apply();
+        effectedCard.addAll(effectableCard);
+        effectableCard.clear();
+    }
+    abstract void apply();
 
     abstract void deuse();
 
