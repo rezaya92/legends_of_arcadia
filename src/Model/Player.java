@@ -136,8 +136,14 @@ public class Player {
     }
 
     public void useContinuousSpellCards(){   // must be called when turn starts
-        for (SpellCard continuousSpellCard: continuousSpellCards)
-            continuousSpellCard.useSpell();
+        for (SpellCard continuousSpellCard: continuousSpellCards) {
+            if (continuousSpellCard.getSpell().inputNeeded() != null) {
+                //TODO get Input
+                //continuousSpellCard.getSpell().use(input);
+            }
+            else
+                continuousSpellCard.getSpell().use();
+        }
     }
 
     public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
