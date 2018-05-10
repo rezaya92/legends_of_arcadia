@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Card.CardPlace;
+import Model.Card.Tribe;
 import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
@@ -8,11 +10,13 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero { // todo amulet
+public class PlayerHero implements SpellCastable { // todo amulet
     private int defaultHP;
+    private CardPlace cardPlace = CardPlace.PLAYERAREA;
     private int hp;
     private ArrayList<GeneralizedSpell> items;
     private Player owner;
+    private Tribe tribe;
 
     public PlayerHero(int defaultHP, Player owner){
         this.hp = this.defaultHP = defaultHP;
@@ -36,5 +40,17 @@ public class PlayerHero { // todo amulet
         if (hp <= 0){
             // todo game ends
         }
+    }
+
+    public CardPlace getCardPlace() {
+        return cardPlace;
+    }
+
+    public void setCardPlace(CardPlace cardPlace) {
+        this.cardPlace = cardPlace;
+    }
+
+    public Tribe getTribe() {
+        return tribe;
     }
 }

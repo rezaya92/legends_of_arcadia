@@ -2,19 +2,20 @@ package Model.Spell;
 
 import Model.Card.Card;
 import Model.Card.Tribe;
+import Model.SpellCastable;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Spell {
-    private ArrayList<ArrayList<Card>> effectableArea;
+    private ArrayList<ArrayList<SpellCastable>> effectableArea;
     private String[] effectableCardType;
     private Tribe[] effectableTribe;
     SpellChoiceType choiceType;
-    ArrayList<Card> effectableCard = new ArrayList<>();
-    ArrayList<Card> effectedCard = new ArrayList<>();
+    ArrayList<SpellCastable> effectableCard = new ArrayList<SpellCastable>();
+    ArrayList<SpellCastable> effectedCard = new ArrayList<SpellCastable>();
 
-    public Spell(ArrayList<ArrayList<Card>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType) {
+    public Spell(ArrayList<ArrayList<SpellCastable>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType) {
         this.effectableArea = effectableArea;
         this.effectableCardType = effectableCardType;
         this.effectableTribe = effectableTribe;
@@ -22,9 +23,9 @@ public abstract class Spell {
     }
 
     void setEffectableCards(){
-        effectableCard = new ArrayList<>();
-        for (ArrayList<Card> cardArray: effectableArea) {
-            for (Card card:cardArray) {
+        effectableCard = new ArrayList<SpellCastable>();
+        for (ArrayList<SpellCastable> cardArray: effectableArea) {
+            for (SpellCastable card:cardArray) {
                 for (String cardType: effectableCardType){
                     for (Tribe tribe: effectableTribe) {
                         if (card.getClass().getName().equals(cardType) && card.getTribe().equals(tribe)) {
@@ -45,7 +46,7 @@ public abstract class Spell {
             case RANDOM:
                 Random random = new Random();
                 int index = random.nextInt(effectableCard.size());
-                Card choice = effectableCard.get(index);
+                SpellCastable choice = effectableCard.get(index);
                 effectableCard.clear();
                 effectableCard.add(choice);
                 return;
@@ -58,7 +59,7 @@ public abstract class Spell {
 
     abstract void deuse();
 
-    public ArrayList<Card> getEffectableCard() {
+    public ArrayList<SpellCastable> getEffectableCard() {
         return effectableCard;
     }
 
@@ -66,7 +67,7 @@ public abstract class Spell {
         return choiceType;
     }
 
-    public ArrayList<Card> getEffectedCard() {
+    public ArrayList<SpellCastable> getEffectedCard() {
         return effectedCard;
     }
 }

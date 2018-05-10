@@ -3,14 +3,15 @@ package Model.Spell;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.SpellCastable;
 
 import java.util.ArrayList;
 
 public class APSpell extends Spell {
     private int changeAmount;
 
-    public APSpell(ArrayList<ArrayList<Card>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType, int changeAmount) {
-        super(effectedArea, effectableCardType, effectedTribe, choiceType);
+    public APSpell(ArrayList<ArrayList<SpellCastable>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType, int changeAmount) {
+        super(effectableArea, effectableCardType, effectableTribe, choiceType);
         this.changeAmount = changeAmount;
     }
 
@@ -18,7 +19,7 @@ public class APSpell extends Spell {
     void use() {
         setEffectableCards();
         choose();
-        for (Card card: effectableCard) {
+        for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setAp(current.getAp() + changeAmount);
@@ -31,9 +32,9 @@ public class APSpell extends Spell {
 
     @Override
     void use(Card choice) {
-        effectableCard = new ArrayList<>(1);
+        effectableCard = new ArrayList<SpellCastable>(1);
         effectableCard.add(choice);
-        for (Card card: effectableCard) {
+        for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setAp(current.getAp() + changeAmount);
@@ -46,7 +47,7 @@ public class APSpell extends Spell {
 
     @Override
     void deuse() {
-        for (Card card: effectableCard) {
+        for (SpellCastable card: effectableCard) {
             MonsterCard current = (MonsterCard) card;
             current.setAp(current.getAp() - changeAmount);
         }

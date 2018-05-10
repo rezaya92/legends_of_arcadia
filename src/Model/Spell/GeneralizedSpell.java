@@ -1,6 +1,7 @@
 package Model.Spell;
 
 import Model.Card.Card;
+import Model.SpellCastable;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class GeneralizedSpell {
         this.detail = detail;
     }
 
-    public ArrayList<Card> inputNeeded(){
+    public ArrayList<SpellCastable> inputNeeded(){
         for (Spell spell: spells) {
             if (spell.choiceType == SpellChoiceType.SELECT){
                 spell.setEffectableCards();

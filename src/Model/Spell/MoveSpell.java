@@ -2,6 +2,7 @@ package Model.Spell;
 
 import Model.Card.*;
 import Model.Player;
+import Model.SpellCastable;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class MoveSpell extends Spell {
 
     //TODO initial health needed
 
-    public MoveSpell(ArrayList<ArrayList<Card>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType, CardPlace destination, Player destinationPlayer) {
+    public MoveSpell(ArrayList<ArrayList<SpellCastable>> effectedArea, String[] effectableCardType, Tribe[] effectedTribe, SpellChoiceType choiceType, CardPlace destination, Player destinationPlayer) {
         super(effectedArea, effectableCardType, effectedTribe, choiceType);
         this.destination = destination;
         this.destinationPlayer = destinationPlayer;
@@ -21,7 +22,7 @@ public class MoveSpell extends Spell {
     void use() {
         setEffectableCards();
         choose();
-        for (Card card: effectableCard) {
+        for (SpellCastable card: effectableCard) {
             switch (card.getCardPlace()){
                 case DECK:
                     card.getOwner().getDeckCards().remove(card);
@@ -49,25 +50,22 @@ public class MoveSpell extends Spell {
             }
             switch (destination){
                 case DECK:
-                    destinationPlayer.getDeckCards().add(card);
+                    destinationPlayer.getDeckCards().add((Card) card);
                     card.setCardPlace(CardPlace.DECK);
                     break;
                 case HAND:
-                    destinationPlayer.getHandCards().add(card);
+                    destinationPlayer.getHandCards().add((Card)card);
                     card.setCardPlace(CardPlace.HAND);
                     break;
                 case GRAVEYARD:
-                    destinationPlayer.getGraveyardCards().add(card);
+                    destinationPlayer.getGraveyardCards().add((Card) card);
                     card.setCardPlace(CardPlace.GRAVEYARD);
                     break;
                 case SPELLFIELD:
                     for (int i = 0; i < 5; i++) {
                         if (destinationPlayer.getSpellFieldCards()[i] == null) {
-                            destinationPlayer.getSpellFieldCards()[i] = card;
+                            destinationPlayer.getSpellFieldCards()[i] = (SpellCard) card;
                             card.setCardPlace(CardPlace.SPELLFIELD);
-                            break;
-                        }
-                        else if (i == 4){
                             break;
                         }
                     }
@@ -76,10 +74,7 @@ public class MoveSpell extends Spell {
                     for (int i = 0; i < 5; i++) {
                         if (destinationPlayer.getMonsterFieldCards()[i] == null) {
                             destinationPlayer.getMonsterFieldCards()[i] = (MonsterCard) card;
-                            card.setCardPlace(CardPlace.SPELLFIELD);
-                            break;
-                        }
-                        else if (i == 4){
+                            card.setCardPlace(CardPlace.MONSTERFIELD);
                             break;
                         }
                     }
@@ -96,9 +91,9 @@ public class MoveSpell extends Spell {
 
     @Override
     void use(Card choice) {
-        effectableCard = new ArrayList<>(1);
+        effectableCard = new ArrayList<SpellCastable>(1);
         effectableCard.add(choice);
-        for (Card card: effectableCard) {
+        for (SpellCastable card: effectableCard) {
             switch (card.getCardPlace()){
                 case DECK:
                     card.getOwner().getDeckCards().remove(card);
@@ -126,21 +121,21 @@ public class MoveSpell extends Spell {
             }
             switch (destination){
                 case DECK:
-                    destinationPlayer.getDeckCards().add(card);
+                    destinationPlayer.getDeckCards().add((Card)card);
                     card.setCardPlace(CardPlace.DECK);
                     break;
                 case HAND:
-                    destinationPlayer.getHandCards().add(card);
+                    destinationPlayer.getHandCards().add((Card)card);
                     card.setCardPlace(CardPlace.HAND);
                     break;
                 case GRAVEYARD:
-                    destinationPlayer.getGraveyardCards().add(card);
+                    destinationPlayer.getGraveyardCards().add((Card)card);
                     card.setCardPlace(CardPlace.GRAVEYARD);
                     break;
                 case SPELLFIELD:
                     for (int i = 0; i < 5; i++) {
                         if (destinationPlayer.getSpellFieldCards()[i] == null) {
-                            destinationPlayer.getSpellFieldCards()[i] = card;
+                            destinationPlayer.getSpellFieldCards()[i] =(Card) card;
                             card.setCardPlace(CardPlace.SPELLFIELD);
                             break;
                         }
@@ -153,7 +148,7 @@ public class MoveSpell extends Spell {
                     for (int i = 0; i < 5; i++) {
                         if (destinationPlayer.getMonsterFieldCards()[i] == null) {
                             destinationPlayer.getMonsterFieldCards()[i] = (MonsterCard) card;
-                            card.setCardPlace(CardPlace.SPELLFIELD);
+                            card.setCardPlace(CardPlace.MONSTERFIELD);
                             break;
                         }
                         else if (i == 4){

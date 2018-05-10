@@ -1,11 +1,12 @@
 package Model.Card;
 
 import Model.Player;
+import Model.SpellCastable;
 
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class Card {
+public abstract class Card implements SpellCastable {
 
     int cardID;
     int defaultManaCost; // todo set final and initialize
