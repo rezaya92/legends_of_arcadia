@@ -1,6 +1,5 @@
 package Model.Spell;
 
-import Model.Card.Card;
 import Model.Card.Tribe;
 import Model.SpellCastable;
 
@@ -61,7 +60,7 @@ public abstract class Spell {
         effectedCard.addAll(effectableCard);
         effectableCard.clear();
     }
-    void use(Card choice){
+    void use(SpellCastable choice){
         effectableCard = new ArrayList<SpellCastable>(1);
         effectableCard.add(choice);
         apply();

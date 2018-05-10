@@ -1,11 +1,10 @@
 package Model;
 
-import Model.Card.Card;
-import Model.Card.MonsterCard;
+import Model.Card.*;
 import Model.Card.PlayerHero;
-import Model.Card.SpellCard;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Player {
     private final int deckCapacity = 30;
@@ -135,16 +134,30 @@ public class Player {
         continuousSpellCards.add(continuousSpellCard);
     }
 
-    public void useContinuousSpellCards(){   // must be called when turn starts
+    //TODO must be moved to MAIN
+    /*public void useContinuousSpellCards(){   // must be called when turn starts
         for (SpellCard continuousSpellCard: continuousSpellCards) {
-            if (continuousSpellCard.getSpell().inputNeeded() != null) {
-                //TODO get Input
+            ArrayList<SpellCastable> inputNeeded = continuousSpellCard.getSpell().inputNeeded();
+            int index = 0;
+            if ( inputNeeded != null) {
+                System.out.println("List of Targets:");
+                CardPlace cardPlace = CardPlace.INVENTORY;
+                for (SpellCastable spellCastable: inputNeeded) {
+                    index++;
+                    if (cardPlace != spellCastable.getCardPlace())
+                        System.out.println(cardPlace + ":");
+                    System.out.println(index + ".\t" + spellCastable.getName());
+                    cardPlace = spellCastable.getCardPlace();
+                }
+                Scanner input = new Scanner(System.in);
+                int choice = input.nextInt();
+                continuousSpellCard.getSpell().use(inputNeeded.get(choice - 1));
                 //continuousSpellCard.getSpell().use(input);
             }
             else
                 continuousSpellCard.getSpell().use();
         }
-    }
+    }*/
 
     public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
         continuousSpellCards.remove(continuousSpellCard);
@@ -242,11 +255,9 @@ public class Player {
                 }
             }
         }
-
         for(int i=0; i<uniqueCards.size(); i++){
             output += i + 1 + ". " + numberOfCards.get(i) + " " + uniqueCards.get(i).getName() + " / " + numberOnDeck.get(i) + " on deck\n";
         }
-
         return output;
     }
 }

@@ -8,4 +8,5 @@ public interface SpellCastable {
     Player getOwner();
     void setCardPlace(CardPlace cardPlace);
     Tribe getTribe();
+    String getName();
 }

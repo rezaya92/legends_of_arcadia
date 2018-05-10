@@ -14,6 +14,7 @@ public class PlayerHero implements SpellCastable { // todo amulet
     private int defaultHP;
     private CardPlace cardPlace = CardPlace.PLAYERAREA;
     private int hp;
+    private String name = "Enemy Player";
     private ArrayList<GeneralizedSpell> items;
     private Player owner;
     private Tribe tribe;
@@ -52,5 +53,10 @@ public class PlayerHero implements SpellCastable { // todo amulet
 
     public Tribe getTribe() {
         return tribe;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
