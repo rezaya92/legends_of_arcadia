@@ -3,6 +3,8 @@ package Model.Card;
 import Model.Player;
 import Model.SpellCastable;
 
+import java.util.ArrayList;
+
 /**
  * Created by msi-pc on 4/27/2018.
  */
@@ -12,10 +14,10 @@ public abstract class Card implements SpellCastable {
     int defaultManaCost; // todo set final and initialize
     int manaCost;
     int price;
-    CardPlace cardPlace;
     String name;
     Tribe tribe;
-    Player owner;
+    Player owner;    // "add default owner in case of opponent could take control of a card of player"
+    ArrayList<Card> cardPlace;
 
     public int getDefaultManaCost() {
         return defaultManaCost;
@@ -35,10 +37,10 @@ public abstract class Card implements SpellCastable {
         return manaCost;
     }
 
-    public void setCardPlace(CardPlace cardPlace) {
+    public void setCardPlace(ArrayList<Card> cardPlace) {
         this.cardPlace = cardPlace;
     }
-    public CardPlace getCardPlace(){
+    public ArrayList<Card> getCardPlace(){
         return cardPlace;
     }
 
@@ -71,14 +73,21 @@ public abstract class Card implements SpellCastable {
     }
 
 
-    public void play(int slotNumber){}
-
-    //public abstract void destroy();
+    public abstract void play(int slotNumber);
 
     public boolean equalsInName(Object arg0){
         if(!(arg0 instanceof Card))
             return false;
         return (this.name.equals(((Card) arg0).name));
     }
+
+    public void transfer (ArrayList<Card> destination){  // todo consider spell of spellCards   "also can be boolean"
+        cardPlace.remove(this);
+        destination.add(this);
+        cardPlace = destination;
+        this.restoreValues();   // is correct ??
+    }
+
+    public abstract void restoreValues();
 }
 

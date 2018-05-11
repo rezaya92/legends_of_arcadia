@@ -1,12 +1,15 @@
 package Model;
 
+import Model.Card.Card;
 import Model.Card.CardPlace;
 import Model.Card.Tribe;
 
+import java.util.ArrayList;
+
 public interface SpellCastable {
-    CardPlace getCardPlace();
+    ArrayList<Card> getCardPlace();
     Player getOwner();
-    void setCardPlace(CardPlace cardPlace);
+    void setCardPlace(ArrayList<Card> cardPlace);
     Tribe getTribe();
     String getName();
 }

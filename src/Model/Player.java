@@ -6,13 +6,13 @@ import Model.Card.PlayerHero;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Player {
+public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this   // also start/end turn methods
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> deckCards = new ArrayList<>();
     private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();
-    private MonsterCard[] monsterFieldCards = new MonsterCard[5];
-    private Card[] spellFieldCards = new Card[3];    //todo replace SpellCard
+    private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
+    private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
     private ArrayList<Card> graveyardCards;
     private ArrayList<Card> handCards;
     private Shop shop = new Shop();
@@ -24,7 +24,6 @@ public class Player {
     private Player opponent;
     private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
     private ArrayList<SpellCard> continuousSpellCards = new ArrayList<>();
-
     public Player(){} //for now (human)
 
     public Player(String name, int playerHeroDefaultHP){
@@ -50,18 +49,12 @@ public class Player {
         this.deckCards = deckCards;
     }
 
-    public MonsterCard[] getMonsterFieldCards() {
+    public ArrayList<Card> getMonsterFieldCards() {
         return monsterFieldCards;
     }
-    public void setMonsterFieldCards(MonsterCard monsterFieldCard, int slotNumber) {
-        monsterFieldCards[slotNumber] = monsterFieldCard;
-    }
 
-    public Card[] getSpellFieldCards() {
+    public ArrayList<Card> getSpellFieldCards() {
         return spellFieldCards;
-    }
-    public void setSpellFieldCards(Card[] spellFieldCards) {
-        this.spellFieldCards = spellFieldCards;
     }
 
     public ArrayList<Card> getGraveyardCards() {
@@ -213,8 +206,8 @@ public class Player {
     }
 
     public boolean isDefenderPresent(){
-        for (MonsterCard monsterCard: monsterFieldCards)
-            if (monsterCard != null && monsterCard.isDefender())
+        for (Card monsterCard: monsterFieldCards)
+            if (monsterCard != null && ((MonsterCard)monsterCard).isDefender())
                 return true;
         return false;
     }
