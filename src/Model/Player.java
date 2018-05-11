@@ -4,7 +4,6 @@ import Model.Card.*;
 import Model.Card.PlayerHero;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player {
     private final int deckCapacity = 30;
@@ -12,7 +11,7 @@ public class Player {
     private ArrayList<Card> deckCards = new ArrayList<>();
     private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();
     private MonsterCard[] monsterFieldCards = new MonsterCard[5];
-    private Card[] spellFieldCards = new Card[3];    //todo replace SpellCard
+    private SpellCard[] spellFieldCards = new SpellCard[3];    //todo replace SpellCard
     private ArrayList<Card> graveyardCards;
     private ArrayList<Card> handCards;
     private Shop shop = new Shop();
@@ -57,10 +56,10 @@ public class Player {
         monsterFieldCards[slotNumber] = monsterFieldCard;
     }
 
-    public Card[] getSpellFieldCards() {
+    public SpellCard[] getSpellFieldCards() {
         return spellFieldCards;
     }
-    public void setSpellFieldCards(Card[] spellFieldCards) {
+    public void setSpellFieldCards(SpellCard[] spellFieldCards) {
         this.spellFieldCards = spellFieldCards;
     }
 
@@ -133,31 +132,6 @@ public class Player {
     public void addContinuousSpellCard(SpellCard continuousSpellCard){
         continuousSpellCards.add(continuousSpellCard);
     }
-
-    //TODO must be moved to MAIN
-    /*public void useContinuousSpellCards(){   // must be called when turn starts
-        for (SpellCard continuousSpellCard: continuousSpellCards) {
-            ArrayList<SpellCastable> inputNeeded = continuousSpellCard.getSpell().inputNeeded();
-            int index = 0;
-            if ( inputNeeded != null) {
-                System.out.println("List of Targets:");
-                CardPlace cardPlace = CardPlace.INVENTORY;
-                for (SpellCastable spellCastable: inputNeeded) {
-                    index++;
-                    if (cardPlace != spellCastable.getCardPlace())
-                        System.out.println(cardPlace + ":");
-                    System.out.println(index + ".\t" + spellCastable.getName());
-                    cardPlace = spellCastable.getCardPlace();
-                }
-                Scanner input = new Scanner(System.in);
-                int choice = input.nextInt();
-                continuousSpellCard.getSpell().use(inputNeeded.get(choice - 1));
-                //continuousSpellCard.getSpell().use(input);
-            }
-            else
-                continuousSpellCard.getSpell().use();
-        }
-    }*/
 
     public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
         continuousSpellCards.remove(continuousSpellCard);

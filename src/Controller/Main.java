@@ -2,6 +2,8 @@ package Controller;
 
 import Model.*;
 import Model.Card.Card;
+import Model.Card.CardPlace;
+import Model.Card.SpellCard;
 import View.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,6 +33,29 @@ public class Main {
         afterMatch();
 
     }
+
+    public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
+        for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
+            ArrayList<SpellCastable> inputNeeded = continuousSpellCard.getSpell().inputNeeded();
+            int index = 0;
+            if (inputNeeded != null) {
+                System.out.println("List of Targets:");
+                CardPlace cardPlace = CardPlace.INVENTORY;
+                for (SpellCastable spellCastable : inputNeeded) {
+                    index++;
+                    if (cardPlace != spellCastable.getCardPlace())
+                        System.out.println(cardPlace + ":");
+                    System.out.println(index + ".\t" + spellCastable.getName());
+                    cardPlace = spellCastable.getCardPlace();
+                }
+                scanner.next();
+                int choice = scanner.nextInt();
+                continuousSpellCard.getSpell().use(inputNeeded.get(choice - 1));
+            } else
+                continuousSpellCard.getSpell().use();
+        }
+    }
+
 
     private static void afterMatch() throws Exception{
         //TODO player saveHuman = human.clone(); (for hourGlass)
