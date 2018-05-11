@@ -139,6 +139,10 @@ public class MonsterCard extends Card {
     @Override
     public void transfer(ArrayList<Card> destination){
         super.transfer(destination);
+        if (isNimble)
+            isAwake = true;
+        else
+            owner.addSleepingPlayedCard(this);
     }
 
     @Override

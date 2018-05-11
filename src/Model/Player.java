@@ -1,7 +1,7 @@
 package Model;
 
 import Model.Card.*;
-import Model.Card.PlayerHero;
+//import Model.PlayerHero;
 
 import java.util.ArrayList;
 
@@ -185,6 +185,21 @@ public class Player {    // todo before and after some actions deuse and use of 
             if (monsterCard != null && ((MonsterCard)monsterCard).isDefender())
                 return true;
         return false;
+    }
+
+    public void startTurn(){
+        for (Card spellCard: spellFieldCards){
+            if (((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
+                ((SpellCard) spellCard).getSpell().use();
+        }
+        mana = ++maxMana;
+        if (!deckCards.isEmpty()){   // deck should be shuffled in the first    // else needed ??
+            deckCards.get(0).transfer(handCards);
+        }
+    }
+
+    public void endTurn(){
+        awakeSleepingPlayedCards();
     }
 
     public String deckToString(){
