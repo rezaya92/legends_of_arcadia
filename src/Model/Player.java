@@ -4,7 +4,6 @@ import Model.Card.*;
 import Model.Card.PlayerHero;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this   // also start/end turn methods
     private final int deckCapacity = 30;
@@ -24,6 +23,7 @@ public class Player {    // todo before and after some actions deuse and use of 
     private Player opponent;
     private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
     private ArrayList<SpellCard> continuousSpellCards = new ArrayList<>();
+
     public Player(){} //for now (human)
 
     public Player(String name, int playerHeroDefaultHP){
@@ -126,31 +126,6 @@ public class Player {    // todo before and after some actions deuse and use of 
     public void addContinuousSpellCard(SpellCard continuousSpellCard){
         continuousSpellCards.add(continuousSpellCard);
     }
-
-    //TODO must be moved to MAIN
-    /*public void useContinuousSpellCards(){   // must be called when turn starts
-        for (SpellCard continuousSpellCard: continuousSpellCards) {
-            ArrayList<SpellCastable> inputNeeded = continuousSpellCard.getSpell().inputNeeded();
-            int index = 0;
-            if ( inputNeeded != null) {
-                System.out.println("List of Targets:");
-                CardPlace cardPlace = CardPlace.INVENTORY;
-                for (SpellCastable spellCastable: inputNeeded) {
-                    index++;
-                    if (cardPlace != spellCastable.getCardPlace())
-                        System.out.println(cardPlace + ":");
-                    System.out.println(index + ".\t" + spellCastable.getName());
-                    cardPlace = spellCastable.getCardPlace();
-                }
-                Scanner input = new Scanner(System.in);
-                int choice = input.nextInt();
-                continuousSpellCard.getSpell().use(inputNeeded.get(choice - 1));
-                //continuousSpellCard.getSpell().use(input);
-            }
-            else
-                continuousSpellCard.getSpell().use();
-        }
-    }*/
 
     public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
         continuousSpellCards.remove(continuousSpellCard);
