@@ -20,7 +20,7 @@ public class Main {
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
     private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
-    private int turnNumber;
+    private static int turnNumber;
 
     public static void main(String[] args) throws Exception{
         int numberOfCards = 40;
@@ -28,16 +28,13 @@ public class Main {
 
         //todo: new cards
         // sout cards
-        // scanner set deck cards (25 - 30)
-        // shuffle deck cards  &&  put 4 cards in hand
-        // while scanner != EndTurn    add max mp & a card to hand    scanner scans a card by id     hand to field || spell card || monsterField to enemy || spellCaster spell || use an Item
-        // random play of opposite player(bot)
+        //startGameAgainst(opponent);
 
         afterMatch();
 
     }
 
-    public void startGameAgainst (Player opponent){
+    public static void startGameAgainst (Player opponent){
         opponent.setOpponent(human);
         human.setOpponent(opponent);
         System.out.println("Battle against " + opponent.getName() + " started!");
@@ -78,7 +75,7 @@ public class Main {
         }
     }
 
-    public void humanPlayTurn(){
+    public static void humanPlayTurn(){
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(human.getName() + "'s turn.");
         if (human.getDeckCards().isEmpty())
@@ -95,7 +92,7 @@ public class Main {
         human.endTurn();
     }
 
-    public void botPlayTurn(Player bot){
+    public static void botPlayTurn(Player bot){
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(human.getName() + "'s turn.");
 
