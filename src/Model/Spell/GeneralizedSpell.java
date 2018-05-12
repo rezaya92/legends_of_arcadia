@@ -7,11 +7,19 @@ import java.util.ArrayList;
 public class GeneralizedSpell {
     private Spell[] spells;
     private String detail;
+    //private String name;//can be optional but is essential for items and amulets
 
     public GeneralizedSpell(Spell[] spells, String detail) {
         this.spells = spells;
         this.detail = detail;
     }
+//
+//    // ----- constructor specially for items and amulets which have names
+//    public GeneralizedSpell(Spell[] spells, String detail, String name) {
+//        this.spells = spells;
+//        this.detail = detail;
+//        this.name = name;
+//    }
 
     public Spell[] getSpells() {
         return spells;
@@ -26,6 +34,13 @@ public class GeneralizedSpell {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+//
+//    public String getName() {
+//        return name;
+//    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public ArrayList<SpellCastable> inputNeeded(){
         for (Spell spell: spells) {

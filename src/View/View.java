@@ -31,7 +31,8 @@ abstract public class View {
 
     public static void cardShop(){
         System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println(human.getShop() + " Card Inventory:\n" + human.inventoryToString());
+        System.out.println(" Shop List:");
+        System.out.println(human.getShop().cardToString() + " Card Inventory:\n" + human.inventoryToString());
     }
 
     public static void cardShopHelp(){
@@ -43,18 +44,47 @@ abstract public class View {
         System.out.println("5. Exit: To return to shop menu");
     }
 
+    public static void itemShop(){
+        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
+        System.out.println(" Shop List:");
+        System.out.println(human.getShop().itemToString() + " Item Inventory:\n" + human.itemToString());
+    }
+
+    public static void itemShopHelp(){
+        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
+        System.out.println("1. Buy \"Item Name\" - #NumberToBuy: To buy an item from the shop");
+        System.out.println("2. Sell \"Item Name\" - #NumberToSell: To sell an item from your item inventory");
+        System.out.println("3. Info \"Item Name\": To view the full information of the item");
+        System.out.println("4. Exit: To return to shop menu");
+    }
+
+    public static void amuletShop(){
+        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
+        System.out.println(" Shop List:");
+        System.out.println(human.getShop().amuletToString() + "Equipped Amulet: " + /*TODO*/ "\nAmulet Inventory:\n" + human.amuletToString());
+    }
+
+    public static void amuletShopHelp(){
+        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
+        System.out.println("1. Buy \"Amulet Name\" - #NumberToBuy: To buy a number of an amulet from the shop");
+        System.out.println("2. Sell \"Amulet Name\" - #NumberToSell: To sell a number of an amulet from amulet inventory");
+        System.out.println("3. Info \"Amulet Name\": To get full info on an amulet");
+        System.out.println("4. Edit Amulets: To equip or remove your hero's amulet");
+        System.out.println("5. Exit: To return to shop menu");
+    }
+
     public static void editDeck(){
-        System.out.println("Deck:\n");
+        System.out.println("Deck:");
         System.out.println(human.deckToString());
-        System.out.println("Other Cards:\n");
+        System.out.println("Other Cards:");
         System.out.println(human.inventoryToString());
     }
 
     public static void editDeckHelp(){
-        System.out.println("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck\n");
-        System.out.println("2. Remove \"Card Name\" #CardSlotNum: To remove cards from your deck\n");
-        System.out.println("3. Info \"Card Name\": To get more information about a specific card\n");
-        System.out.println("4. Exit: To return to the previous section\n");
+        System.out.println("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck");
+        System.out.println("2. Remove \"Card Name\" #CardSlotNum: To remove cards from your deck");
+        System.out.println("3. Info \"Card Name\": To get more information about a specific card");
+        System.out.println("4. Exit: To return to the previous section");
     }
 
     public static void insufficientGil(){

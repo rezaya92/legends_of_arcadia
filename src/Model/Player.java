@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Card.*;
+import Model.Spell.GeneralizedSpell;
 //import Model.PlayerHero;
 
 import java.util.ArrayList;
@@ -9,11 +10,13 @@ public class Player {    // todo before and after some actions deuse and use of 
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> deckCards = new ArrayList<>();
-    private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();
+    private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();//TODO whenever a card comes to deck, it's slot number must be added or updated (also when removed)
     private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
     private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
     private ArrayList<Card> graveyardCards;
     private ArrayList<Card> handCards;
+    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Amulet> amulets = new ArrayList<>();
     private Shop shop = new Shop();
     private int gil;
     private int mana;
@@ -148,7 +151,7 @@ public class Player {    // todo before and after some actions deuse and use of 
             return -1;
         for(Card card : shopCards) {
             if (card.getName().equals(name) && numberToBuy > 0) {
-                shop.remove(card);
+                shop.removeCard(card);
                 inventoryCards.add(card);
                 numberToBuy--;
             }
@@ -171,7 +174,7 @@ public class Player {    // todo before and after some actions deuse and use of 
             return false;
         for(Card card : inventoryCards){
             if(card.getName().equals(name) && !deckCards.contains(card) && numberToSell > 0){
-                shop.add(card);
+                shop.addCard(card);
                 inventoryCards.remove(card);
                 numberToSell --;
             }
@@ -216,6 +219,7 @@ public class Player {    // todo before and after some actions deuse and use of 
         return output;
     }
 
+    //duplicated code could maybe be corrected
     public String inventoryToString(){
         String output = "";
         ArrayList<Card> uniqueCards = new ArrayList<>();
@@ -240,6 +244,50 @@ public class Player {    // todo before and after some actions deuse and use of 
         }
         for(int i=0; i<uniqueCards.size(); i++){
             output += i + 1 + ". " + numberOfCards.get(i) + " " + uniqueCards.get(i).getName() + " / " + numberOnDeck.get(i) + " on deck\n";
+        }
+        return output;
+    }
+
+    public String itemToString(){
+        String output = "";
+        ArrayList<Item> uniqueItems = new ArrayList<>();
+        ArrayList<Integer> numberOfItems = new ArrayList<>();
+        //ArrayList<Integer> numberOnDeck = new ArrayList<>();
+        myLabel1:
+        for(Item item : items){
+            for(int i=0; i<uniqueItems.size(); i++){
+                if(item.equalsInName(uniqueItems.get(i))){
+                    numberOfItems.set(i, numberOfItems.get(i) + 1);
+                    continue myLabel1;
+                }
+            }
+            uniqueItems.add(item);
+            numberOfItems.add(1);
+        }
+        for(int i=0; i<uniqueItems.size(); i++){
+            output += i + 1 + ". " + numberOfItems.get(i) + " " + uniqueItems.get(i).getName();
+        }
+        return output;
+    }
+
+    public String amuletToString(){
+        String output = "";
+        ArrayList<Amulet> uniqueAmulet = new ArrayList<>();
+        ArrayList<Integer> numberOfAmulets = new ArrayList<>();
+        //ArrayList<Integer> numberOnDeck = new ArrayList<>();
+        myLabel1:
+        for(Amulet amulet : amulets){
+            for(int i=0; i<uniqueAmulet.size(); i++){
+                if(amulet.equalsInName(uniqueAmulet.get(i))){
+                    numberOfAmulets.set(i, numberOfAmulets.get(i) + 1);
+                    continue myLabel1;
+                }
+            }
+            uniqueAmulet.add(amulet);
+            numberOfAmulets.add(1);
+        }
+        for(int i=0; i<uniqueAmulet.size(); i++){
+            output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName();
         }
         return output;
     }

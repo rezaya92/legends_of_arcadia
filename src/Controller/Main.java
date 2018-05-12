@@ -248,7 +248,11 @@ public class Main {
     }
 
     private static void itemShop() throws Exception{
-
+        View.itemShop();
+        action = scanner.nextLine();
+        lastViewMethod = Class.forName("View.View").getMethod("itemShop");
+        helpHandler(lastViewMethod);
+        //TODO
     }
 
     private static void amuletShop() throws Exception{
