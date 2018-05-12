@@ -1,16 +1,16 @@
 package Model.Spell;
 
-import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.SpellArea;
 import Model.SpellCastable;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class APSpell extends Spell {
     private int changeAmount;
 
-    public APSpell(ArrayList<ArrayList<SpellCastable>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType, int changeAmount) {
+    public APSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
         super(effectableArea, effectableCardType, effectableTribe, choiceType);
         this.changeAmount = changeAmount;
     }

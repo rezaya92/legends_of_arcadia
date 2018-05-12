@@ -1,5 +1,6 @@
 package Model.Spell;
 
+import Model.Player;
 import Model.SpellCastable;
 
 import java.util.ArrayList;
@@ -7,19 +8,13 @@ import java.util.ArrayList;
 public class GeneralizedSpell {
     private Spell[] spells;
     private String detail;
-    //private String name;//can be optional but is essential for items and amulets
+    private String name;
 
-    public GeneralizedSpell(Spell[] spells, String detail) {
+    public GeneralizedSpell(Spell[] spells, String detail, String name) {
         this.spells = spells;
         this.detail = detail;
+        this.name = name;
     }
-//
-//    // ----- constructor specially for items and amulets which have names
-//    public GeneralizedSpell(Spell[] spells, String detail, String name) {
-//        this.spells = spells;
-//        this.detail = detail;
-//        this.name = name;
-//    }
 
     public Spell[] getSpells() {
         return spells;
@@ -34,13 +29,6 @@ public class GeneralizedSpell {
     public void setDetail(String detail) {
         this.detail = detail;
     }
-//
-//    public String getName() {
-//        return name;
-//    }
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public ArrayList<SpellCastable> inputNeeded(){
         for (Spell spell: spells) {
@@ -69,5 +57,15 @@ public class GeneralizedSpell {
     public void deuse(){
         for (Spell spell : spells)
             spell.deuse();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setOwner(Player owner) {
+        for (Spell spell: spells) {
+            spell.setOwner(owner);
+        }
     }
 }

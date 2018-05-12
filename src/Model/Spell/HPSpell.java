@@ -1,17 +1,17 @@
 package Model.Spell;
 
-import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.Card.PlayerHero;
 import Model.Card.Tribe;
+import Model.PlayerHero;
+import Model.SpellArea;
 import Model.SpellCastable;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class HPSpell extends Spell {
     private int changeAmount;
 
-    public HPSpell(ArrayList<ArrayList<SpellCastable>> effectableArea, String[] effectableCardType, Tribe[] effectableTribe, SpellChoiceType choiceType, int changeAmount) {
+    public HPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
         super(effectableArea,effectableCardType,effectableTribe,choiceType);
         this.changeAmount = changeAmount;
     }

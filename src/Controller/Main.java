@@ -1,15 +1,14 @@
 package Controller;
 
 import Model.*;
-import Model.Card.Card;
-import Model.Card.CardPlace;
-import Model.Card.SpellCard;
+import Model.Card.*;
+import Model.Spell.APSpell;
+import Model.Spell.GeneralizedSpell;
+import Model.Spell.Spell;
+import Model.Spell.SpellChoiceType;
 import View.*;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -26,12 +25,14 @@ public class Main {
         int numberOfCards = 40;
         Card[] cards = new Card[numberOfCards];
 
+        //Sample Instanciation of Spell:
+        new GeneralizedSpell(new Spell[]{new APSpell(EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),new Class[]{PlayerHero.class,MonsterCard.class},EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)}, "Deal 500 damage to a selected enemy monster card on the field or to enemy player","Throw Knives");
+
         //todo: new cards
         // sout cards
         //startGameAgainst(opponent);
 
         afterMatch();
-
     }
 
     public static void startGameAgainst (Player opponent){
@@ -129,12 +130,12 @@ public class Main {
 
     public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
         for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
-            ArrayList<SpellCastable> inputNeeded = continuousSpellCard.getSpell().inputNeeded();
+            ArrayList<SpellCastable> choiceList = continuousSpellCard.getSpell().inputNeeded();
             int index = 0;
-            if (inputNeeded != null) {
+            if (choiceList != null) {
                 System.out.println("List of Targets:");
                 CardPlace cardPlace = CardPlace.INVENTORY;
-                for (SpellCastable spellCastable : inputNeeded) {
+                for (SpellCastable spellCastable : choiceList) {
                     index++;
                     if (cardPlace != spellCastable.getCardPlace())
                         System.out.println(cardPlace + ":");
@@ -143,7 +144,7 @@ public class Main {
                 }
                 scanner.next();
                 int choice = scanner.nextInt();
-                continuousSpellCard.getSpell().use(inputNeeded.get(choice - 1));
+                continuousSpellCard.getSpell().use(choiceList.get(choice - 1));
             } else
                 continuousSpellCard.getSpell().use();
         }
