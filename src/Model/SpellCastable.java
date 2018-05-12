@@ -7,7 +7,7 @@ import Model.Card.Tribe;
 import java.util.ArrayList;
 
 public interface SpellCastable {
-    ArrayList<Card> getCardPlace();
+    //ArrayList<Card> getCardPlace();
     Player getOwner();
     void setCardPlace(ArrayList<Card> cardPlace);
     Tribe getTribe();

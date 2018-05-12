@@ -7,6 +7,8 @@ import Model.Card.SpellCard;
 import View.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -18,6 +20,7 @@ public class Main {
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
     private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
+    private int turnNumber;
 
     public static void main(String[] args) throws Exception{
         int numberOfCards = 40;
@@ -33,6 +36,99 @@ public class Main {
         afterMatch();
 
     }
+
+    public void startGameAgainst (Player opponent){
+        opponent.setOpponent(human);
+        human.setOpponent(opponent);
+        System.out.println("Battle against " + opponent.getName() + " started!");
+        Random random = new Random();
+        int coin = random.nextInt(2);
+        turnNumber = 0;
+
+        human.setMaxMana(0);
+        opponent.setMaxMana(0);
+        Collections.shuffle(human.getDeckCards());
+        Collections.shuffle(opponent.getDeckCards());
+
+        System.out.print("Player drew ");
+        for (int i = 0; i < 4; i++){
+            Card drawingCard = human.getDeckCards().get(0);
+            drawingCard.transfer(human.getHandCards());
+            System.out.print(drawingCard.getName() + ", ");
+            opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
+        }
+        System.out.println("");     // could be a string from "Player drew"
+
+        if (coin == 0)
+            System.out.println(human.getName() + " starts the battle.");
+        else
+            System.out.println(opponent.getName() + " starts the battle.");
+
+        if (coin == 0){
+            while (true) { // todo correct
+                humanPlayTurn();
+                botPlayTurn(opponent);
+            }
+        }
+        else {
+            while (true){
+                botPlayTurn(opponent);
+                humanPlayTurn();
+            }
+        }
+    }
+
+    public void humanPlayTurn(){
+        System.out.println("Turn " + (++turnNumber) + " started!");
+        System.out.println(human.getName() + "'s turn.");
+        if (human.getDeckCards().isEmpty())
+            View.emptyDeck();
+        else
+            System.out.println(human.getDeckCards().get(0).getName());
+        View.showPlayerMana(human);
+
+        human.startTurn();
+        String action = scanner.next();
+        while (action != "Done"){
+            // todo
+        }
+        human.endTurn();
+    }
+
+    public void botPlayTurn(Player bot){
+        System.out.println("Turn " + (++turnNumber) + " started!");
+        System.out.println(human.getName() + "'s turn.");
+
+        bot.startTurn();
+        // todo
+        bot.endTurn();
+    }
+    /*
+    public static void startGame (Player player1, Player player2){
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
+        Player playingPlayer = player1;
+
+        player1.setMaxMana(0);
+        player2.setMaxMana(0);
+        Collections.shuffle(player1.getDeckCards());
+        Collections.shuffle(player2.getDeckCards());
+
+        for (int i = 0; i < 4; i++){
+            player1.getDeckCards().get(0).transfer(player1.getHandCards());
+            player2.getDeckCards().get(0).transfer(player2.getHandCards());
+        }
+
+        while (true){
+            playingPlayer.startTurn();
+            String action = scanner.next();
+            while (action != "Done"){
+                // todo
+            }
+            playingPlayer.endTurn();
+            playingPlayer = playingPlayer.getOpponent();
+        }
+    }*/
 
     public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
         for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {

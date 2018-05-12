@@ -2,6 +2,7 @@ package View;
 
 import Controller.*;
 import Model.Card.Card;
+import Model.Player;
 
 import static Controller.Main.human;
 
@@ -82,5 +83,13 @@ abstract public class View {
 
     public static void invalidCommand(){
         System.out.println("Invalid command. Type Help for more information.");
+    }
+
+    public static void showPlayerMana(Player player){   // mana and maxMana
+        System.out.println(player.getMana() + " - " + player.getMaxMana());
+    }
+
+    public static void emptyDeck(){
+        System.out.println("Deck is empty!");
     }
 }
