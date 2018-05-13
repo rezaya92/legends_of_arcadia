@@ -30,6 +30,10 @@ public class MonsterCard extends Card {
         return isDefender;
     }
 
+    public GeneralizedSpell getBattleCry(){return  battleCry;}
+    public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
+    public GeneralizedSpell getWill(){return will;}
+
     public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, ArrayList<Card> cardPlace, boolean isNimble, boolean isDefender) {
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.hp = this.defualtHP = defaultHP;
@@ -119,8 +123,14 @@ public class MonsterCard extends Card {
         output += "MP cost: " + this.defaultManaCost + "\n";
         output += "Card Type: " + cardType + "\n";
         output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
-        output += "Is Defencive: " + isDefender + "\n";
+        output += "Is Defensive: " + isDefender + "\n";
         output += "Is Nimble: " + isNimble + "\n";
+        if (battleCry != null)
+            output += "BattleCry Details: " + battleCry.getDetail() + "\n";
+        if (spellCasterSpell != null)
+            output += "Spell Details: " + spellCasterSpell.getDetail() + "\n";
+        if (will != null)
+            output += "Will Details: " + will.getDetail() + "\n";
         return output;
     }
 
