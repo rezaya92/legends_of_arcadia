@@ -34,9 +34,6 @@ public class PlayerHero implements SpellCastable { // todo amulet
 
     public Player getOwner(){return owner;}
 
-    @Override
-    public void setCardPlace(ArrayList<Card> cardPlace) {}
-
     public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
         item.use();
     }

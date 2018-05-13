@@ -128,7 +128,7 @@ public class Main {
         }
     }*/
 
-    public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
+    /*public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
         for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
             ArrayList<SpellCastable> choiceList = continuousSpellCard.getSpell().inputNeeded();
             int index = 0;
@@ -149,7 +149,7 @@ public class Main {
                 continuousSpellCard.getSpell().use();
         }
     }
-
+*/
 
     private static void afterMatch() throws Exception{
         //TODO player saveHuman = human.clone(); (for hourGlass)
