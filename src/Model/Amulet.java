@@ -7,6 +7,7 @@ public class Amulet {
     private String name;
     private int price;
 
+    //TODO set owner for every spell in constructor
     public GeneralizedSpell getEffect() {
         return effect;
     }

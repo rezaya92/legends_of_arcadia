@@ -63,7 +63,7 @@ public class GeneralizedSpell {
         return name;
     }
 
-    public void setOwner(Player owner) {
+    public void setOwner(SpellCastable owner) {
         for (Spell spell: spells) {
             spell.setOwner(owner);
         }
