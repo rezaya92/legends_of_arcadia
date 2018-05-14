@@ -83,6 +83,23 @@ public class Battle {
                     human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
                     break;
                 case "View":
+                    String place = scanner.next();
+                    switch (place){
+                        case "Hand":
+                            View.viewHand(human);
+                            break;
+                        case "Graveyard":
+                            View.viewGraveyard(human);
+                            break;
+                        case "SpellField":
+                            View.viewSpellField(human);
+                            break;
+                        case "MonsterField":
+                            View.viewMonsterField(human);
+                            break;
+                        default:
+                            View.invalidCommand();
+                    }
                     break;
                 case "Info":
                     break;

@@ -2,6 +2,7 @@ package View;
 
 import Controller.*;
 import Model.Card.Card;
+import Model.Card.MonsterCard;
 import Model.Player;
 
 import static Controller.Main.human;
@@ -123,6 +124,91 @@ abstract public class View {
         System.out.println("Deck is empty!");
     }
 
+    public static void slotIsFull(){
+        System.out.println("\nSlot is full!\n");
+    }
+
+    public static void insufficientMana(){
+        System.out.println("\nNot enough MP!\n");
+    }
+
+//--------------------------------------------------------------------------------- view hand,graveyard,spellField,monsterField
+    public static void viewHand(Player player){
+        System.out.println("Your Hand:");
+        int i = 1;
+        for (Card card: player.getHandCards()){
+            System.out.println(i + ". " + card.getName());
+            i++;
+        }
+        if (i == 1)
+            System.out.println("Hand empty!");
+    }
+
+    public static void viewGraveyard(Player player){
+        System.out.println("Your Graveyard:");
+        int i = 1;
+        for (Card card: player.getGraveyardCards()){
+            System.out.println(i + ". " + card.getName());
+            i++;
+        }
+        if (i == 1)
+            System.out.println("Graveyard empty!");
+
+        System.out.println("Enemy's Graveyard:");
+        int j = 1;
+        for (Card card: player.getOpponent().getGraveyardCards()){
+            System.out.println(j + ". " + card.getName());
+            j++;
+        }
+        if (j == 1)
+            System.out.println("Graveyard empty!");
+    }
+
+    public static void viewSpellField(Player player){
+        System.out.println("Your SpellField:");
+        int i =1;
+        for (Card card: player.getSpellFieldCards()){
+            System.out.print("Slot" + i + ": ");
+            if (card == null)
+                System.out.println("Empty");
+            else
+                System.out.println(card.getName());
+            i++;
+        }
+
+        System.out.println("Enemy's SpellField:");
+        int j =1;
+        for (Card card: player.getOpponent().getSpellFieldCards()){
+            System.out.print("Slot" + j + ": ");
+            if (card == null)
+                System.out.println("Empty");
+            else
+                System.out.println(card.getName());
+            i++;
+        }
+    }
+
+    public static void viewMonsterField(Player player){
+        System.out.println("Your MonsterField:");
+        int i = 1;
+        for (Card card: player.getMonsterFieldCards()){
+            System.out.print("Slot" + i + ": ");
+            if (card == null)
+                System.out.println("Empty");
+            else{
+                MonsterCard monsterCard = (MonsterCard)card;
+                System.out.print(card.getName() + " HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+                if (monsterCard.isDefender())
+                    System.out.print(" Defensive");
+                if (monsterCard.isNimble())
+                    System.out.print(" Nimble");
+
+            }
+            i++;
+        }
+    }
+
+//------------------------------------------------------------------------------------------
     public static void battleHelp(){
         System.out.println("\n1. Use #SlotNum: To use a specific card which is on the Monster Field");
         System.out.println("2. Set #HandIndex to #SlotNum: To set a card which is on the hand, in the field");

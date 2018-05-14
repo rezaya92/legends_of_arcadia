@@ -2,7 +2,7 @@ package Model.Card;
 
 import Model.Player;
 import Model.Spell.GeneralizedSpell;
-
+import View.View;
 import java.util.ArrayList;
 
 /**
@@ -13,10 +13,12 @@ public class MonsterCard extends Card {
     final boolean isNimble;
     final boolean isDefender;
     boolean isAwake = false;
-    final int defualtHP;
+    final int defaultHP;
     final int defaultAP;
     int ap;
     int hp;
+    boolean hasSpell = false;
+    boolean hasAttacked = false;
     GeneralizedSpell battleCry;
     GeneralizedSpell spellCasterSpell;
     GeneralizedSpell will;
@@ -30,16 +32,25 @@ public class MonsterCard extends Card {
         return isDefender;
     }
 
+    public boolean hasSpell(){return hasSpell;}
+
+    public boolean hasAttacked(){return hasAttacked;}
+
     public GeneralizedSpell getBattleCry(){return  battleCry;}
     public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
     public GeneralizedSpell getWill(){return will;}
 
-    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, ArrayList<Card> cardPlace, boolean isNimble, boolean isDefender) {
+    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, ArrayList<Card> cardPlace, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will, boolean isNimble, boolean isDefender) {
         this.manaCost = this.defaultManaCost = defaultManaCost;
-        this.hp = this.defualtHP = defaultHP;
+        this.hp = this.defaultHP = defaultHP;
         this.ap = this.defaultAP = defaultAP;
         this.cardPlace = cardPlace;
         cardPlace.add(this);
+        this.battleCry = battleCry;
+        this.spellCasterSpell = spellCasterSpell;
+        this.will = will;
+        if (spellCasterSpell != null)
+            hasSpell = true;
         this.isNimble = isNimble;
         this.isDefender = isDefender;
     }
@@ -77,17 +88,25 @@ public class MonsterCard extends Card {
 
     @Override
     public void play(int slotNumber) { // must be < 5   "just from hand to monsterField"
-        if (manaCost <= owner.getMana() && owner.getMonsterFieldCards().get(slotNumber) == null) {   //else if slot is full needed ??
-            cardPlace.remove(this);      // todo card may get played from deck --> fix this
-            owner.getMonsterFieldCards().set(slotNumber, this);
-            cardPlace = owner.getMonsterFieldCards();
-            owner.setMana(owner.getMana() - manaCost);
-            if (isNimble)
-                getAwake();
-            else
-                owner.addSleepingPlayedCard(this);
-            if (battleCry != null)
-                battleCry.use();
+        if (manaCost <= owner.getMana()) {
+            if (owner.getMonsterFieldCards().get(slotNumber) == null) {
+                cardPlace.remove(this);
+                owner.getMonsterFieldCards().set(slotNumber, this);
+                cardPlace = owner.getMonsterFieldCards();
+                owner.setMana(owner.getMana() - manaCost);
+                if (isNimble)
+                    getAwake();
+                else
+                    owner.addSleepingPlayedCard(this);
+                if (battleCry != null)
+                    battleCry.use();
+            }
+            else {
+                View.slotIsFull();
+            }
+        }
+        else {
+            View.insufficientMana();
         }
     }
 
@@ -118,7 +137,7 @@ public class MonsterCard extends Card {
         String cardType = this.getClass().getName();
         cardType = cardType.substring(0, cardType.length() - 4);// not perfect
         output += "Name: " + this.name + "\n";
-        output += "HP: " + this.defualtHP + "\n";
+        output += "HP: " + this.defaultHP + "\n";
         output += "AP: " + this.defaultAP + "\n";
         output += "MP cost: " + this.defaultManaCost + "\n";
         output += "Card Type: " + cardType + "\n";
@@ -138,8 +157,8 @@ public class MonsterCard extends Card {
         isAwake = true;
     }
 
-    public int getDefualtHP() {
-        return defualtHP;
+    public int getDefaultHP() {
+        return defaultHP;
     }
 
     public int getDefaultAP() {
@@ -157,7 +176,7 @@ public class MonsterCard extends Card {
 
     @Override
     public void restoreValues(){
-        hp = defualtHP;
+        hp = defaultHP;
         ap = defaultAP;
         manaCost = defaultManaCost;
         isAwake = false;

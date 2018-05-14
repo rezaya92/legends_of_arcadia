@@ -9,8 +9,6 @@ import java.util.ArrayList;
  * Created by msi-pc on 4/27/2018.
  */
 public abstract class Card implements SpellCastable {
-
-    int cardID;
     int defaultManaCost; // todo set final and initialize
     int manaCost;
     int price;
@@ -23,13 +21,6 @@ public abstract class Card implements SpellCastable {
 
     public int getDefaultManaCost() {
         return defaultManaCost;
-    }
-
-    public int getCardID() {
-        return cardID;
-    }
-    public void setCardID(int cardID) {
-        this.cardID = cardID;
     }
 
     public void setManaCost(int manaCost) {
