@@ -17,6 +17,7 @@ public class Player {    // todo before and after some actions deuse and use of 
     private ArrayList<Card> handCards;
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
+    private Amulet equippedAmulet;
     private Shop shop = new Shop();
     private int gil;
     private int mana;
@@ -113,6 +114,13 @@ public class Player {    // todo before and after some actions deuse and use of 
         this.opponent = opponent;
     }
 
+    public Amulet getEquippedAmulet() {
+        return equippedAmulet;
+    }
+    public void setEquippedAmulet(Amulet equippedAmulet) {
+        this.equippedAmulet = equippedAmulet;
+    }
+
     //---------------------------------------------------------------------------------------------------------------
     public void addSleepingPlayedCard(MonsterCard sleepingPlayedCard){
         sleepingPlayedCards.add(sleepingPlayedCard);
@@ -135,37 +143,121 @@ public class Player {    // todo before and after some actions deuse and use of 
     }
     //---------------------------------------------------------------------------------------------------------------
 
-    public int buyCard(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
-        ArrayList<Card> shopCards = shop.getCards();
+    public int buyStuff(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
+        int numberToBuyCounter = numberToBuy;
+        ArrayList<? extends Stuff> shopStuff;
         int numberOfThatCardInShop = 0;
         int priceOfThatCard = 0;
-        for(Card card : shopCards){
-            if(card.getName().equals(name)){
+
+        switch (typeOfStuffToBuyAndSell) {
+            case CARD:
+                shopStuff = shop.getCards();
+                break;
+            case ITEM:
+                shopStuff = shop.getItems();
+                break;
+            //case AMULET:
+                default:
+                shopStuff = shop.getAmulets();
+        }
+
+        for(Stuff stuff : shopStuff){
+            if(stuff.getName().equals(name)){
                 numberOfThatCardInShop ++;
-                priceOfThatCard = card.getPrice();
+                priceOfThatCard = stuff.getPrice();
             }
         }
         if(numberOfThatCardInShop < numberToBuy)
             return 0;
         if(priceOfThatCard * numberToBuy > gil)
             return -1;
-        for(Card card : shopCards) {
-            if (card.getName().equals(name) && numberToBuy > 0) {
-                shop.removeCard(card);
-                inventoryCards.add(card);
-                numberToBuy--;
+        for(Stuff stuff : shopStuff) {
+            if (stuff.getName().equals(name) && numberToBuyCounter > 0) {
+                switch (typeOfStuffToBuyAndSell) {
+                    case CARD:
+                        shop.removeCard((Card) stuff);
+                        inventoryCards.add((Card) stuff);
+                        break;
+                    case ITEM:
+                        shop.removeItem((Item) stuff);
+                        items.add((Item) stuff);
+                        break;
+                    default:
+                        shop.removeAmulet((Amulet) stuff);
+                        amulets.add((Amulet) stuff);
+                }
+                numberToBuyCounter--;
             }
         }
         gil -= priceOfThatCard * numberToBuy;
         return 1;
     }
 
-    public boolean sellCard(String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
-        ArrayList<Card> shopCards = shop.getCards();
+    //can improve by omitting the duplication
+    public boolean sellStuff(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
+        int numberToSellCounter = numberToSell;
+        ArrayList<? extends Stuff> playerStuff;
         int availableNumberOfThatCard = 0;
         int priceOfThatCard = 0;
-        for(Card card : inventoryCards){
-            if(card.getName().equals(name) && !deckCards.contains(card)){
+
+        switch (typeOfStuffToBuyAndSell) {
+            case CARD:
+                //playerStuff = inventoryCards;
+                for(Card card : inventoryCards){
+                    if(card.getName().equals(name) && !deckCards.contains(card)){
+                        availableNumberOfThatCard ++;
+                        priceOfThatCard = card.getPrice();
+                    }
+                }
+                if(availableNumberOfThatCard < numberToSell)
+                    return false;
+                for(Card card : inventoryCards){
+                    if(card.getName().equals(name) && !deckCards.contains(card) && numberToSellCounter > 0){
+                        shop.addCard(card);
+                        inventoryCards.remove(card);
+                        numberToSellCounter --;
+                    }
+                }
+                break;
+            case ITEM:
+                //playerStuff = items;
+                for(Item item : items){
+                    if(item.getName().equals(name)){
+                        availableNumberOfThatCard ++;
+                        priceOfThatCard = item.getPrice();
+                    }
+                }
+                if(availableNumberOfThatCard < numberToSell)
+                    return false;
+                for(Item item : items){
+                    if(item.getName().equals(name) && numberToSellCounter > 0){
+                        shop.addItem(item);
+                        items.remove(item);
+                        numberToSellCounter --;
+                    }
+                }
+                break;
+            default:
+                //playerStuff = amulets;
+                for(Amulet amulet : amulets){
+                    if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet)){
+                        availableNumberOfThatCard ++;
+                        priceOfThatCard = amulet.getPrice();
+                    }
+                }
+                if(availableNumberOfThatCard < numberToSell)
+                    return false;
+                for(Amulet amulet : amulets){
+                    if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet) && numberToSellCounter > 0){
+                        shop.addAmulet(amulet);
+                        amulets.remove(amulet);
+                        numberToSellCounter --;
+                    }
+                }
+        }
+/*
+        for(Stuff stuff : playerStuff){
+            if(stuff.getName().equals(name) && !deckCards.contains(card)){
                 availableNumberOfThatCard ++;
                 priceOfThatCard = card.getPrice();
             }
@@ -173,15 +265,170 @@ public class Player {    // todo before and after some actions deuse and use of 
         if(availableNumberOfThatCard < numberToSell)
             return false;
         for(Card card : inventoryCards){
-            if(card.getName().equals(name) && !deckCards.contains(card) && numberToSell > 0){
+            if(card.getName().equals(name) && !deckCards.contains(card) && numberToSellCounter > 0){
                 shop.addCard(card);
                 inventoryCards.remove(card);
-                numberToSell --;
+                numberToSellCounter --;
             }
-        }
+        }*/
         gil += priceOfThatCard * numberToSell;
         return true;
     }
+
+
+
+
+
+
+
+//
+//    //duplicated code can be improved?
+//    public int buyCard(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
+//        int numberToBuyCounter = numberToBuy;
+//        ArrayList<Card> shopCards = shop.getCards();
+//        int numberOfThatCardInShop = 0;
+//        int priceOfThatCard = 0;
+//        for(Card card : shopCards){
+//            if(card.getName().equals(name)){
+//                numberOfThatCardInShop ++;
+//                priceOfThatCard = card.getPrice();
+//            }
+//        }
+//        if(numberOfThatCardInShop < numberToBuy)
+//            return 0;
+//        if(priceOfThatCard * numberToBuy > gil)
+//            return -1;
+//        for(Card card : shopCards) {
+//            if (card.getName().equals(name) && numberToBuyCounter > 0) {
+//                shop.removeCard(card);
+//                inventoryCards.add(card);
+//                numberToBuyCounter--;
+//            }
+//        }
+//        gil -= priceOfThatCard * numberToBuy;
+//        return 1;
+//    }
+//
+//    public boolean sellCard(String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
+//        int numberToSellCounter = numberToSell;
+//        int availableNumberOfThatCard = 0;
+//        int priceOfThatCard = 0;
+//        for(Card card : inventoryCards){
+//            if(card.getName().equals(name) && !deckCards.contains(card)){
+//                availableNumberOfThatCard ++;
+//                priceOfThatCard = card.getPrice();
+//            }
+//        }
+//        if(availableNumberOfThatCard < numberToSell)
+//            return false;
+//        for(Card card : inventoryCards){
+//            if(card.getName().equals(name) && !deckCards.contains(card) && numberToSellCounter > 0){
+//                shop.addCard(card);
+//                inventoryCards.remove(card);
+//                numberToSellCounter --;
+//            }
+//        }
+//        gil += priceOfThatCard * numberToSell;
+//        return true;
+//    }
+//
+//    public int buyItem(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
+//        int numberToBuyCounter = numberToBuy;
+//        ArrayList<Item> shopItems = shop.getItems();
+//        int numberOfThatCardInShop = 0;
+//        int priceOfThatCard = 0;
+//        for(Item item : shopItems){
+//            if(item.getName().equals(name)){
+//                numberOfThatCardInShop ++;
+//                priceOfThatCard = item.getPrice();
+//            }
+//        }
+//        if(numberOfThatCardInShop < numberToBuy)
+//            return 0;
+//        if(priceOfThatCard * numberToBuy > gil)
+//            return -1;
+//        for(Item item : shopItems) {
+//            if (item.getName().equals(name) && numberToBuyCounter > 0) {
+//                shop.removeItem(item);
+//                items.add(item);
+//                numberToBuyCounter--;
+//            }
+//        }
+//        gil -= priceOfThatCard * numberToBuy;
+//        return 1;
+//    }
+//
+//    public boolean sellItem(String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
+//        int numberToSellCounter = numberToSell;
+//        int availableNumberOfThatCard = 0;
+//        int priceOfThatCard = 0;
+//        for(Item item : items){
+//            if(item.getName().equals(name)){
+//                availableNumberOfThatCard ++;
+//                priceOfThatCard = item.getPrice();
+//            }
+//        }
+//        if(availableNumberOfThatCard < numberToSell)
+//            return false;
+//        for(Item item : items){
+//            if(item.getName().equals(name) && numberToSellCounter > 0){
+//                shop.addItem(item);
+//                items.remove(item);
+//                numberToSellCounter --;
+//            }
+//        }
+//        gil += priceOfThatCard * numberToSell;
+//        return true;
+//    }
+//
+//    public int buyAmulet(String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
+//        int numberToBuyCounter = numberToBuy;
+//        ArrayList<Amulet> shopAmulets = shop.getAmulets();
+//        int numberOfThatCardInShop = 0;
+//        int priceOfThatCard = 0;
+//        for(Amulet amulet : shopAmulets){
+//            if(amulet.getName().equals(name)){
+//                numberOfThatCardInShop ++;
+//                priceOfThatCard = amulet.getPrice();
+//            }
+//        }
+//        if(numberOfThatCardInShop < numberToBuy)
+//            return 0;
+//        if(priceOfThatCard * numberToBuy > gil)
+//            return -1;
+//        for(Amulet amulet : shopAmulets) {
+//            if (amulet.getName().equals(name) && numberToBuyCounter > 0) {
+//                shop.removeAmulet(amulet);
+//                amulets.add(amulet);
+//                numberToBuyCounter--;
+//            }
+//        }
+//        gil -= priceOfThatCard * numberToBuy;
+//        return 1;
+//    }
+//
+//    public boolean sellAmulet(String name, int numberToSell){/* 0:number more than in inventory(and not in deck) - 1:successful */
+//        int numberToSellCounter = numberToSell;
+//        int availableNumberOfThatCard = 0;
+//        int priceOfThatCard = 0;
+//        for(Amulet amulet : amulets){
+//            if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet)){
+//                availableNumberOfThatCard ++;
+//                priceOfThatCard = amulet.getPrice();
+//            }
+//        }
+//        if(availableNumberOfThatCard < numberToSell)
+//            return false;
+//        for(Amulet amulet : amulets){
+//            if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet) && numberToSellCounter > 0){
+//                shop.addAmulet(amulet);
+//                amulets.remove(amulet);
+//                numberToSellCounter --;
+//            }
+//        }
+//        gil += priceOfThatCard * numberToSell;
+//        return true;
+//    }
 
     public boolean isDefenderPresent(){
         for (Card monsterCard: monsterFieldCards)

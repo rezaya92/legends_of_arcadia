@@ -4,6 +4,7 @@ import Controller.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Player;
+import Model.Stuff;
 
 import static Controller.Main.human;
 
@@ -62,7 +63,8 @@ abstract public class View {
     public static void amuletShop(){
         System.out.println("Remaining Gil: " + human.getGil() + " Gil");
         System.out.println(" Shop List:");
-        System.out.println(human.getShop().amuletToString() + "Equipped Amulet: " + /*TODO*/ "\nAmulet Inventory:\n" + human.amuletToString());
+        System.out.println(human.getShop().amuletToString() + "Equipped Amulet: " + (human.getEquippedAmulet() == null ? "-" : human.getEquippedAmulet().getName()));
+        System.out.println("Amulet Inventory:\n" + human.amuletToString());
     }
 
     public static void amuletShopHelp(){
@@ -108,8 +110,8 @@ abstract public class View {
         System.out.println("Successfully sold " + numberToSell + " of " + soldThingName + "!");
     }
 
-    public static void printCardInfo(Card card){
-        System.out.println(card);
+    public static void printStuffInfo(Stuff stuff){
+        System.out.println(stuff);
     }
 
     public static void invalidCommand(){
