@@ -55,6 +55,7 @@ public class Main {
     }
     */
 
+    //executing with while improves performance a lot?
     private static void afterMatch() throws Exception{
         //TODO player saveHuman = human.clone(); (for hourGlass)
         View.afterMatch();
@@ -64,17 +65,16 @@ public class Main {
         switch (action){
             case "1":
                 enterShop();
-                return;
+                break;
             case "2":
                 editInventory();
-                return;
+                break;
             case "3":
-                //TODO
                 return;
                 default:
                     View.invalidCommand();
-                    afterMatch();
         }
+        afterMatch();
     }
 
     private static void enterShop() throws Exception{
@@ -85,20 +85,19 @@ public class Main {
         switch (action){
             case "1":
                 cardShop();
-                return;
+                break;
             case "2":
                 itemShop();
-                return;
+                break;
             case "3":
                 amuletShop();
-                return;
+                break;
             case "4":
-                afterMatch();
                 return;
                 default:
                     View.invalidCommand();
-                    enterShop();
         }
+        enterShop();
     }
 
     private static void cardShop() throws Exception{
@@ -106,10 +105,6 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("cardShop");
         helpHandler(lastViewMethod);
-        if(action.equals("5") || action.equals("Exit") || action.equals("exit")) {
-            enterShop();
-            return;
-        }
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
                 buyThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
@@ -119,6 +114,10 @@ public class Main {
                 infoProcessor(action);
             else if(action.equals("4") || action.equals("Edit deck") || action.equals("edit deck"))
                 editDeck();
+            else if(action.equals("5") || action.equals("Exit") || action.equals("exit"))
+                return;
+            else
+                throw new Exception();
         } catch (Exception e){
             View.invalidCommand();
         }
@@ -130,10 +129,6 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("itemShop");
         helpHandler(lastViewMethod);
-        if(action.equals("4") || action.equals("Exit") || action.equals("exit")) {
-            enterShop();
-            return;
-        }
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
                 buyThingsProcessor(TypeOfStuffToBuyAndSell.ITEM, action);
@@ -141,6 +136,10 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.ITEM, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
+            else if(action.equals("4") || action.equals("Exit") || action.equals("exit"))
+                return;
+            else
+                throw new Exception();
         } catch (Exception e){
             View.invalidCommand();
         }
@@ -152,10 +151,6 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("amuletShop");
         helpHandler(lastViewMethod);
-        if(action.equals("5") || action.equals("Exit") || action.equals("exit")) {
-            enterShop();
-            return;
-        }
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
                 buyThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
@@ -165,6 +160,10 @@ public class Main {
                 infoProcessor(action);
             else if(action.equals("4") || action.equals("Edit amulet") || action.equals("edit Amulet"))
                 editAmulet();
+            else if(action.equals("5") || action.equals("Exit") || action.equals("exit"))
+                return;
+            else
+                throw new Exception();
         } catch (Exception e){
             View.invalidCommand();
         }
@@ -176,6 +175,43 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("editInventory");
         helpHandler(lastViewMethod);
+        switch (action){
+            case "1":
+                stuffInventory(TypeOfStuffToBuyAndSell.CARD);
+                break;
+            case "2":
+                stuffInventory(TypeOfStuffToBuyAndSell.ITEM);
+                break;
+            case "3":
+                stuffInventory(TypeOfStuffToBuyAndSell.AMULET);
+                break;
+            case "4":
+                editDeck();
+            case "5":
+                editAmulet();
+            case "6":
+                return;
+                default:
+                    View.invalidCommand();
+        }
+        editInventory();
+    }
+
+    private static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
+        View.stuffInventory(typeOfStuffToBuyAndSell);
+        action = scanner.nextLine();
+        lastViewMethod = Class.forName("View.View").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
+        helpHandler(lastViewMethod, typeOfStuffToBuyAndSell);
+        if(action.equals("2") || action.equals("Exit") || action.equals("exit"))
+            return;
+        try{
+            if(!(action.startsWith("Info ") || action.startsWith("info")))
+                throw new Exception();
+            infoProcessor(action);
+        } catch (Exception e){
+            View.invalidCommand();
+        }
+        stuffInventory(typeOfStuffToBuyAndSell);
     }
 
     private static void editDeck() throws Exception{
@@ -183,7 +219,39 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("editDeck");
         helpHandler(lastViewMethod);
-        //TODO
+        try {
+            if (action.startsWith("Add ") || action.startsWith("add ")) {
+                int splitIndex = 0;
+                for (int i = action.length() - 1; i >= 0; i--) {
+                    if (action.charAt(i) == ' ') {
+                        splitIndex = i;
+                        break;
+                    }
+                }
+                String cardName = action.substring(4, splitIndex);
+                int slotNumber = Integer.parseInt(action.substring(splitIndex + 1));
+                if (human.addToDeck(cardName, slotNumber))
+                    View.successfulAddToDeck(cardName, slotNumber);
+                else
+                    throw new Exception();
+            }else if(action.startsWith("Remove ") || action.startsWith("remove ")){
+                int slotNumber = Integer.parseInt(action.substring(7));
+                String cardName = human.removeFromDeck(slotNumber);
+                if(cardName == null)
+                    throw new Exception();
+                else
+                    View.successfulRemoveFromDeck(cardName, slotNumber);
+            }else if(action.startsWith("Info ") || action.startsWith("info ")){
+                infoProcessor(action);
+            }else if(action.equals("4") || action.equals("Exit") || action.equals("exit")){
+                return;
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e){
+            View.invalidCommand();
+        }
+        editDeck();
     }
 
     private static void editAmulet() throws Exception{
@@ -191,10 +259,32 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("editAmulet");
         helpHandler(lastViewMethod);
-        //TODO
+        try{
+            if(action.startsWith("Equip ") || action.startsWith("equip ")){
+                String amuletName = action.substring(6);
+                if(human.equipAmulet(amuletName))
+                    View.successfulAmuletEquip(amuletName);
+                else
+                    throw new Exception();
+            }else if(action.equals("2") || action.matches("[rR]emove [aA]mulet")){
+                String amuletName = human.removeEquippedAmulet();
+                if(amuletName == null)
+                    throw new Exception();
+                View.successfulRemoveEquippedAmulet(amuletName);
+            }else if(action.startsWith("Info ") || action.startsWith("info")){
+                infoProcessor(action);
+            }else if(action.equals("4") || action.matches("[Ee]xit")){
+                return;
+            }else{
+                throw new Exception();
+            }
+        }catch(Exception e){
+            View.invalidCommand();
+        }
+        editAmulet();
     }
 
-    public static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+    private static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
         int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
         if(numberToBuy <= 0)
             throw new Exception();//TODO check if executes correctly
@@ -212,7 +302,7 @@ public class Main {
         }
     }
 
-    public static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+    private static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
         int numberToSell = Integer.parseInt(command.split(" - ")[1]);
         if(numberToSell <= 0)
             throw new Exception();//TODO check if executes correctly
@@ -223,7 +313,7 @@ public class Main {
             View.notEnoughStuffs(typeOfStuffToBuyAndSell);
     }
 
-    public static void infoProcessor(String command) throws Exception{
+    private static void infoProcessor(String command) throws Exception{
         String stuffName = command.substring(5);
         if(!printInfoStuff(stuffName)){
             throw new Exception();
@@ -246,6 +336,21 @@ public class Main {
                 case "Help":
                 case "help":
                     Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help").invoke(null);
+                    break;
+                case "Again":
+                case "again":
+                    lastViewMethod.invoke(null);
+            }
+            action = scanner.nextLine();
+        }
+    }
+
+    private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
+        while(action.equals("Help") || action.equals("help") || action.equals("Again") || action.equals("again")){
+            switch (action) {
+                case "Help":
+                case "help":
+                    Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
                     break;
                 case "Again":
                 case "again":

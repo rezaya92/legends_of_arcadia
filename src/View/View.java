@@ -91,6 +91,27 @@ abstract public class View {
         editInventory();
     }
 
+    public static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
+        switch (typeOfStuffToBuyAndSell){
+            case CARD:
+                System.out.println("Card Inventory:");
+                System.out.println(human.inventoryToString());
+                break;
+            case ITEM:
+                System.out.println("Item Inventory:");
+                System.out.println(human.itemToString());
+                break;
+                default:
+                    System.out.println("Amulet Inventory:");
+                    System.out.println(human.amuletToString());
+        }
+    }
+
+    public static void stuffInventoryHelp(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
+        System.out.println("1. Info \"" + typeOfStuffToBuyAndSell.name() + " name\": to get more information about a specific " + typeOfStuffToBuyAndSell.name());
+        System.out.println("2. Exit: to return to previous section");
+    }
+
     public static void editDeck(){
         System.out.println("Deck:");
         System.out.println(human.deckToString());
@@ -100,7 +121,7 @@ abstract public class View {
 
     public static void editDeckHelp(){
         System.out.println("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck");
-        System.out.println("2. Remove \"Card Name\" #CardSlotNum: To remove cards from your deck");
+        System.out.println("2. Remove #CardSlotNum: To remove cards from your deck");
         System.out.println("3. Info \"Card Name\": To get more information about a specific card");
         System.out.println("4. Exit: To return to the previous section");
     }
@@ -113,7 +134,10 @@ abstract public class View {
     }
 
     public static void editAmuletHelp(){
-        //TODO
+        System.out.println("1. Equip \"Amulet name\": To equip the player with an amulet");
+        System.out.println("2. Remove Amulet: To remove the equipped amulet of the player (if the player is equipped with one)");
+        System.out.println("3. Info \"Amulet Name\": To get more information about a specific amulet");
+        System.out.println("4. Exit: to return to the previous section");
     }
 
     public static void insufficientGil(){
@@ -150,6 +174,22 @@ abstract public class View {
 
     public static void emptyDeck(){
         System.out.println("Deck is empty!");
+    }
+
+    public static void successfulAddToDeck(String cardName, int slotNumber){
+        System.out.println(cardName + " was add to slot " + slotNumber);
+    }
+
+    public static void successfulRemoveFromDeck(String cardName, int slotNumber){
+        System.out.println(cardName + " was removed from slot " + slotNumber);
+    }
+
+    public static void successfulAmuletEquip(String amuletName){
+        System.out.println(amuletName + " was equipped on the player.");
+    }
+
+    public static void successfulRemoveEquippedAmulet(String amuletName){
+        System.out.println(amuletName + " was removed!");
     }
 
     public static void slotIsFull(Player player){
