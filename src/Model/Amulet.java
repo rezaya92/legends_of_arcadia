@@ -2,7 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 
-public class Amulet {
+public class Amulet implements Stuff {
     private GeneralizedSpell effect;
     private String name;
     private int price;
@@ -34,4 +34,13 @@ public class Amulet {
             return false;
         return (this.name.equals(((Amulet) arg0).name));
     }
+
+    public String info(){
+        return effect.getDetail();//TODO item has it's own description or is equal to it's "effect" description?
+    }
+
+//    @Override
+//    public String toString(){
+//        return this.name + "\n" + this.info();
+//    }
 }

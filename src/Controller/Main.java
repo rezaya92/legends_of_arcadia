@@ -19,6 +19,10 @@ public class Main {
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
     private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
+//    private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
+//    private static ArrayList<Item> allItems = new ArrayList<>();//TODO add from constructors
+//    private static ArrayList<Amulet> allAmulets = new ArrayList<>();//TODO add from constructors
+    private static ArrayList<Stuff> allStuff = new ArrayList<>();//TODO add from constructors
 
     public static void main(String[] args) throws Exception{
         int numberOfCards = 40;
@@ -114,33 +118,12 @@ public class Main {
         }
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy ")) {
-                int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
-                if(numberToBuy <= 0)
-                    throw new Exception();//TODO check if executes correctly
-                String cardName = action.split(" - ")[0].substring(4);
-                int status = human.buyCard(cardName, numberToBuy);
-                switch (status){
-                    case -1:
-                        View.insufficientGil();
-                        break;
-                    case 0:
-                        View.notAvailableInShop();
-                        break;
-                    case 1:
-                        View.successfulBuy(cardName, numberToBuy);
-                }
+                buyThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
             } else if(action.startsWith("Sell ") || action.startsWith("sell ")){
-                int numberToSell = Integer.parseInt(action.split(" - ")[1]);
-                if(numberToSell <= 0)
-                    throw new Exception();//TODO check if executes correctly
-                String cardName = action.split(" - ")[0].substring(5);
-                if(human.sellCard(cardName, numberToSell))
-                    View.successfulSell(cardName, numberToSell);
-                else
-                    View.notEnoughCards();
+                sellThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
             } else if(action.startsWith("Info ") || action.startsWith("info ")){
                 String cardName = action.substring(5);
-                if(!infoCard(cardName)){
+                if(!printInfoStuff(cardName)){
                     throw new Exception();
                 }
             } else if(action.equals("4") || action.equals("Edit deck") || action.equals("edit deck")){
@@ -152,6 +135,35 @@ public class Main {
             return;
         }
         cardShop();
+    }
+
+    public static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+        int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
+        if(numberToBuy <= 0)
+            throw new Exception();//TODO check if executes correctly
+        String thingName = action.split(" - ")[0].substring(4);
+        int status = human.buyStuff(typeOfStuffToBuyAndSell, thingName, numberToBuy);
+        switch (status){
+            case -1:
+                View.insufficientGil();
+                break;
+            case 0:
+                View.notAvailableInShop();
+                break;
+            case 1:
+                View.successfulBuy(thingName, numberToBuy);
+        }
+    }
+
+    public static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+        int numberToSell = Integer.parseInt(action.split(" - ")[1]);
+        if(numberToSell <= 0)
+            throw new Exception();//TODO check if executes correctly
+        String cardName = action.split(" - ")[0].substring(5);
+        if(human.sellStuff(typeOfStuffToBuyAndSell, cardName, numberToSell))
+            View.successfulSell(cardName, numberToSell);
+        else
+            View.notEnoughCards();
     }
 
     private static void itemShop() throws Exception{
@@ -174,10 +186,10 @@ public class Main {
         //TODO
     }
 
-    private static boolean infoCard(String cardName){
-        for(Card card : allCards){
-            if(card.getName().equals(cardName)){
-                View.printCardInfo(card);
+    private static boolean printInfoStuff(String stuffName){
+        for(Stuff stuff : allStuff){
+            if(stuff.getName().equals(stuffName)){
+                View.printStuffInfo(stuff);
                 return true;
             }
         }
