@@ -2,6 +2,7 @@ package Model.Card;
 
 import Model.Player;
 import Model.Spell.GeneralizedSpell;
+import Model.Stuff;
 import View.View;
 import java.util.ArrayList;
 
@@ -17,7 +18,8 @@ public class MonsterCard extends Card {
     final int defaultAP;
     int ap;
     int hp;
-    boolean hasSpell = false;
+    boolean hasGotSpell = false;
+    boolean hasUsedSpell = false;
     boolean hasAttacked = false;
     GeneralizedSpell battleCry;
     GeneralizedSpell spellCasterSpell;
@@ -27,14 +29,16 @@ public class MonsterCard extends Card {
     public boolean isNimble() {
         return isNimble;
     }
-
     public boolean isDefender() {
         return isDefender;
     }
+    public boolean isAwake(){return isAwake;}
 
-    public boolean hasSpell(){return hasSpell;}
+    public boolean hasGotSpell(){return hasGotSpell;}
+    public boolean hasUsedSpell(){return hasUsedSpell;}
 
     public boolean hasAttacked(){return hasAttacked;}
+    public void setHasAttacked(boolean hasAttacked){this.hasAttacked = hasAttacked;}
 
     public GeneralizedSpell getBattleCry(){return  battleCry;}
     public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
@@ -50,29 +54,60 @@ public class MonsterCard extends Card {
         this.spellCasterSpell = spellCasterSpell;
         this.will = will;
         if (spellCasterSpell != null)
-            hasSpell = true;
+            hasGotSpell = true;
         this.isNimble = isNimble;
         this.isDefender = isDefender;
+        Stuff.allStuff.add(this);
     }
 
-    public void Attack(MonsterCard monsterCard) {   // todo return string
-        // defender magic case || secrets
-        if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
-            monsterCard.hp -= ap;
-            hp -= monsterCard.ap;
-            this.checkAlive();
-            monsterCard.checkAlive();
+    public void attack(int slotNumber){
+        MonsterCard monsterCard = (MonsterCard)owner.getOpponent().getMonsterFieldCards().get(slotNumber);
+        if (monsterCard != null){
+            this.attack(monsterCard);
+        }
+        else {
+            View.slotIsEmpty(owner);
         }
     }
+    public void attack(MonsterCard monsterCard) {   // todo return string
+        if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
+            if (!hasAttacked) {
+                monsterCard.hp -= ap;
+                hp -= monsterCard.ap;
+                this.checkAlive();
+                monsterCard.checkAlive();
+                hasAttacked = true;
+                owner.addHasAttackedCard(this);
+                View.clashWith(this.name, monsterCard.getName());
+            }
+            else
+                View.alreadyAttacked(owner);
+        } else if (!isAwake){
+            View.cardIsSleep(owner);
+        }
+        else
+            View.defenderEnemyPresent(owner);
+    }
 
-    public void AttackOpponentHero() {   // todo return string
+    public void attackOpponentHero() {   // todo return string
         if (isAwake) {
             Player opponent = this.owner.getOpponent();
             if (!opponent.isDefenderPresent()) {
-                opponent.getPlayerHero().setHp(opponent.getPlayerHero().getHp() - ap);
-                opponent.getPlayerHero().checkAlive();
-                // this.checkAlive in case of weapon for playerHero
+                if (!hasAttacked) {
+                    opponent.getPlayerHero().setHp(opponent.getPlayerHero().getHp() - ap);
+                    opponent.getPlayerHero().checkAlive();
+                    // this.checkAlive in case of weapon for playerHero
+                    hasAttacked = true;
+                    owner.addHasAttackedCard(this);
+                    View.clashWith(this.name, owner.getOpponent().getName());
+                }
+                else
+                    View.alreadyAttacked(owner);
+            } else if (!isAwake){
+                View.cardIsSleep(owner);
             }
+            else
+                View.defenderEnemyPresent(owner);
         }
     }
 
@@ -102,17 +137,21 @@ public class MonsterCard extends Card {
                     battleCry.use();
             }
             else {
-                View.slotIsFull();
+                View.slotIsFull(owner);
             }
         }
         else {
-            View.insufficientMana();
+            View.insufficientMana(owner);
         }
     }
 
     public void castSpell() {
-        if (spellCasterSpell != null)
-            spellCasterSpell.use();   // else ??
+        if (spellCasterSpell != null) {
+            if (!hasUsedSpell) {
+                spellCasterSpell.use();   // else ??
+                hasUsedSpell = true;
+            }
+        }
     }
 
     public int getAp() {

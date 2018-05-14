@@ -26,6 +26,7 @@ public class Player {    // todo before and after some actions deuse and use of 
     private PlayerHero playerHero;
     private Player opponent;
     private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
+    private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
     private ArrayList<SpellCard> continuousSpellCards = new ArrayList<>();
 
     public Player(){} //for now (human)
@@ -131,6 +132,18 @@ public class Player {    // todo before and after some actions deuse and use of 
             sleepingPlayedCard.getAwake();
         }
         sleepingPlayedCards.clear();
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    public void addHasAttackedCard(MonsterCard monsterCard){
+        hasAttackedCards.add(monsterCard);
+    }
+
+    public void resetHasAttackedCards(){
+        for (MonsterCard monsterCard: hasAttackedCards){
+            monsterCard.setHasAttacked(false);
+        }
+        hasAttackedCards.clear();
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -437,6 +450,7 @@ public class Player {    // todo before and after some actions deuse and use of 
         return false;
     }
 
+//---------------------------------------------------------------------------------------------------------------------
     public void startTurn(){
         for (Card spellCard: spellFieldCards){
             if (((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
@@ -450,8 +464,10 @@ public class Player {    // todo before and after some actions deuse and use of 
 
     public void endTurn(){
         awakeSleepingPlayedCards();
+        resetHasAttackedCards();
     }
 
+//---------------------------------------------------------------------------------------------------------------------
     public String deckToString(){
         String output = "";
         for(int i=1; i<deckCapacity + 1; i++){

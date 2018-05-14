@@ -1,7 +1,9 @@
 package Controller;
 
 import Model.Card.Card;
+import Model.Card.MonsterCard;
 import Model.Player;
+import Model.Stuff;
 import View.View;
 
 import java.util.Collections;
@@ -37,7 +39,7 @@ public class Battle {
             System.out.print(drawingCard.getName() + ", ");
             opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
-        System.out.println("");     // could be a string from "Player drew"
+        System.out.println();     // could be a string from "Player drew"
 
         if (coin == 0)
             System.out.println(human.getName() + " starts the battle.");
@@ -69,17 +71,19 @@ public class Battle {
         human.startTurn();
         String action = scanner.next();
         while (action != "Done") {
+            int slotNumber;
             switch (action) {
                 case "Help":
                     View.battleHelp();
                     break;
                 case "Use":
-
+                    slotNumber = scanner.nextInt();
+                    monsterCardUseMenu((MonsterCard)human.getMonsterFieldCards().get(slotNumber));
                     break;
                 case "Set":
                     int handIndex = scanner.nextInt();
                     scanner.next();
-                    int slotNumber = scanner.nextInt();
+                    slotNumber = scanner.nextInt();
                     human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
                     break;
                 case "View":
@@ -102,6 +106,12 @@ public class Battle {
                     }
                     break;
                 case "Info":
+                    String cardName = scanner.nextLine();  // must be a card name (??)
+                    Stuff card = Stuff.getStuffByName(cardName);
+                    if (card != null)
+                        System.out.println(card);
+                    else
+                        View.invalidCardName();
                     break;
                 default:
                     View.invalidCommand();
@@ -118,32 +128,40 @@ public class Battle {
         // todo
         bot.endTurn();
     }
-    /*
-    public static void startGame (Player player1, Player player2){
-        player1.setOpponent(player2);
-        player2.setOpponent(player1);
-        Player playingPlayer = player1;
 
-        player1.setMaxMana(0);
-        player2.setMaxMana(0);
-        Collections.shuffle(player1.getDeckCards());
-        Collections.shuffle(player2.getDeckCards());
-
-        for (int i = 0; i < 4; i++){
-            player1.getDeckCards().get(0).transfer(player1.getHandCards());
-            player2.getDeckCards().get(0).transfer(player2.getHandCards());
-        }
-
-        while (true){
-            playingPlayer.startTurn();
-            String action = scanner.next();
-            while (action != "Done"){
-                // todo
+    public static void monsterCardUseMenu(MonsterCard monsterCard){
+        View.usingMonsterCardInfo(monsterCard);
+        String action = scanner.next();
+        while (!action.equals("Exit")){
+            switch (action){
+                case "Help":
+                    View.usingMonsterCardHelp(monsterCard.hasGotSpell());
+                    break;
+                case "Info":
+                    System.out.println(monsterCard);
+                    break;
+                case "Attack":
+                    String beingAttackedSlot = scanner.next();
+                    if (beingAttackedSlot.equals("Player"))
+                        monsterCard.attackOpponentHero();
+                    else
+                        monsterCard.attack(Integer.parseInt(beingAttackedSlot));  // bug: must surround with try/catch  also must be < 5
+                    break;
+                case "Cast":
+                    String s = scanner.next();
+                    if (!monsterCard.hasGotSpell() || !s.equals("Spell"))
+                        View.invalidCommand();
+                    else
+                        spellCastingMenu(monsterCard);
+                    break;
+                default:
+                    View.invalidCommand();
             }
-            playingPlayer.endTurn();
-            playingPlayer = playingPlayer.getOpponent();
+            action = scanner.next();
         }
-    }*/
+    }
 
-
+    public static void spellCastingMenu(MonsterCard monsterCard){   // MonsterCard or Card or SpellCastable ?
+        // todo
+    }
 }

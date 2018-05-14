@@ -3,6 +3,7 @@ package View;
 import Controller.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.PlayAreaArrayList;
 import Model.Player;
 import Model.Stuff;
 
@@ -126,12 +127,66 @@ abstract public class View {
         System.out.println("Deck is empty!");
     }
 
-    public static void slotIsFull(){
-        System.out.println("\nSlot is full!\n");
+    public static void slotIsFull(Player player){
+        if (player == human)
+            System.out.println("\nSlot is full!\n");
     }
 
-    public static void insufficientMana(){
-        System.out.println("\nNot enough MP!\n");
+    public static void insufficientMana(Player player){
+        if (player == human)
+            System.out.println("\nNot enough MP!\n");
+    }
+
+    public static void invalidCardName(){
+        System.out.println("Card does not exist!");
+    }
+
+    public static void slotIsEmpty(Player player){
+        if (player == human)
+            System.out.println("Slot is empty!");
+    }
+
+    public static void clashWith(String attackerCard, String attackedCard){
+        System.out.println(attackerCard + " clashed with " + attackedCard);
+    }
+
+    public static void alreadyAttacked(Player player){
+        if (player == human)
+            System.out.println("The card has already attacked!");
+    }
+
+    public static void cardIsSleep(Player player){
+        if (player == human)
+            System.out.println("The selected card is sleep!");
+    }
+
+    public static void defenderEnemyPresent(Player player){
+        if (player == human)
+            System.out.println("There's a defender enemy present!");
+    }
+
+//--------------------------------------------------------------------------------- usingMonsterCard
+    public static void usingMonsterCardInfo(MonsterCard monsterCard){
+        System.out.println("Using " + monsterCard.getName() + ":");
+        System.out.println("HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+        System.out.println("Is Sleeping: " + !monsterCard.isAwake());
+        System.out.println("Can Attack: " + !monsterCard.hasAttacked());
+        if (monsterCard.hasGotSpell()){
+            System.out.println("Can Cast: " + !monsterCard.hasUsedSpell());
+        }
+    }
+
+    public static void usingMonsterCardHelp(boolean hasSpell){
+        System.out.println("1. Attack #EnemyMonsterSlot / Player: To attack the card on that slot of enemy MonsterField or the enemy player");
+        if (!hasSpell){
+            System.out.println("2. Info: To get full information on card");
+            System.out.println("3. Exit: To go back to Play Menu");
+        }
+        else{
+            System.out.println("2. Cast Spell: To cast the card's spell ");
+            System.out.println("3. Info: To get full information on card");
+            System.out.println("4. Exit: To go back to Play Menu");
+        }
     }
 
 //--------------------------------------------------------------------------------- view hand,graveyard,spellField,monsterField
@@ -204,9 +259,39 @@ abstract public class View {
                     System.out.print(" Defensive");
                 if (monsterCard.isNimble())
                     System.out.print(" Nimble");
-
+                if (monsterCard.hasGotSpell()){
+                    if (monsterCard.hasUsedSpell())
+                        System.out.print(" UsedSpell");
+                    else
+                        System.out.println(" HasSpell");
+                }
             }
+            System.out.println();
             i++;
+        }
+
+        System.out.println("Enemy's MonsterField:");
+        int j = 1;
+        for (Card card: player.getOpponent().getMonsterFieldCards()){
+            System.out.print("Slot" + j + ": ");
+            if (card == null)
+                System.out.println("Empty");
+            else{
+                MonsterCard monsterCard = (MonsterCard)card;
+                System.out.print(card.getName() + " HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+                if (monsterCard.isDefender())
+                    System.out.print(" Defensive");
+                if (monsterCard.isNimble())
+                    System.out.print(" Nimble");
+                if (monsterCard.hasGotSpell()){
+                    if (monsterCard.hasUsedSpell())
+                        System.out.print(" UsedSpell");
+                    else
+                        System.out.println(" HasSpell");
+                }
+            }
+            System.out.println();
+            j++;
         }
     }
 

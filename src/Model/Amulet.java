@@ -8,6 +8,10 @@ public class Amulet implements Stuff {
     private int price;
 
     //TODO set owner for every spell in constructor
+    public Amulet(){
+        Stuff.allStuff.add(this);
+    }
+
     public GeneralizedSpell getEffect() {
         return effect;
     }
