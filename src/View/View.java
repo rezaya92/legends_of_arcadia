@@ -6,6 +6,7 @@ import Model.Card.MonsterCard;
 import Model.PlayAreaArrayList;
 import Model.Player;
 import Model.Stuff;
+import Model.TypeOfStuffToBuyAndSell;
 
 import static Controller.Main.human;
 
@@ -77,6 +78,19 @@ abstract public class View {
         System.out.println("5. Exit: To return to shop menu");
     }
 
+    public static void editInventory(){
+        System.out.println("1. Card Inventory: To view your cards");
+        System.out.println("2. Item Inventory: To view your items");
+        System.out.println("3. Amulet Inventory: To view your amulets");
+        System.out.println("4. Edit Deck: To edit your card deck");
+        System.out.println("5. Edit Amulets: To equip or remove your amulets");
+        System.out.println("6. Exit: to return to previous menu");
+    }
+
+    public static void editInventoryHelp(){
+        editInventory();
+    }
+
     public static void editDeck(){
         System.out.println("Deck:");
         System.out.println(human.deckToString());
@@ -91,6 +105,17 @@ abstract public class View {
         System.out.println("4. Exit: To return to the previous section");
     }
 
+    public static void editAmulet(){
+        System.out.println("Amulets:");
+        System.out.println(human.amuletToString());
+        if(human.getEquippedAmulet() != null)
+            System.out.println("Player is equipped with " + human.getEquippedAmulet().getName());
+    }
+
+    public static void editAmuletHelp(){
+        //TODO
+    }
+
     public static void insufficientGil(){
         System.out.println("Not enough Gil!");
     }
@@ -103,8 +128,8 @@ abstract public class View {
         System.out.println("Successfully bought " + numberToBuy + " of " + boughtThingName + "!");
     }
 
-    public static void notEnoughCards(){
-        System.out.println("Not enough cards!");
+    public static void notEnoughStuffs(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
+        System.out.println("Not enough " + typeOfStuffToBuyAndSell.name() + "s!");
     }
 
     public static void successfulSell(String soldThingName, int numberToSell){
