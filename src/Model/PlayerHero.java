@@ -1,9 +1,9 @@
 package Model;
 
-import Model.Card.Card;
 import Model.Card.CardPlace;
 import Model.Card.Tribe;
 import Model.Spell.GeneralizedSpell;
+import View.View;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,13 @@ public class PlayerHero implements SpellCastable { // todo amulet
 
     public void checkAlive(){
         if (hp <= 0){
-            // todo game ends
+            View.battleOver(owner);
+            if (owner.getMysticHourglasses() == 0){
+                View.gameOver(owner);
+            }
+            else{
+
+            }
         }
     }
 

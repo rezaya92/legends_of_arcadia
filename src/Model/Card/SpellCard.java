@@ -20,6 +20,13 @@ public class SpellCard extends Card {
         return spellCardType;
     }
 
+    public SpellCard(int defaultManaCost, ArrayList<Card> cardPlace, GeneralizedSpell spell, SpellCardType spellCardType){
+        this.defaultManaCost = defaultManaCost;
+        this.cardPlace = cardPlace;
+        this.spell = spell;
+        this.spellCardType = spellCardType;
+    }
+
     @Override
     public void play(int slotNumber) {   // -1 case card is instant spell  // only plays from hand
         if (manaCost <= owner.getMana()) {

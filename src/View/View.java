@@ -369,4 +369,20 @@ abstract public class View {
         System.out.println("7. Info \"Card Name\": To view full information about a card");
         System.out.println("8. Done: To end your turn\n");
     }
+
+    public static void battleOver(Player loser){
+        System.out.println("Battle Ended!");
+        if (loser == human){
+            System.out.println("You Lost!");
+        }
+        else
+            System.out.println("You Won!");
+    }
+
+    public static void gameOver(Player player){
+        if (player == human) {
+            System.out.println("You are out of Mystic Hourglass");
+            System.out.println("Game Over!");
+        }
+    }
 }
