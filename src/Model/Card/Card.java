@@ -77,10 +77,21 @@ public abstract class Card implements SpellCastable, Stuff {
     }
 
     public void transfer (ArrayList<Card> destination){  // todo consider spell of spellCards   "also can be boolean"
+        deuseAuraCards();
         cardPlace.remove(this);
         destination.add(this);
         cardPlace = destination;
-        this.restoreValues();   // is correct ??
+        this.restoreValues();   // is correct ??  "if there exist a spell that change hand cards no"
+        useAuraCards();
+    }
+
+    public void deuseAuraCards(){
+        owner.deuseAuraCards();
+        owner.getOpponent().deuseAuraCards();
+    }
+    public void useAuraCards(){
+        owner.useAuraCards();
+        owner.getOpponent().useAuraCards();
     }
 
     public abstract void restoreValues();

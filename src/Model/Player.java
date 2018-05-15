@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this   // also start/end turn methods
+public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -28,7 +28,6 @@ public class Player {    // todo before and after some actions deuse and use of 
     private Player opponent;
     private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
     private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
-    private ArrayList<SpellCard> continuousSpellCards = new ArrayList<>();
 
     public Player(){} //for now (human)
 
@@ -147,14 +146,6 @@ public class Player {    // todo before and after some actions deuse and use of 
         hasAttackedCards.clear();
     }
 
-    //---------------------------------------------------------------------------------------------------------------
-    public void addContinuousSpellCard(SpellCard continuousSpellCard){
-        continuousSpellCards.add(continuousSpellCard);
-    }
-
-    public void removeContinuousSpellCard(SpellCard continuousSpellCard){   // "consider being empty for next game"
-        continuousSpellCards.remove(continuousSpellCard);
-    }
     //-------------------------------------------buy and sell stuff from shop----------------------------------------------------
     public int buyStuff(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String name, int numberToBuy){/* -1:insufficient Gil - 0:not available in shop - 1:successful */
         int numberToBuyCounter = numberToBuy;
@@ -327,14 +318,29 @@ public class Player {    // todo before and after some actions deuse and use of 
         return false;
     }
 
-//---------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------Aura Cards deuse and use---------------------------------------------------
+    public void deuseAuraCards(){
+        for (Card spellCard: spellFieldCards){
+            if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
+                ((SpellCard) spellCard).getSpell().deuse();
+        }
+    }
+
+    public void useAuraCards(){
+        for (Card spellCard: spellFieldCards){
+            if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
+                ((SpellCard) spellCard).getSpell().use();
+        }
+    }
+
+//------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
     public void startTurn(){
         for (Card spellCard: spellFieldCards){
-            if (((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
+            if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
                 ((SpellCard) spellCard).getSpell().use();
         }
         mana = ++maxMana;
-        if (!deckCards.isEmpty()){   // deck should be shuffled in the first    // else needed ??
+        if (!deckCards.isEmpty()){    // else needed ??
             deckCards.get(0).transfer(handCards);
         }
     }

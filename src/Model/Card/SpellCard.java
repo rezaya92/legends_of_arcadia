@@ -31,17 +31,19 @@ public class SpellCard extends Card {
             }
             else{
                 if (owner.getSpellFieldCards().get(slotNumber) == null){
+                    deuseAuraCards();
                     cardPlace.remove(this);    // cardPlace = hand here
                     owner.getSpellFieldCards().set(slotNumber, this);
                     cardPlace = owner.getSpellFieldCards();
+                    useAuraCards();
                 }
             }
         }
     }
 
-    @Override
+/*    @Override     // this is not needed since transfer does the deuse and use of AuraCards.
     public void transfer(ArrayList<Card> destination){   // bug: nabaiad ye spell bashe ke instantSpellCard majani bazi kone!
-        if (spellCardType == SpellCardType.AURA) {
+        if (spellCardType == SpellCardType.AURA  && owner != null) {
             if (destination == owner.getSpellFieldCards()) {
                 spell.use();
             }
@@ -50,7 +52,7 @@ public class SpellCard extends Card {
             }
         }
         super.transfer(destination);
-    }
+    }*/
 
     @Override
     public void restoreValues(){

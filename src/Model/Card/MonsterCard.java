@@ -125,14 +125,18 @@ public class MonsterCard extends Card {
     public void play(int slotNumber) { // must be < 5   "just from hand to monsterField"
         if (manaCost <= owner.getMana()) {
             if (owner.getMonsterFieldCards().get(slotNumber) == null) {
+                deuseAuraCards();
                 cardPlace.remove(this);
                 owner.getMonsterFieldCards().set(slotNumber, this);
                 cardPlace = owner.getMonsterFieldCards();
                 owner.setMana(owner.getMana() - manaCost);
+                useAuraCards();
                 if (isNimble)
                     getAwake();
-                else
+                else {
                     owner.addSleepingPlayedCard(this);
+                    isAwake = false;                // because card may be played more than once
+                }
                 if (battleCry != null)
                     battleCry.use();
             }
@@ -205,12 +209,16 @@ public class MonsterCard extends Card {
     }
 
     @Override
-    public void transfer(ArrayList<Card> destination){
+    public void transfer(ArrayList<Card> destination){  // how about will ??
         super.transfer(destination);
-        if (isNimble)
-            isAwake = true;
-        else
-            owner.addSleepingPlayedCard(this);
+        if (destination == owner.getMonsterFieldCards()) {  // how about enemy monsterFieldCards ?
+            if (isNimble)
+                isAwake = true;
+            else {
+                owner.addSleepingPlayedCard(this);
+                isAwake = false;
+            }
+        }
     }
 
     @Override

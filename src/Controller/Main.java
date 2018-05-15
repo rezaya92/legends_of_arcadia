@@ -19,14 +19,11 @@ public class Main {
 //    private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
 //    private static ArrayList<Item> allItems = new ArrayList<>();//TODO add from constructors
 //    private static ArrayList<Amulet> allAmulets = new ArrayList<>();//TODO add from constructors
-    private static ArrayList<Stuff> allStuff = new ArrayList<>();//TODO add from constructors
 
     public static void main(String[] args) throws Exception{
         int numberOfCards = 40;
         Card[] cards = new Card[numberOfCards];
 
-        //todo: new cards
-        // sout cards
         //startGameAgainst(opponent);
 
         afterMatch();
@@ -321,7 +318,7 @@ public class Main {
     }
 
     private static boolean printInfoStuff(String stuffName){
-        for(Stuff stuff : allStuff){
+        for(Stuff stuff : Stuff.allStuff){
             if(stuff.getName().equals(stuffName)){
                 View.printStuffInfo(stuff);
                 return true;

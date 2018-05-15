@@ -19,7 +19,7 @@ public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void startGameAgainst(Player opponent) {
+    public static void startGameAgainst(Player opponent) {   // todo use amulets
         opponent.setOpponent(human);
         human.setOpponent(opponent);
         System.out.println("Battle against " + opponent.getName() + " started!");
