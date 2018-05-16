@@ -9,6 +9,7 @@ public class GeneralizedSpell {
     final private Spell[] spells;
     final private String detail;
     final private String name;
+    public static ArrayList<GeneralizedSpell> allSpells = new ArrayList<>();
 
     public GeneralizedSpell(Spell[] spells, String detail, String name) {
         this.spells = spells;

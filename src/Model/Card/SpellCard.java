@@ -20,10 +20,11 @@ public class SpellCard extends Card {
         return spellCardType;
     }
 
-    public SpellCard(int defaultManaCost, GeneralizedSpell spell, SpellCardType spellCardType){
+    public SpellCard(GeneralizedSpell spell, int defaultManaCost, SpellCardType spellCardType){
         this.defaultManaCost = defaultManaCost;
         this.spell = spell;
         this.spellCardType = spellCardType;
+        this.name = spell.getName();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SpellCard extends Card {
 
     @Override
     public String toString() {
-        String output = this.name + "Info:\n";
+        String output = this.name + " Info:\n";
         output += "Name: " + this.name + "\n";
         output += "MP cost: " + defaultManaCost + "\n";
         output += "Card Type: " + spellCardType.name() + "\n";//TODO check to execute correctly
