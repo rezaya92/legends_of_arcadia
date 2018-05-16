@@ -1,0 +1,8 @@
+Elven Monster
+Elven Ranger - 300 - 400 - 1 - Normal - None
+Elven Hunter - 800 - 600 - 3 - Normal - None
+Elven Guardsman - 1500 - 500 - 5 - Normal - Defender
+Elven Assasin - 800 - 1200 - 5 - Normal - Nimble
+Elven Druid - 1200 - 600 - 5 - Spell Caster - None - Rejuvenation
+Elven Sorceress - 1000 - 1000 - 7 - Spell Caster - Nimble - Arcane Explosion
+Noble Elf - 2000 - 2400 - 9 - General - None - Purge - Noble Purge

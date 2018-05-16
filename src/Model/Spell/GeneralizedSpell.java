@@ -42,6 +42,14 @@ public class GeneralizedSpell {
         return null;
     }*/
 
+    public static GeneralizedSpell getSpellByName(String name){
+        for(GeneralizedSpell spell : allSpells){
+            if(spell.getName().equals(name))
+                return spell;
+        }
+        return null;
+    }
+
     public void use(){
         if (merge){
             spells[0].use();

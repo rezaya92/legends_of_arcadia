@@ -8,7 +8,10 @@ public class Item implements Stuff{
     private int price;
 
     //TODO set owner for every spell in constructor
-    public Item(){
+    public Item(GeneralizedSpell effect, int price){
+        this.effect = effect;
+        this.price = price;
+        this.name = effect.getName();
         Stuff.allStuff.add(this);
     }
 
@@ -45,6 +48,6 @@ public class Item implements Stuff{
 
     @Override
     public String toString(){
-        return this.name + "Info:\n" + this.info();
+        return this.name + " Info:\n" + this.info() + "\n";
     }
 }

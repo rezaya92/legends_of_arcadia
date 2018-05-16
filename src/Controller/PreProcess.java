@@ -1,10 +1,12 @@
 package Controller;
 
+import Model.Amulet;
 import Model.Card.*;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
 import Model.Card.Tribe;
+import Model.Item;
 import Model.PlayerHero;
 import Model.Spell.*;
 import Model.Spell.SpellArea;
@@ -183,7 +185,7 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         EnumSet.of(Tribe.ELVEN),SpellChoiceType.RANDOM,800)
         },
-                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge",true);
+                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge",true);//this spell has no name in doc!
         GeneralizedSpell reviveAllies = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.FRIENDLY_GRAVEYARD),
@@ -586,31 +588,6 @@ public class PreProcess {
                         SpellChoiceType.ALL,3)
         },
                 "Increase Player’s Max MP by 3","Diamond Ring");
-
-
-
-
-
-
-
-
-
-        allSpells.add(throwingKnives);
-        allSpells.add(poisonousCauldron);
-        allSpells.add(firstAidKit);
-        allSpells.add(reapersScythe);
-        allSpells.add(meteorShower);
-        allSpells.add(lunarBlessing);
-        allSpells.add(strategicRetreat);
-        allSpells.add(warDrum);
-        allSpells.add(healingWard);
-        allSpells.add(bloodFeast);
-        allSpells.add(tsunami);
-        allSpells.add(takeAllYouCan);
-        allSpells.add(arcaneBolt);
-        allSpells.add(greaterPurge);
-        allSpells.add(magicSeal);
-
     }
 
 
@@ -622,16 +599,86 @@ public class PreProcess {
             String line = null;
             while((line = bufferedReader.readLine()) != null){
                 String[] constructorInputs = line.split(" - ");
-                GeneralizedSpell wantedSpell = null;
-                for(GeneralizedSpell generalizedSpell : allSpells){
-                    if(constructorInputs[0].equals(generalizedSpell.getName())){
-                        wantedSpell = generalizedSpell;
-                        break;
-                    }
-                }
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
                 int manaCost = Integer.parseInt(constructorInputs[1]);
                 SpellCardType spellCardType = SpellCardType.nameToSpellCardType(constructorInputs[2]);
-                allStuff.add(new SpellCard(wantedSpell, manaCost, spellCardType));
+                new SpellCard(wantedSpell, manaCost, spellCardType);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateMonsterCards(){
+        try {
+            FileReader fileReader = new FileReader("MonsterCards.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            Tribe tribeOfSection = null;
+            while((line = bufferedReader.readLine()) != null){
+                if(!line.contains("-")){
+                    tribeOfSection = Tribe.getTribeByName(line);
+                    continue;
+                }
+                String[] constructorInputs = line.split(" - ");
+                int defaultHP = Integer.parseInt(constructorInputs[1]);
+                int defaultAP = Integer.parseInt(constructorInputs[2]);
+                int defaultManaCost = Integer.parseInt(constructorInputs[3]);
+                boolean isDefender = (constructorInputs[5].equalsIgnoreCase("Defender") || constructorInputs[5].equalsIgnoreCase("Both"));
+                boolean isNimble = (constructorInputs[5].equalsIgnoreCase("Nimble") || constructorInputs[5].equalsIgnoreCase("Both"));
+                if(constructorInputs[4].equalsIgnoreCase("Normal")){
+                    new NormalCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble);
+                }else if(constructorInputs[4].equalsIgnoreCase("Spell Caster")){
+                    GeneralizedSpell spell = getSpellByName(constructorInputs[6]);
+                    new SpellcasterCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, spell);
+                }else if(constructorInputs[4].equalsIgnoreCase("General")){
+                    GeneralizedSpell battleCry = getSpellByName(constructorInputs[6]);
+                    GeneralizedSpell will = getSpellByName(constructorInputs[7]);
+                    new GeneralCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, battleCry, will);
+                }else if(constructorInputs[4].equalsIgnoreCase("Hero")){
+                    GeneralizedSpell battleCry = getSpellByName(constructorInputs[6]);
+                    GeneralizedSpell spell = getSpellByName(constructorInputs[7]);
+                    GeneralizedSpell will = getSpellByName(constructorInputs[8]);
+                    new HeroCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, battleCry, spell, will);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateItems(){
+        try {
+            FileReader fileReader = new FileReader("Items.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] constructorInputs = line.split(" - ");
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
+                int price = Integer.parseInt(constructorInputs[1]);
+                new Item(wantedSpell, price);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateAmulets(){
+        try {
+            FileReader fileReader = new FileReader("Amulets.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] constructorInputs = line.split(" - ");
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
+                int price = Integer.parseInt(constructorInputs[1]);
+                new Amulet(wantedSpell, price);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

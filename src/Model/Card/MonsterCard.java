@@ -44,7 +44,9 @@ public class MonsterCard extends Card {
     public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
     public GeneralizedSpell getWill(){return will;}
 
-    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will, boolean isNimble, boolean isDefender) {
+    public MonsterCard(Tribe tribe, String name, int defaultHP, int defaultAP, int defaultManaCost, boolean isDefender, boolean isNimble, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will) {
+        this.tribe = tribe;
+        this.name = name;
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.hp = this.defaultHP = defaultHP;
         this.ap = this.defaultAP = defaultAP;
@@ -182,7 +184,8 @@ public class MonsterCard extends Card {
     @Override
     public String toString() {
         String output = this.name + " Info:\n";
-        String cardType = this.getClass().getName();
+        String[] tmp = this.getClass().getName().split("\\.");
+        String cardType = tmp[tmp.length-1];
         cardType = cardType.substring(0, cardType.length() - 4);// not perfect
         output += "Name: " + this.name + "\n";
         output += "HP: " + this.defaultHP + "\n";

@@ -31,7 +31,10 @@ public class Main {
 
         instantiateSpells();
         instantiateSpellCards();
-        //System.out.println(allSpells);
+        instantiateMonsterCards();
+        instantiateItems();
+        instantiateAmulets();
+        System.out.println(allSpells);
         System.out.println(allStuff);
         //System.out.println(allStuff.get(0));
         //System.out.println(allStuff.get(1));

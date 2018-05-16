@@ -25,6 +25,8 @@ public class SpellCard extends Card {
         this.spell = spell;
         this.spellCardType = spellCardType;
         this.name = spell.getName();
+        this.price = 700*defaultManaCost;
+        allStuff.add(this);
     }
 
     @Override
