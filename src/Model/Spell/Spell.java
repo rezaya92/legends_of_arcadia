@@ -1,9 +1,11 @@
 package Model.Spell;
 
+import Model.Card.Card;
+import Model.Card.SpellCard;
 import Model.Card.Tribe;
-import Model.Player;
-import Model.SpellArea;
+import Model.HasTribe;
 import Model.SpellCastable;
+import View.View;
 
 import java.util.*;
 
@@ -12,10 +14,10 @@ public abstract class Spell {
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;
     private Set<Tribe> effectableTribe;
-    private SpellCastable owner;
+    SpellCastable owner;
     SpellChoiceType choiceType;
     ArrayList<SpellCastable> effectableCard = new ArrayList<>();
-    ArrayList<SpellCastable> effectedCard = new ArrayList<>();
+    //ArrayList<SpellCastable> effectedCard = new ArrayList<>();
 
 
     public Spell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType) {
@@ -23,6 +25,10 @@ public abstract class Spell {
         this.effectableCardType = effectableCardType;
         this.effectableTribe = effectableTribe;
         this.choiceType = choiceType;
+    }
+
+    public Spell(Set<SpellArea> effectableArea, Class[] effectableCardType, SpellChoiceType choiceType) {
+        this(effectableArea, effectableCardType,EnumSet.of(Tribe.DEMONIC, Tribe.ELVEN, Tribe.DRAGONBREED, Tribe.ATLANTIAN), choiceType);
     }
 
     private void setEffectableAreaCards(){
@@ -72,14 +78,14 @@ public abstract class Spell {
         }
     }
 
-    void setEffectableCards(){
+    private void setEffectableCards(){
         setEffectableAreaCards();
         effectableCard = new ArrayList<>();
         for (ArrayList<SpellCastable> cardArray: effectableAreaCards) {
             for (SpellCastable card:cardArray) {
                 for (Class cardType: effectableCardType){
                     for (Tribe tribe: effectableTribe) {
-                        if (cardType.isInstance(card) && (card.getTribe().equals(tribe) || card.getTribe().equals(Tribe.HUMAN))) {
+                        if (cardType.isInstance(card) && (card instanceof SpellCard || ((HasTribe)card).getTribe().equals(tribe) || ((HasTribe)card).getTribe().equals(Tribe.HUMAN))) {
                             effectableCard.add(card);
                             break;
                         }
@@ -89,6 +95,7 @@ public abstract class Spell {
         }
         effectableCard = new ArrayList<>(new LinkedHashSet<>(effectableCard));
     }
+
 
     private void choose(){
         switch (choiceType){
@@ -102,6 +109,12 @@ public abstract class Spell {
                 effectableCard.add(choice);
                 return;
             case SELECT:
+                View.viewSpellEffectableCards(effectableCard);
+                Scanner scanner = new Scanner(System.in);
+                index = scanner.nextInt() - 1;
+                choice = effectableCard.get(index);
+                effectableCard.clear();
+                effectableCard.add(choice);
         }
     }
 
@@ -109,16 +122,18 @@ public abstract class Spell {
         setEffectableCards();
         choose();
         apply();
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
+    //    effectedCard.addAll(effectableCard);
+    //    effectableCard.clear();
     }
-    void use(SpellCastable choice){
+
+    /*void use(SpellCastable choice){
         effectableCard = new ArrayList<>(1);
         effectableCard.add(choice);
         apply();
-        effectedCard.addAll(effectableCard);
-        effectableCard.clear();
-    }
+    //    effectedCard.addAll(effectableCard);
+    //    effectableCard.clear();
+    }*/
+
     abstract void apply();
 
     abstract void deuse();
@@ -131,11 +146,15 @@ public abstract class Spell {
         return choiceType;
     }
 
-    public ArrayList<SpellCastable> getEffectedCard() {
-        return effectedCard;
-    }
+    //public ArrayList<SpellCastable> getEffectedCard() {
+    //    return effectedCard;
+    //}
 
     void setOwner(SpellCastable owner) {
         this.owner = owner;
+    }
+
+    public void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
+        this.effectableCard = effectableCard;
     }
 }

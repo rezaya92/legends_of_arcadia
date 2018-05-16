@@ -18,6 +18,7 @@ public class MonsterCard extends Card {
     final int defaultAP;
     int ap;
     int hp;
+    Tribe tribe;
     boolean hasGotSpell = false;
     boolean hasUsedSpell = false;
     boolean hasAttacked = false;
@@ -85,6 +86,13 @@ public class MonsterCard extends Card {
         }
         else
             View.defenderEnemyPresent(owner);
+    }
+
+    public Tribe getTribe() {
+        return tribe;
+    }
+    public void setTribe(Tribe tribe) {
+        this.tribe = tribe;
     }
 
     public void attackOpponentHero() {   // todo return string

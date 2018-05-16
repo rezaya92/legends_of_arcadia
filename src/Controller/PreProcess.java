@@ -1,12 +1,13 @@
 package Controller;
 
+import Model.Card.*;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
 import Model.Card.Tribe;
 import Model.PlayerHero;
 import Model.Spell.*;
-import Model.SpellArea;
+import Model.Spell.SpellArea;
 import static Model.Spell.GeneralizedSpell.*;
 import static Model.Stuff.allStuff;
 
@@ -26,171 +27,215 @@ public class PreProcess {
         },
                 "Deal 500 damage to a selected enemy monster card on the field or to enemy player","Throwing Knives");
         GeneralizedSpell poisonousCauldron = new GeneralizedSpell(new Spell[]{
-                new APSpell(
+                new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,-100)
         },
                 "Deal 100 damage to all enemy monster cards and enemy player","Poisonous Cauldron");
         GeneralizedSpell firstAidKit = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,500)
         },
                 "Increase HP of a selected friendly monster card or player by 500","First Aid Kit");
         GeneralizedSpell reapersScythe = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_SPELLFIELD),
+                        new Class[]{SpellCard.class,MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Send an enemy monster or spell card from field to graveyard","Reaper's Scythe");
         GeneralizedSpell meteorShower = new GeneralizedSpell(new Spell[]{
-                new APSpell(
+                new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,-800)
         },
                 "Deal 800 damage to a random enemy monster card on field or player","Meteor Shower");
         GeneralizedSpell lunarBlessing = new GeneralizedSpell(new Spell[]{
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.ELVEN),SpellChoiceType.ALL,300),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.ELVEN),SpellChoiceType.ALL,300)
         },
                 "Increase AP and HP of friendly Elven monster cards by 300","Lunar Blessing");
         GeneralizedSpell strategicRetreat = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,SpellArea.FRIENDLY_HAND),
+                new MoveSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_DECK),
+                        new Class[]{Card.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.FRIENDLY_HAND)
         },
                 "Select and move a monster card from field to hand and draw one card from deck","Strategic Retreat");
         GeneralizedSpell warDrum = new GeneralizedSpell(new Spell[]{
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,300)
         },
                 "Increase all friendly monster cards’ AP by 300","War Drum");
         GeneralizedSpell healingWard = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,200)
         },
                 "Increase all friendly monster cards’ HP by 200","Healing Ward");
         GeneralizedSpell bloodFeast = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new HPSpell(
+                        EnumSet.of(SpellArea.ENEMY_PLAYER),
+                        new Class[]{PlayerHero.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,-500),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_PLAYER),
+                        new Class[]{PlayerHero.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,500)
         },
                 "Deal 500 damage to enemy player and heal your player for 500 HP","Blood Feast");
         GeneralizedSpell tsunami = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new HPSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,-500)
         },
                 "Deal 500 damage to all non-Atlantian monster cards on both sides of field","Tsunami");
         GeneralizedSpell takeAllYouCan = new GeneralizedSpell(new Spell[]{
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{NormalCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,400),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{NormalCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,400)
         },
                 "Increase all friendly normal monster cards’ HP and AP by 400","Take All You Can");
         GeneralizedSpell arcaneBolt = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new HPSpell(
+                        EnumSet.of(SpellArea.ENEMY_PLAYER),
+                        new Class[]{PlayerHero.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,-500),
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_SPELLFIELD),
+                        new Class[]{SpellCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Deal 500 damage to enemy player and select and move an enemy spell card from field to graveyard","Arcane Bolt");
         GeneralizedSpell greaterPurge = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_SPELLFIELD,SpellArea.FRIENDLY_SPELLFIELD),
+                        new Class[]{SpellCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,SpellArea.FRIENDLY_HAND)
         },
                 "Remove all spell cards on field from both sides and move them to hand","Greater Purge");
         GeneralizedSpell magicSeal = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_SPELLFIELD),
+                        new Class[]{SpellCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Remove all enemy spell cards from field and move them to graveyard","Magic Seal");
         GeneralizedSpell rejuvenation = new GeneralizedSpell(new Spell[]{
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,500),
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,300)
         },
-                "Increase a selected friendly monster card’s HP by 500 and AP by 300","Rejuvenation");
+                "Increase a selected friendly monster card’s HP by 500 and AP by 300","Rejuvenation", true);
         GeneralizedSpell arcaneExplosion = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new HPSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,-400),
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_SPELLFIELD),
+                        new Class[]{SpellCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Deal 400 damage to all enemy monster cards and remove a random spell card from enemy field and move it to graveyard.","Arcane Explosion");
         GeneralizedSpell purge = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_SPELLFIELD),
+                        new Class[]{SpellCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,SpellArea.FRIENDLY_HAND)
         },
                 "Remove all enemy spell cards on the field and move them to hand","Purge");
         GeneralizedSpell noblePurge = new GeneralizedSpell(new Spell[]{
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.ELVEN),SpellChoiceType.RANDOM,600),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.ELVEN),SpellChoiceType.RANDOM,800)
         },
-                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge");
+                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge",true);
         GeneralizedSpell reviveAllies = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_GRAVEYARD),
+                        new Class[]{Card.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.FRIENDLY_HAND),
+                new MoveSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_GRAVEYARD),
+                        new Class[]{Card.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.FRIENDLY_HAND)
         },
                 "move two random cards from your graveyard to hand","Revive Allies");
         GeneralizedSpell divineBlessing = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,2500)
         },
                 "Increase HP of a friendly monster card or player by 2500","Divine Blessing");
         GeneralizedSpell burstofLight = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
+                new HPSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,200),
+                new APSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.ALL,200)
         },
                 "Increase HP of all friendly monster cards and player by 500 and increase AP of all friendly monster cards by 200","Burst of Light");
         GeneralizedSpell magicalFire = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Move an enemy monster card from field to graveyard","Magical Fire");
         GeneralizedSpell lavaSpit = new GeneralizedSpell(new Spell[]{
+                new HPSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500),
                 new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
                         EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
         },
-                "Deal 500 damage to an enemy monster card and reduce its AP by 500","Lava Spit");
+                "Deal 500 damage to an enemy monster card and reduce its AP by 500","Lava Spit",true);
         GeneralizedSpell Devour = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Send a random enemy monster card from field to graveyard","Devour");
         GeneralizedSpell dragonsCall = new GeneralizedSpell(new Spell[]{
