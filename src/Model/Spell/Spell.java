@@ -1,9 +1,7 @@
 package Model.Spell;
 
-import Model.Card.Card;
-import Model.Card.SpellCard;
+import Model.Card.MonsterCard;
 import Model.Card.Tribe;
-import Model.HasTribe;
 import Model.SpellCastable;
 import View.View;
 
@@ -88,7 +86,7 @@ public abstract class Spell {
                 differentSituations:
                 for (Class cardType: effectableCardType){
                     for (Tribe tribe: effectableTribe) {
-                        if (cardType.isInstance(card) && (card instanceof SpellCard || ((HasTribe)card).getTribe().equals(tribe) || ((HasTribe)card).getTribe().equals(Tribe.HUMAN))) {
+                        if (cardType.isInstance(card) && ( !(card instanceof MonsterCard) || ((MonsterCard)card).getTribe().equals(tribe) )) {
                             effectableCard.add(card);
                             break differentSituations;
                         }

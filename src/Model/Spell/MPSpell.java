@@ -25,7 +25,7 @@ public class MPSpell extends Spell {
         for (SpellCastable card: effectableCard) {
             if (card instanceof PlayerHero) {
                 PlayerHero current = (PlayerHero) card;
-//TODO                current.setMana(current.getMana() + changeAmount);
+                current.getOwner().setMana(current.getOwner().getMana() + changeAmount);
             } else
                 return;
         }
@@ -35,7 +35,7 @@ public class MPSpell extends Spell {
     void deuse() {
         for (SpellCastable card: effectableCard) {
             PlayerHero current = (PlayerHero) card;
-//TODO            current.setMana(current.getMana() - changeAmount);
+            current.getOwner().setMana(current.getOwner().getMana() - changeAmount);
         }
         //        effectedCard.clear();
         effectableCard.clear();

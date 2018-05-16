@@ -16,7 +16,6 @@ public class PlayerHero implements SpellCastable { // todo amulet
     private String name = "Enemy Player";
     private ArrayList<GeneralizedSpell> items;
     private Player owner;
-    private Tribe tribe;
 
     public PlayerHero(int defaultHP, Player owner){
         this.hp = this.defaultHP = defaultHP;
@@ -42,10 +41,6 @@ public class PlayerHero implements SpellCastable { // todo amulet
             return false;
         }
         return true;
-    }
-
-    public Tribe getTribe() {
-        return tribe;
     }
 
     @Override
