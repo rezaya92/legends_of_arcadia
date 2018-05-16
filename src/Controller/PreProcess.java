@@ -232,10 +232,10 @@ public class PreProcess {
         },
                 "Deal 500 damage to an enemy monster card and reduce its AP by 500","Lava Spit",true);
         GeneralizedSpell Devour = new GeneralizedSpell(new Spell[]{
-                new APSpell(
-                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
-                        new Class[]{PlayerHero.class,MonsterCard.class},
-                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
+                new MoveSpell(
+                        EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
+                        new Class[]{MonsterCard.class},
+                        EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.RANDOM,SpellArea.ENEMY_GRAVEYARD)
         },
                 "Send a random enemy monster card from field to graveyard","Devour");
         GeneralizedSpell dragonsCall = new GeneralizedSpell(new Spell[]{

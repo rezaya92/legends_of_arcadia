@@ -20,10 +20,7 @@ public class GeneralizedSpell {
     }
 
     public GeneralizedSpell(Spell[] spells, String detail, String name) {
-        this.spells = spells;
-        this.detail = detail;
-        this.name = name;
-        merge = false;
+        this(spells,detail,name,false);
     }
 
     public Spell[] getSpells() {
