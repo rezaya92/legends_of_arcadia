@@ -25,7 +25,6 @@ public class MonsterCard extends Card {
     GeneralizedSpell battleCry;
     GeneralizedSpell spellCasterSpell;
     GeneralizedSpell will;
-    //todo set in constructor
 
     public boolean isNimble() {
         return isNimble;
