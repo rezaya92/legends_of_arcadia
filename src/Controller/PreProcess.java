@@ -588,6 +588,13 @@ public class PreProcess {
                         SpellChoiceType.ALL,3)
         },
                 "Increase Player’s Max MP by 3","Diamond Ring");
+        GeneralizedSpell DemonKingsCrown = new GeneralizedSpell(new Spell[]{
+                new RatioSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
+                        new Class[]{PlayerHero.class,MonsterCard.class},
+                        SpellChoiceType.ALL,0.8)
+        },
+                "Decrease All Incoming Damages by 20%","Demon King’s Crown");
     }
 
 

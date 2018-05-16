@@ -2,6 +2,7 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.HasHP;
 import Model.PlayerHero;
 import Model.SpellCastable;
 
@@ -23,18 +24,11 @@ public class HPSpell extends Spell {
     @Override
     void apply() {
         for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else if (card instanceof PlayerHero){
-                PlayerHero current = (PlayerHero) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else
-                return;
+                if (changeAmount > 0)
+                    ((HasHP)card).heal(changeAmount);
+                else
+                    ((HasHP)card).takeDamage(changeAmount);
+                ((HasHP) card).checkAlive();
         }
 
     }
@@ -42,15 +36,11 @@ public class HPSpell extends Spell {
     @Override
     void deuse() {
         for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setHp(current.getHp() - changeAmount);
-                current.checkAlive();
-            }
-            else if (card instanceof PlayerHero){
-                PlayerHero current = (PlayerHero) card;
-                current.setHp(current.getHp() + changeAmount);
-            }
+            if (changeAmount > 0)
+                ((HasHP)card).heal(-changeAmount);
+            else
+                ((HasHP)card).takeDamage(-changeAmount);
+            ((HasHP) card).checkAlive();
         }
         //effectedCard.clear();
         effectableCard.clear();
