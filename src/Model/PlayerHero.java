@@ -38,16 +38,12 @@ public class PlayerHero implements SpellCastable { // todo amulet
         item.use();
     }
 
-    public void checkAlive(){
+    public boolean checkAlive(){
         if (hp <= 0){
-            View.battleOver(owner);
-            if (owner.getMysticHourglasses() == 0){
-                View.gameOver(owner);
-            }
-            else{
-
-            }
+            View.battleOver(owner);  // owner = loser
+            return false;
         }
+        return true;
     }
 
     public CardPlace getCardPlace() {

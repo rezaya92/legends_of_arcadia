@@ -19,13 +19,14 @@ public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void startGameAgainst(Player opponent) {   // todo use amulets
+    public static Player startGameAgainst(Player opponent) {   // todo use amulets
         opponent.setOpponent(human);
         human.setOpponent(opponent);
         System.out.println("Battle against " + opponent.getName() + " started!");
         Random random = new Random();
         int coin = random.nextInt(2);
         turnNumber = 0;
+        Player winner = null;
 
         human.setMaxMana(0);
         opponent.setMaxMana(0);
@@ -48,18 +49,33 @@ public class Battle {
 
         if (coin == 0) {
             while (true) { // todo correct
-                humanPlayTurn();
-                botPlayTurn(opponent);
+                if (!humanPlayTurn()){
+                    winner = human;
+                    break;
+                }
+                if (!botPlayTurn(opponent)){
+                    winner = opponent;
+                    break;
+                }
             }
         } else {
             while (true) {
-                botPlayTurn(opponent);
-                humanPlayTurn();
+                if (!botPlayTurn(opponent)){
+                    winner = opponent;
+                    break;
+                }
+                if (!humanPlayTurn()){
+                    winner = human;
+                    break;
+                }
             }
         }
+
+        return winner;
     }
 
-    public static void humanPlayTurn() {
+
+    public static boolean humanPlayTurn() {
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(human.getName() + "'s turn.");
         if (human.getDeckCards().isEmpty())
@@ -78,7 +94,13 @@ public class Battle {
                     break;
                 case "Use":
                     slotNumber = scanner.nextInt();
-                    monsterCardUseMenu((MonsterCard)human.getMonsterFieldCards().get(slotNumber));
+                    MonsterCard monsterCard = (MonsterCard)human.getMonsterFieldCards().get(slotNumber);
+                    if (monsterCard != null)
+                        if (!monsterCardUseMenu(monsterCard)){
+                            return false;
+                        }
+                    else
+                        View.slotIsEmpty(human);
                     break;
                 case "Set":
                     int handIndex = scanner.nextInt();
@@ -116,20 +138,25 @@ public class Battle {
                 default:
                     View.invalidCommand();
             }
+            action = scanner.next();
         }
         human.endTurn();
+        return true;
     }
 
-    public static void botPlayTurn(Player bot) {
+
+    public static boolean botPlayTurn(Player bot) {
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(bot.getName() + "'s turn.");
 
         bot.startTurn();
         // todo
         bot.endTurn();
+        return true;
     }
 
-    public static void monsterCardUseMenu(MonsterCard monsterCard){
+
+    public static boolean monsterCardUseMenu(MonsterCard monsterCard){  // returns false if opponent hero dies
         View.usingMonsterCardInfo(monsterCard);
         String action = scanner.next();
         while (!action.equals("Exit")){
@@ -142,8 +169,11 @@ public class Battle {
                     break;
                 case "Attack":
                     String beingAttackedSlot = scanner.next();
-                    if (beingAttackedSlot.equals("Player"))
+                    if (beingAttackedSlot.equals("Player")) {
                         monsterCard.attackOpponentHero();
+                        if (!monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive())
+                            return false;
+                    }
                     else
                         monsterCard.attack(Integer.parseInt(beingAttackedSlot));  // bug: must surround with try/catch  also must be < 5
                     break;
@@ -151,17 +181,21 @@ public class Battle {
                     String s = scanner.next();
                     if (!monsterCard.hasGotSpell() || !s.equals("Spell"))
                         View.invalidCommand();
-                    else
-                        spellCastingMenu(monsterCard);
+                    else {
+                        if (!spellCastingMenu(monsterCard))
+                            return false;
+                    }
                     break;
                 default:
                     View.invalidCommand();
             }
             action = scanner.next();
         }
+        return true;
     }
 
-    public static void spellCastingMenu(MonsterCard monsterCard){   // MonsterCard or Card or SpellCastable ?
+    public static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
         // todo
+        return true;
     }
 }

@@ -24,7 +24,7 @@ public class Main {
         int numberOfCards = 40;
         Card[] cards = new Card[numberOfCards];
 
-        //startGameAgainst(opponent);
+        //Player winner = startGameAgainst(opponent);
 
         afterMatch();
     }
