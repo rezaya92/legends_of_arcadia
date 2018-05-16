@@ -27,6 +27,8 @@ public class Battle {
         int coin = random.nextInt(2);
         turnNumber = 0;
         Player winner = null;
+        human.setIsPlaying(true);
+        opponent.setIsPlaying(true);
 
         human.setMaxMana(0);
         opponent.setMaxMana(0);
@@ -71,6 +73,8 @@ public class Battle {
             }
         }
 
+        human.setIsPlaying(false);
+        opponent.setIsPlaying(false);
         return winner;
     }
 
