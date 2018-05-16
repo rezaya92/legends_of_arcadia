@@ -28,7 +28,7 @@ public class Player {    // todo before and after some actions deuse and use of 
     private Player opponent;
     private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
     private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
-    private int mysticHourglasses = 0;
+    private boolean isPlaying = false;
 
     public Player(){} //for now (human)
 
@@ -41,8 +41,8 @@ public class Player {    // todo before and after some actions deuse and use of 
         return name;
     }
 
-    public int getMysticHourglasses(){return mysticHourglasses;}
-    public void setMysticHourglasses(int mysticHourglasses){this.mysticHourglasses = mysticHourglasses;}
+    public void setIsPlaying(boolean isPlaying){this.isPlaying = isPlaying;}
+    public boolean getIsPlaying(){return isPlaying;}
 
     public ArrayList<Card> getInventoryCards() {
         return inventoryCards;

@@ -44,12 +44,10 @@ public class MonsterCard extends Card {
     public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
     public GeneralizedSpell getWill(){return will;}
 
-    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, ArrayList<Card> cardPlace, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will, boolean isNimble, boolean isDefender) {
+    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will, boolean isNimble, boolean isDefender) {
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.hp = this.defaultHP = defaultHP;
         this.ap = this.defaultAP = defaultAP;
-        this.cardPlace = cardPlace;
-        cardPlace.add(this);
         this.battleCry = battleCry;
         this.spellCasterSpell = spellCasterSpell;
         this.will = will;
