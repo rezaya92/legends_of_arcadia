@@ -9,11 +9,20 @@ public class GeneralizedSpell {
     final private Spell[] spells;
     final private String detail;
     final private String name;
+    final private boolean merge;
+
+    public GeneralizedSpell(Spell[] spells, String detail, String name,boolean merge) {
+        this.spells = spells;
+        this.detail = detail;
+        this.name = name;
+        this.merge = merge;
+    }
 
     public GeneralizedSpell(Spell[] spells, String detail, String name) {
         this.spells = spells;
         this.detail = detail;
         this.name = name;
+        merge = false;
     }
 
     public Spell[] getSpells() {
@@ -24,7 +33,7 @@ public class GeneralizedSpell {
         return detail;
     }
 
-    public ArrayList<SpellCastable> inputNeeded(){
+    /*public ArrayList<SpellCastable> inputNeeded(){
         for (Spell spell: spells) {
             if (spell.choiceType == SpellChoiceType.SELECT){
                 spell.setEffectableCards();
@@ -32,21 +41,28 @@ public class GeneralizedSpell {
             }
         }
         return null;
-    }
+    }*/
 
     public void use(){
+        if (merge){
+            spells[0].use();
+            for (int i = 1; i < spells.length; i++) {
+                spells[i].setEffectableCard(spells[0].getEffectableCard());
+                spells[i].apply();
+            }
+        }
         for (Spell spell: spells)
             spell.use();
     }
 
-    public void use(SpellCastable choice){
+    /*public void use(SpellCastable choice){
         for (Spell spell: spells) {
             if (spell.choiceType == SpellChoiceType.SELECT)
                 spell.use(choice);
             else
                 spell.use();
         }
-    }
+    }*/
 
     public void deuse(){
         for (Spell spell : spells)

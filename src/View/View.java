@@ -3,8 +3,11 @@ package View;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Player;
+import Model.SpellCastable;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
+
+import java.util.ArrayList;
 
 import static Controller.Main.human;
 
@@ -355,6 +358,13 @@ abstract public class View {
             }
             System.out.println();
             j++;
+        }
+    }
+
+    public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
+        int index =  1;
+        for (SpellCastable spellCastable: effectableCards){
+            System.out.println(index + "." + spellCastable.getName());
         }
     }
 

@@ -29,26 +29,9 @@ public class Main {
         afterMatch();
     }
 
-    /*public void useContinuousSpellCards(){ //TODO enemy spellFieldCards needed
+    /*public void useContinuousSpellCards(){
     for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
-        ArrayList<SpellCastable> choiceList = continuousSpellCard.getSpell().inputNeeded();
-        int index = 0;
-        if (choiceList != null) {
-            System.out.println("List of Targets:");
-            CardPlace cardPlace = CardPlace.INVENTORY;
-            for (SpellCastable spellCastable : choiceList) {
-                index++;
-                if (cardPlace != spellCastable.getCardPlace())
-                    System.out.println(cardPlace + ":");
-                System.out.println(index + ".\t" + spellCastable.getName());
-                cardPlace = spellCastable.getCardPlace();
-            }
-            scanner.next();
-            int choice = scanner.nextInt();
-            continuousSpellCard.getSpell().use(choiceList.get(choice - 1));
-        } else
-            continuousSpellCard.getSpell().use();
-        }
+
     }
     */
 

@@ -2,7 +2,6 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
-import Model.SpellArea;
 import Model.SpellCastable;
 
 import java.util.Set;
@@ -32,7 +31,7 @@ public class APSpell extends Spell {
             MonsterCard current = (MonsterCard) card;
             current.setAp(current.getAp() - changeAmount);
         }
-        effectedCard.clear();
+        //        effectedCard.clear();
         effectableCard.clear();
     }
 }

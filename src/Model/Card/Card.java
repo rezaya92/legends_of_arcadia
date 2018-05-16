@@ -15,7 +15,6 @@ public abstract class Card implements SpellCastable, Stuff {
     int manaCost;
     int price;
     String name;
-    Tribe tribe;
     Player owner;    // "add default owner in case of opponent could take control of a card of player"
     ArrayList<Card> cardPlace;
 
@@ -51,13 +50,6 @@ public abstract class Card implements SpellCastable, Stuff {
     }
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public Tribe getTribe() {
-        return tribe;
-    }
-    public void setTribe(Tribe tribe) {
-        this.tribe = tribe;
     }
 
     public Player getOwner() {

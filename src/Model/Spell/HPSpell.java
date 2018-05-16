@@ -3,7 +3,6 @@ package Model.Spell;
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.PlayerHero;
-import Model.SpellArea;
 import Model.SpellCastable;
 
 import java.util.Set;
@@ -48,7 +47,7 @@ public class HPSpell extends Spell {
                 current.setHp(current.getHp() + changeAmount);
             }
         }
-        effectedCard.clear();
+        //effectedCard.clear();
         effectableCard.clear();
     }
 }
