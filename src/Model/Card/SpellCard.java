@@ -20,9 +20,8 @@ public class SpellCard extends Card {
         return spellCardType;
     }
 
-    public SpellCard(int defaultManaCost, ArrayList<Card> cardPlace, GeneralizedSpell spell, SpellCardType spellCardType){
+    public SpellCard(int defaultManaCost, GeneralizedSpell spell, SpellCardType spellCardType){
         this.defaultManaCost = defaultManaCost;
-        this.cardPlace = cardPlace;
         this.spell = spell;
         this.spellCardType = spellCardType;
     }
