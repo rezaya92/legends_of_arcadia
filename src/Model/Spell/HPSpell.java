@@ -15,6 +15,11 @@ public class HPSpell extends Spell {
         this.changeAmount = changeAmount;
     }
 
+    public HPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, SpellChoiceType choiceType, int changeAmount) {
+        super(effectableArea, effectableCardType, choiceType);
+        this.changeAmount = changeAmount;
+    }
+
     @Override
     void apply() {
         for (SpellCastable card: effectableCard) {

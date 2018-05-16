@@ -2,19 +2,20 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.PlayerHero;
 import Model.SpellCastable;
 
 import java.util.Set;
 
-public class APSpell extends Spell {
+public class MPSpell extends Spell {
     private int changeAmount;
 
-    public APSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
+    public MPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
         super(effectableArea, effectableCardType, effectableTribe, choiceType);
         this.changeAmount = changeAmount;
     }
 
-    public APSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, SpellChoiceType choiceType, int changeAmount) {
+    public MPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, SpellChoiceType choiceType, int changeAmount) {
         super(effectableArea, effectableCardType, choiceType);
         this.changeAmount = changeAmount;
     }
@@ -22,9 +23,9 @@ public class APSpell extends Spell {
     @Override
     void apply() {
         for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setAp(current.getAp() + changeAmount);
+            if (card instanceof PlayerHero) {
+                PlayerHero current = (PlayerHero) card;
+//TODO                current.setMana(current.getMana() + changeAmount);
             } else
                 return;
         }
@@ -33,8 +34,8 @@ public class APSpell extends Spell {
     @Override
     void deuse() {
         for (SpellCastable card: effectableCard) {
-            MonsterCard current = (MonsterCard) card;
-            current.setAp(current.getAp() - changeAmount);
+            PlayerHero current = (PlayerHero) card;
+//TODO            current.setMana(current.getMana() - changeAmount);
         }
         //        effectedCard.clear();
         effectableCard.clear();

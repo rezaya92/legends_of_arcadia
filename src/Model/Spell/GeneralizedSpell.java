@@ -17,6 +17,7 @@ public class GeneralizedSpell {
         this.detail = detail;
         this.name = name;
         this.merge = merge;
+        allSpells.add(this);
     }
 
     public GeneralizedSpell(Spell[] spells, String detail, String name) {

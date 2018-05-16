@@ -9,6 +9,8 @@ import View.View;
 
 import java.util.*;
 
+import static Controller.Main.human;
+
 public abstract class Spell {
     private ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
     private Set<SpellArea> effectableArea;
@@ -83,11 +85,12 @@ public abstract class Spell {
         effectableCard = new ArrayList<>();
         for (ArrayList<SpellCastable> cardArray: effectableAreaCards) {
             for (SpellCastable card:cardArray) {
+                differentSituations:
                 for (Class cardType: effectableCardType){
                     for (Tribe tribe: effectableTribe) {
                         if (cardType.isInstance(card) && (card instanceof SpellCard || ((HasTribe)card).getTribe().equals(tribe) || ((HasTribe)card).getTribe().equals(Tribe.HUMAN))) {
                             effectableCard.add(card);
-                            break;
+                            break differentSituations;
                         }
                     }
                 }
@@ -101,18 +104,20 @@ public abstract class Spell {
         switch (choiceType){
             case ALL:
                 return;
+            case SELECT:
+                if (owner.getOwner() == human) {
+                    View.viewSpellEffectableCards(effectableCard);
+                    Scanner scanner = new Scanner(System.in);
+                    int index = scanner.nextInt() - 1;
+                    SpellCastable choice = effectableCard.get(index);
+                    effectableCard.clear();
+                    effectableCard.add(choice);
+                    return;
+                }
             case RANDOM:
                 Random random = new Random();
                 int index = random.nextInt(effectableCard.size());
                 SpellCastable choice = effectableCard.get(index);
-                effectableCard.clear();
-                effectableCard.add(choice);
-                return;
-            case SELECT:
-                View.viewSpellEffectableCards(effectableCard);
-                Scanner scanner = new Scanner(System.in);
-                index = scanner.nextInt() - 1;
-                choice = effectableCard.get(index);
                 effectableCard.clear();
                 effectableCard.add(choice);
         }

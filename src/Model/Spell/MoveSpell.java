@@ -15,6 +15,11 @@ public class MoveSpell extends Spell {
         this.destination = destination;
     }
 
+    public MoveSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, SpellChoiceType choiceType, SpellArea destination) {
+        super(effectableArea, effectableCardType, choiceType);
+        this.destination = destination;
+    }
+
     @Override
     void apply() {
         switch (destination){
