@@ -1,21 +1,31 @@
 package Controller;
 
 import Model.Card.*;
+import Model.Card.MonsterCard;
+import Model.Card.SpellCard;
+import Model.Card.SpellCardType;
+import Model.Card.Tribe;
 import Model.PlayerHero;
 import Model.Spell.*;
 import Model.Spell.SpellArea;
+import static Model.Spell.GeneralizedSpell.*;
+import static Model.Stuff.allStuff;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.EnumSet;
 
 public class PreProcess {
-    private void instantiateSpells(){
-        GeneralizedSpell throwKnives = new GeneralizedSpell(new Spell[]{
+    static void instantiateSpells(){
+        GeneralizedSpell throwingKnives = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN), SpellChoiceType.SELECT,-500)
         },
-                "Deal 500 damage to a selected enemy monster card on the field or to enemy player","Throw Knives");
+                "Deal 500 damage to a selected enemy monster card on the field or to enemy player","Throwing Knives");
         GeneralizedSpell poisonousCauldron = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
@@ -36,7 +46,7 @@ public class PreProcess {
                         new Class[]{SpellCard.class,MonsterCard.class},
                         EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,SpellArea.ENEMY_GRAVEYARD)
         },
-                "Send an enemy monster or spell card from field to graveyard","Reaper’s Scythe");
+                "Send an enemy monster or spell card from field to graveyard","Reaper's Scythe");
         GeneralizedSpell meteorShower = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
@@ -509,5 +519,57 @@ public class PreProcess {
                         EnumSet.of(Tribe.DEMONIC,Tribe.ATLANTIAN,Tribe.DRAGONBREED,Tribe.ELVEN),SpellChoiceType.SELECT,-500)
         },
                 "Increase Player’s Max MP by 3","Diamond Ring");
+
+
+
+
+
+
+
+
+
+        allSpells.add(throwingKnives);
+        allSpells.add(poisonousCauldron);
+        allSpells.add(firstAidKit);
+        allSpells.add(reapersScythe);
+        allSpells.add(meteorShower);
+        allSpells.add(lunarBlessing);
+        allSpells.add(strategicRetreat);
+        allSpells.add(warDrum);
+        allSpells.add(healingWard);
+        allSpells.add(bloodFeast);
+        allSpells.add(tsunami);
+        allSpells.add(takeAllYouCan);
+        allSpells.add(arcaneBolt);
+        allSpells.add(greaterPurge);
+        allSpells.add(magicSeal);
+
+    }
+
+
+
+    static void instantiateSpellCards() {
+        try {
+            FileReader fileReader = new FileReader("SpellCards.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] constructorInputs = line.split(" - ");
+                GeneralizedSpell wantedSpell = null;
+                for(GeneralizedSpell generalizedSpell : allSpells){
+                    if(constructorInputs[0].equals(generalizedSpell.getName())){
+                        wantedSpell = generalizedSpell;
+                        break;
+                    }
+                }
+                int manaCost = Integer.parseInt(constructorInputs[1]);
+                SpellCardType spellCardType = SpellCardType.nameToSpellCardType(constructorInputs[2]);
+                allStuff.add(new SpellCard(wantedSpell, manaCost, spellCardType));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

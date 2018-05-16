@@ -6,6 +6,9 @@ import Model.Spell.*;
 import View.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import static Controller.PreProcess.*;
+import static Model.Spell.GeneralizedSpell.allSpells;
+import static Model.Stuff.*;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -26,6 +29,12 @@ public class Main {
 
         //Player winner = startGameAgainst(opponent);
 
+        instantiateSpells();
+        instantiateSpellCards();
+        //System.out.println(allSpells);
+        //System.out.println(allStuff);
+        //System.out.println(allStuff.get(0));
+        //System.out.println(allStuff.get(1));
         afterMatch();
     }
 

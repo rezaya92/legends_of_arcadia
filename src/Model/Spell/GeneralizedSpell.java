@@ -9,6 +9,7 @@ public class GeneralizedSpell {
     final private Spell[] spells;
     final private String detail;
     final private String name;
+    public static ArrayList<GeneralizedSpell> allSpells = new ArrayList<>();
     final private boolean merge;
 
     public GeneralizedSpell(Spell[] spells, String detail, String name,boolean merge) {
@@ -51,8 +52,10 @@ public class GeneralizedSpell {
                 spells[i].apply();
             }
         }
-        for (Spell spell: spells)
-            spell.use();
+        else {
+            for (Spell spell: spells)
+                spell.use();
+        }
     }
 
     /*public void use(SpellCastable choice){
