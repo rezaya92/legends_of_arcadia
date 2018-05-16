@@ -250,7 +250,7 @@ public class PreProcess {
                         new Class[]{Card.class},
                         SpellChoiceType.RANDOM,SpellArea.FRIENDLY_HAND)
         },
-                "draw two cards from deck to hand","Dragon’s Call");
+                "draw two cards from deck to hand","Dragon's Call");
         GeneralizedSpell kingsGrace = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
@@ -261,21 +261,21 @@ public class PreProcess {
                         new Class[]{NormalCard.class,GeneralCard.class,SpellcasterCard.class},
                         SpellChoiceType.ALL,SpellArea.FRIENDLY_GRAVEYARD)
         },
-                "Send all non-Hero monster cards on both sides of field to their graveyards","King’s Grace");
+                "Send all non-Hero monster cards on both sides of field to their graveyards","King's Grace");
         GeneralizedSpell kingsWingSlash = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.ALL,-600)
         },
-                "Deal 600 damage to all enemy monster cards and player","King’s Wing Slash");
+                "Deal 600 damage to all enemy monster cards and player","King's Wing Slash");
         GeneralizedSpell kingsWail = new GeneralizedSpell(new Spell[]{
                 new APSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
                         new Class[]{MonsterCard.class},
                         SpellChoiceType.ALL,-400)
         },
-                "Decrease all enemy monster cards’ AP by 400","King’s Wail");
+                "Decrease all enemy monster cards’ AP by 400","King's Wail");
         GeneralizedSpell songoftheSiren = new GeneralizedSpell(new Spell[]{
                 new APSpell(
                         EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
@@ -293,7 +293,7 @@ public class PreProcess {
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.SELECT,-1000)
         },
-                "Deal 1000 damage to an enemy monster card or player","Serpent’s Bite");
+                "Deal 1000 damage to an enemy monster card or player","Serpent's Bite");
         GeneralizedSpell titansPresence = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
@@ -304,14 +304,14 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         SpellChoiceType.SELECT,-200)
         },
-                "Return one random enemy monster card from field to hand and reduce all enemy monsters’ AP by 200","Titan’s Presence");
+                "Return one random enemy monster card from field to hand and reduce all enemy monsters AP by 200","Titan's Presence");
         GeneralizedSpell titansFall = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.ALL,-400)
         },
-                "Deal 400 damage to all enemy monster cards and player","Titan’s Fall");
+                "Deal 400 damage to all enemy monster cards and player","Titan's Fall");
         GeneralizedSpell calltoArms = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.FRIENDLY_HAND),
@@ -344,7 +344,7 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         EnumSet.of(Tribe.ATLANTIAN),SpellChoiceType.ALL,500)
         },
-                "Deal 400 damage to all enemy monster cards and player and increase all friendly Atlantian monster cards’ AP by 500","Ocean’s Cry");
+                "Deal 400 damage to all enemy monster cards and player and increase all friendly Atlantian monster cards’ AP by 500","Ocean's Cry");
         GeneralizedSpell mend = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),

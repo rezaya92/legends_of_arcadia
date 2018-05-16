@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class NormalCard extends MonsterCard {
 
-    public NormalCard(Tribe tribe, String name, int defaultManaCost, int defaultHP, int defaultAP, boolean isDefender, boolean isNimble) {
+    public NormalCard(Tribe tribe, String name, int defaultHP, int defaultAP, int defaultManaCost, boolean isDefender, boolean isNimble) {
         super(tribe, name, defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, null, null, null);
         this.price = 300*defaultManaCost;
     }

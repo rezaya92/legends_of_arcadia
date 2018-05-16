@@ -6,3 +6,52 @@ Elven Assasin - 800 - 1200 - 5 - Normal - Nimble
 Elven Druid - 1200 - 600 - 5 - Spell Caster - None - Rejuvenation
 Elven Sorceress - 1000 - 1000 - 7 - Spell Caster - Nimble - Arcane Explosion
 Noble Elf - 2000 - 2400 - 9 - General - None - Purge - Noble Purge
+Luthien, The High Priestess - 2500 - 2000 - 9 - Hero - None - Recive Allies - Divine Blessing - Burst of Light
+
+DragonBreed Monster
+Lesser Whelp - 500 - 300 - 1 - Normal - None
+Dragonling - 700 - 700 - 3 - Normal - None
+Armored Dragon - 2000 - 400 - 5 - Normal - Defender
+Yellow Drake - 800 - 1000 - 5 - Normal - Nimble
+Blue Dragon - 800 - 1200 - 5 - Spell Caster - None - Magical Fire
+Volcanic Dragon - 2500 - 700 - 8 - Spell Caster - Defender - Lava Spit
+Greater Dragon - 2000 - 1800 - 8 - General - None - Devour - Dragon's Call
+Igneel, The Dragon King - 4000 - 800 - 10 - Hero - None - King's Grace - King's Wing Slash - King's Wail
+
+Atlantian Monster
+Murloc Crawler - 200 - 500 - 1 - Normal - None
+Murloc Warrior - 600 - 600 - 2 - Normal - None
+Giant Crab - 1500 - 300 - 4 - Normal - Defender
+Shark Man - 900 - 1200 - 5 - Normal - Nimble
+Naga Siren - 1200 - 600 - 6 - Spell Caster - None - Song of the Siren
+Sea Serpent - 1500 - 1200 - 7 - Spell Caster - Nimble - Serpent's Bite
+Kraken - 1800 - 2200 - 8 - General - None - Titan's Presence - Titan's Fall
+Neptune, King of Atlantis - 2200 - 2500 - 10 - Hero - Nimble - Call to Arms - Trident Beam - Ocean's Cry
+
+Goblin Monster
+Goblin Smuggler - 600 - 400 - 2 - Normal - None
+Goblin Shaman - 1000 - 700 - 4 - Spell Caster - None - Mend
+
+Ogre Monster
+Ogre Warrior - 800 - 500 - 3 - Normal - None
+Ogre Frontliner - 1800 - 600 - 5 - Normal - Defender
+Ogre Magi - 1500 - 800 - 5 - Spell Caster - None - Enrage
+Ogre Warchief - 2500 - 1500 - 7 - General - None - War Stomp - Last Order
+
+Vampiric Monster
+Undead - 200 - 400 - 1 - Normal - None
+Giant Bat - 500 - 900 - 3 - Normal - Nimble
+Stout Undead - 1200 - 600 - 4 - Normal - Defender
+Undead Mage - 800 - 1000 - 6 - Spell Caster - None - Curse
+Vampire Acolyte - 1500 - 1500 - 7 - Spell Caster - Nimble - Black Wave
+Vampiric prince - 2000 - 2200 - 9 - General - None - Fear - Darkness
+
+Demonic Monster
+Imp - 300 - 500 - 2 - Normal - None
+Shade - 500 - 800 - 3 - Normal - None
+Living Armor - 1500 - 400 - 5 - Normal - Defender
+Hellhound - 800 - 1000 - 5 - Normal - Nimble
+Evil Eye - 400 - 400 - 6 - Spell Caster - None - Evil Gaze
+Necromancer - 1200 - 1500 - 7 - Spell Caster - Nimble - Raise Dead
+Dark Knight - 2500 - 2500 - 8 - General - None - Sacrifice - Loyalty
+Cerberus, Gatekeeper of Hell - 3000 - 2000 - 10 - Hero - Nimble - Open the Gate - Hellfire - Revenge of the Two Heads

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class GeneralCard extends MonsterCard {
 
-    public GeneralCard(Tribe tribe, String name, int defaultHP, int defaultAP, int defaultManaCost,boolean isDefender, boolean isNimble, GeneralizedSpell battleCry, GeneralizedSpell will){
+    public GeneralCard(Tribe tribe, String name, int defaultHP, int defaultAP, int defaultManaCost, boolean isDefender, boolean isNimble, GeneralizedSpell battleCry, GeneralizedSpell will){
         super(tribe, name, defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, battleCry, null, will);
         this.price = 700*defaultManaCost;
     }
