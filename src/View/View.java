@@ -1,11 +1,8 @@
 package View;
 
+import Model.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
-import Model.Player;
-import Model.SpellCastable;
-import Model.Stuff;
-import Model.TypeOfStuffToBuyAndSell;
 
 import java.util.ArrayList;
 
@@ -370,14 +367,15 @@ abstract public class View {
 
 //------------------------------------------------------------------------------------------
     public static void battleHelp(){
-        System.out.println("\n1. Use #SlotNum: To use a specific card which is on the Monster Field");
+        System.out.println("0. Use Item: To use an item of your items");
+        System.out.println("1. Use #SlotNum: To use a specific card which is on the Monster Field");
         System.out.println("2. Set #HandIndex to #SlotNum: To set a card which is on the hand, in the field");
         System.out.println("3. View Hand: To view the cards in your hand");
         System.out.println("4. View Graveyard: To view the cards in your graveyard");
         System.out.println("5. View SpellField: To view the cards in both ’players spell fields");
         System.out.println("6. View MonsterField: To view the cards in both ’players monster fields");
         System.out.println("7. Info \"Card Name\": To view full information about a card");
-        System.out.println("8. Done: To end your turn\n");
+        System.out.println("8. Done: To end your turn");
     }
 
     public static void battleOver(Player loser){
@@ -394,5 +392,26 @@ abstract public class View {
             System.out.println("You are out of Mystic Hourglass");
             System.out.println("Game Over!");
         }
+    }
+
+//--------------------------------------Items menu-------------------------------------------------------
+    public static void availableItems(Player player){
+        System.out.println("Available Items: (you have " + player.getMana() + " MP");
+        int i = 0;
+        for (Item item: player.getItems()){
+            System.out.println((++i) + ". " + item.getName() + " : " + item.getManaCost() + " MP");
+        }
+        if (i == 0)
+            System.out.println("There's no available item!");
+    }
+
+    public static void itemHelp(){
+        System.out.println("1. Use \"Item Name\": To cast the spell of the item");
+        System.out.println("2. Info \"Item Name\": To view full information about a card");
+        System.out.println("2. Exit");
+    }
+
+    public static void itemDontExist(){
+        System.out.println("Item doesn't exist!");
     }
 }

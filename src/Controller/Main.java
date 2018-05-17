@@ -309,7 +309,7 @@ public class Main {
         }
     }
 
-    private static boolean printInfoStuff(String stuffName){
+    static boolean printInfoStuff(String stuffName){
         for(Stuff stuff : Stuff.allStuff){
             if(stuff.getName().equals(stuffName)){
                 View.printStuffInfo(stuff);

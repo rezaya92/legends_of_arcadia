@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.Item;
 import Model.Player;
 import Model.Stuff;
 import View.View;
@@ -46,35 +47,26 @@ public class Battle {
 
         if (coin == 0)
             System.out.println(human.getName() + " starts the battle.");
-        else
+        else {
             System.out.println(opponent.getName() + " starts the battle.");
+            botPlayTurn(opponent);
+        }
 
-        if (coin == 0) {
-            while (true) { // todo correct
-                if (!humanPlayTurn()){
-                    winner = human;
-                    break;
-                }
-                if (!botPlayTurn(opponent)){
-                    winner = opponent;
-                    break;
-                }
+        while (!(human.getDeckCards().isEmpty() && human.getHandCards().isEmpty() && human.getMonsterFieldCards().isEmpty() && opponent.getDeckCards().isEmpty() && opponent.getHandCards().isEmpty() && opponent.getMonsterFieldCards().isEmpty())) {
+            if (!humanPlayTurn()){
+                winner = human;
+                break;
             }
-        } else {
-            while (true) {
-                if (!botPlayTurn(opponent)){
-                    winner = opponent;
-                    break;
-                }
-                if (!humanPlayTurn()){
-                    winner = human;
-                    break;
-                }
+            if (!botPlayTurn(opponent)){
+                winner = opponent;
+                break;
             }
         }
 
         human.setIsPlaying(false);
         opponent.setIsPlaying(false);
+        if (winner == null)
+            winner = (human.getPlayerHero().getHp() > opponent.getPlayerHero().getHp()) ? human : opponent;
         return winner;
     }
 
@@ -90,21 +82,31 @@ public class Battle {
 
         human.startTurn();
         String action = scanner.next();
-        while (action != "Done") {
+        while (!action.equals("Done")) {
             int slotNumber;
             switch (action) {
                 case "Help":
                     View.battleHelp();
                     break;
                 case "Use":
-                    slotNumber = scanner.nextInt();
-                    MonsterCard monsterCard = (MonsterCard)human.getMonsterFieldCards().get(slotNumber);
-                    if (monsterCard != null)
-                        if (!monsterCardUseMenu(monsterCard)){
+                    String s = scanner.next();
+                    if (s.equals("Item")){
+                        if (!itemUseMenu())
                             return false;
+                    } else {
+                        try {
+                            slotNumber = Integer.parseInt(s);
+                            MonsterCard monsterCard = (MonsterCard) human.getMonsterFieldCards().get(slotNumber);
+                            if (monsterCard != null) {
+                                if (!monsterCardUseMenu(monsterCard)) {
+                                    return false;
+                                }
+                            } else
+                                View.slotIsEmpty(human);
+                        } catch (NumberFormatException e){
+                            View.invalidCommand();
                         }
-                    else
-                        View.slotIsEmpty(human);
+                    }
                     break;
                 case "Set":
                     int handIndex = scanner.nextInt();
@@ -165,6 +167,9 @@ public class Battle {
         String action = scanner.next();
         while (!action.equals("Exit")){
             switch (action){
+                case "Again":
+                    View.usingMonsterCardInfo(monsterCard);
+                    break;
                 case "Help":
                     View.usingMonsterCardHelp(monsterCard.hasGotSpell());
                     break;
@@ -178,8 +183,13 @@ public class Battle {
                         if (!monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive())
                             return false;
                     }
-                    else
-                        monsterCard.attack(Integer.parseInt(beingAttackedSlot));  // bug: must surround with try/catch  also must be < 5
+                    else {
+                        try {
+                            monsterCard.attack(Integer.parseInt(beingAttackedSlot));  //must be < 5
+                        } catch (NumberFormatException e){
+                            View.invalidCommand();
+                        }
+                    }
                     break;
                 case "Cast":
                     String s = scanner.next();
@@ -198,8 +208,45 @@ public class Battle {
         return true;
     }
 
+
     public static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
         // todo
+        return true;
+    }
+
+
+    public static boolean itemUseMenu(){
+        View.availableItems(human);
+        String action = scanner.next();
+        while (!action.equals("Exit")){
+            switch (action){
+                case "Again":
+                    View.availableItems(human);
+                    break;
+                case "Help":
+                    View.itemHelp();
+                    break;
+                case "Use":
+                    String itemName = scanner.nextLine();
+                    for (Item item: human.getItems()){          // invalid input ?
+                        if (item.getName().equals(itemName)){
+                            item.use();
+                            human.getItems().remove(item);
+                            if (!human.getOpponent().getPlayerHero().checkAlive())
+                                return false;
+                            break;
+                        }
+                    }
+                    break;
+                case "Info":
+                    itemName = scanner.nextLine();
+                    if (!Main.printInfoStuff(itemName))
+                        View.itemDontExist();
+                    break;
+                default:
+                    View.invalidCommand();
+            }
+        }
         return true;
     }
 }

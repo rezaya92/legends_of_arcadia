@@ -14,7 +14,6 @@ public class PlayerHero implements SpellCastable { // todo amulet
     private int defaultHP;
     private int hp;
     private String name = "Enemy Player";
-    private ArrayList<GeneralizedSpell> items;
     private Player owner;
     private Tribe tribe;
 

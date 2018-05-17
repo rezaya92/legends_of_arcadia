@@ -41,6 +41,8 @@ public class Player {    // todo before and after some actions deuse and use of 
         return name;
     }
 
+    public ArrayList<Item> getItems(){return items;}
+
     public void setIsPlaying(boolean isPlaying){this.isPlaying = isPlaying;}
     public boolean getIsPlaying(){return isPlaying;}
 
