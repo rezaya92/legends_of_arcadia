@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero implements HasHP { // todo amulet
+public class PlayerHero implements HasHP {
     private int defaultHP;
     private int hp;
     private double damageReceivementRatio = 1;

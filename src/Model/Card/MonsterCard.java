@@ -63,7 +63,7 @@ public class MonsterCard extends Card implements HasHP {
     }
 
     public void attack(int slotNumber){
-        MonsterCard monsterCard = (MonsterCard)owner.getOpponent().getMonsterFieldCards().get(slotNumber);
+        MonsterCard monsterCard = (MonsterCard)owner.getOpponent().getMonsterFieldCards().get(slotNumber);  // casting a null object possible ?
         if (monsterCard != null){
             this.attack(monsterCard);
         }
@@ -105,7 +105,6 @@ public class MonsterCard extends Card implements HasHP {
                 if (!hasAttacked) {
                     opponent.getPlayerHero().takeDamage(ap);
                     opponent.getPlayerHero().checkAlive();
-                    // this.checkAlive in case of weapon for playerHero
                     hasAttacked = true;
                     owner.addHasAttackedCard(this);
                     View.clashWith(this.name, owner.getOpponent().getName());
@@ -129,7 +128,6 @@ public class MonsterCard extends Card implements HasHP {
     }
 
     public boolean checkAlive() {
-        // how about the player
         if (hp <= 0) {
             if (will != null) {
                 will.use(owner);

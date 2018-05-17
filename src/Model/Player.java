@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this
+public class Player {
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -330,6 +330,8 @@ public class Player {    // todo before and after some actions deuse and use of 
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
                 ((SpellCard) spellCard).getSpell().deuse(this);
         }
+        if (equippedAmulet != null)
+            equippedAmulet.getEffect().deuse(this);
     }
 
     public void useAuraCards(){
@@ -337,6 +339,8 @@ public class Player {    // todo before and after some actions deuse and use of 
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
                 ((SpellCard) spellCard).getSpell().use(this);
         }
+        if (equippedAmulet != null)
+            equippedAmulet.getEffect().use(this);
     }
 
 //------------------------------------------------------------Start Turn, End Turn --------------------------------------------------

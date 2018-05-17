@@ -71,7 +71,7 @@ public class Battle {
     }
 
 
-    public static boolean humanPlayTurn() {
+    private static boolean humanPlayTurn() {
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(human.getName() + "'s turn.");
         if (human.getDeckCards().isEmpty())
@@ -108,7 +108,7 @@ public class Battle {
                         }
                     }
                     break;
-                case "Set":
+                case "Set":                // todo correct for instant spells
                     int handIndex = scanner.nextInt();
                     scanner.next();
                     slotNumber = scanner.nextInt();
@@ -230,7 +230,7 @@ public class Battle {
                     String itemName = scanner.nextLine();
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){
-                            item.use();
+                            item.use(human);
                             human.getItems().remove(item);
                             if (!human.getOpponent().getPlayerHero().checkAlive())
                                 return false;

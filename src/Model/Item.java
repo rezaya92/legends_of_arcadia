@@ -36,8 +36,8 @@ public class Item implements Stuff{
         this.price = price;
     }
 
-    public void use(){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
-        effect.use();
+    public void use(Player player){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
+        effect.use(player);
     }
 
     public boolean equalsInName(Object arg0){

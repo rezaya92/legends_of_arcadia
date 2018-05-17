@@ -11,14 +11,12 @@ import java.util.ArrayList;
  */
 public abstract class Card implements SpellCastable, Stuff {
 
-    int defaultManaCost; // todo set final and initialize
+    int defaultManaCost;
     int manaCost;
     int price;
     String name;
     Player owner;    // "add default owner in case of opponent could take control of a card of player"
     ArrayList<Card> cardPlace;
-
-    //TODO set owner for every spell in constructor
 
     public int getDefaultManaCost() {
         return defaultManaCost;
