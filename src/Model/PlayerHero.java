@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero implements HasHP { // todo amulet
+public class PlayerHero implements HasHP, Cloneable { // todo amulet
     private int defaultHP;
     private int hp;
     private double damageReceivementRatio = 1;
@@ -59,5 +59,10 @@ public class PlayerHero implements HasHP { // todo amulet
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
         this.damageReceivementRatio *= coefficentofVariation;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

@@ -2,7 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 
-public class Amulet implements Stuff {
+public class Amulet implements Stuff, Cloneable {
     private GeneralizedSpell effect;
     private String name;
     private int price;
@@ -49,5 +49,10 @@ public class Amulet implements Stuff {
     @Override
     public String toString(){
         return this.name + ":\n" + this.info() + "\n";
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

@@ -10,7 +10,7 @@ import java.util.*;
 
 import static Controller.Main.human;
 
-public abstract class Spell {
+public abstract class Spell implements Cloneable{
     private ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;
@@ -155,5 +155,10 @@ public abstract class Spell {
 
     public void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
         this.effectableCard = effectableCard;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

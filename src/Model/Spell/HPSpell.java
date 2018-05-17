@@ -9,7 +9,7 @@ import Model.SpellCastable;
 
 import java.util.Set;
 
-public class HPSpell extends Spell {
+public class HPSpell extends Spell implements Cloneable{
     private int changeAmount;
 
     public HPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
@@ -53,5 +53,10 @@ public class HPSpell extends Spell {
         }
         //effectedCard.clear();
         effectableCard.clear();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

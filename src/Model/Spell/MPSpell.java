@@ -8,7 +8,7 @@ import Model.SpellCastable;
 
 import java.util.Set;
 
-public class MPSpell extends Spell {
+public class MPSpell extends Spell implements Cloneable{
     private int changeAmount;
 
     public MPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {
@@ -41,5 +41,10 @@ public class MPSpell extends Spell {
         }
         //        effectedCard.clear();
         effectableCard.clear();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

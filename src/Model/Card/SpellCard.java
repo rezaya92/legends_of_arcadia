@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/5/2018.
  */
-public class SpellCard extends Card {
+public class SpellCard extends Card implements Cloneable{
     GeneralizedSpell spell;
     SpellCardType spellCardType;
 
@@ -77,5 +77,10 @@ public class SpellCard extends Card {
         output += "Card Type: " + spellCardType.name() + "\n";//TODO check to execute correctly
         output += "Spell Details: " + spell.getDetail() + "\n";
         return output;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

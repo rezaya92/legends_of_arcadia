@@ -5,7 +5,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Shop {
+public class Shop implements Cloneable{
     private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
@@ -74,5 +74,10 @@ public class Shop {
             output += i + 1 + ". " + amulets.get(i).getName() + " " + amulets.get(i).getPrice() + " Gil\n";
         }
         return output;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

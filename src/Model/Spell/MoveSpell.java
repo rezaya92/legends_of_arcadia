@@ -7,7 +7,7 @@ import Model.SpellCastable;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MoveSpell extends Spell {
+public class MoveSpell extends Spell implements Cloneable{
     private SpellArea destination;
     private ArrayList<Card> destinationCardList;
 
@@ -63,5 +63,10 @@ public class MoveSpell extends Spell {
     @Override
     void deuse(Player owner) {
         //deuse nadare (aura nemitoone move kone)
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

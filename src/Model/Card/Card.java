@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class Card implements SpellCastable, Stuff {
+public abstract class Card implements SpellCastable, Stuff, Cloneable {
 
     int defaultManaCost; // todo set final and initialize
     int manaCost;
@@ -90,5 +90,15 @@ public abstract class Card implements SpellCastable, Stuff {
     }
 
     public abstract void restoreValues();
+
+//    @Override
+//    public Stuff clone() throws CloneNotSupportedException{
+//        return (Stuff)super.clone();
+//    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
+    }
 }
 

@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public interface Stuff {
+public interface Stuff extends Cloneable{
     String getName();
     int getPrice();
     String toString();
@@ -15,4 +15,6 @@ public interface Stuff {
         }
         return null;
     }
+
+    public Object clone() throws CloneNotSupportedException;
 }

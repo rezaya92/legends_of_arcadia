@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public class MonsterCard extends Card implements HasHP {
+public class MonsterCard extends Card implements HasHP, Cloneable {
 
     final boolean isNimble;
     final boolean isDefender;
@@ -250,5 +250,10 @@ public class MonsterCard extends Card implements HasHP {
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
         this.damageReceivementRatio *= coefficentofVariation;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Player {    // todo before and after some actions deuse and use of Aura cards must be called --> method for this
+public class Player implements Cloneable{    // todo before and after some actions deuse and use of Aura cards must be called --> method for this
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -443,5 +443,11 @@ public class Player {    // todo before and after some actions deuse and use of 
             output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName();
         }
         return output;
+    }
+
+    //Object object = new Object().clone();
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }
