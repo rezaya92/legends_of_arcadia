@@ -1,6 +1,7 @@
 package Model.Spell;
 
 import Model.Card.*;
+import Model.Player;
 import Model.SpellCastable;
 
 import java.util.ArrayList;
@@ -21,37 +22,37 @@ public class MoveSpell extends Spell {
     }
 
     @Override
-    void apply() {
+    void apply(Player owner) {
         switch (destination){
             case FRIENDLY_MONSTERFIELD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getMonsterFieldCards());
+                destinationCardList = new ArrayList<>(owner.getMonsterFieldCards());
                 break;
             case FRIENDLY_SPELLFIELD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getSpellFieldCards());
+                destinationCardList = new ArrayList<>(owner.getSpellFieldCards());
                 break;
             case FRIENDLY_HAND:
-                destinationCardList = new ArrayList<>(owner.getOwner().getHandCards());
+                destinationCardList = new ArrayList<>(owner.getHandCards());
                 break;
             case FRIENDLY_DECK:
-                destinationCardList = new ArrayList<>(owner.getOwner().getDeckCards());
+                destinationCardList = new ArrayList<>(owner.getDeckCards());
                 break;
             case FRIENDLY_GRAVEYARD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getGraveyardCards());
+                destinationCardList = new ArrayList<>(owner.getGraveyardCards());
                 break;
             case ENEMY_MONSTERFIELD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getOpponent().getMonsterFieldCards());
+                destinationCardList = new ArrayList<>(owner.getOpponent().getMonsterFieldCards());
                 break;
             case ENEMY_SPELLFIELD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getOpponent().getSpellFieldCards());
+                destinationCardList = new ArrayList<>(owner.getOpponent().getSpellFieldCards());
                 break;
             case ENEMY_HAND:
-                destinationCardList = new ArrayList<>(owner.getOwner().getOpponent().getHandCards());
+                destinationCardList = new ArrayList<>(owner.getOpponent().getHandCards());
                 break;
             case ENEMY_DECK:
-                destinationCardList = new ArrayList<>(owner.getOwner().getOpponent().getDeckCards());
+                destinationCardList = new ArrayList<>(owner.getOpponent().getDeckCards());
                 break;
             case ENEMY_GRAVEYARD:
-                destinationCardList = new ArrayList<>(owner.getOwner().getOpponent().getGraveyardCards());
+                destinationCardList = new ArrayList<>(owner.getOpponent().getGraveyardCards());
                 break;
         }
         for (SpellCastable card: effectableCard) {
@@ -60,7 +61,7 @@ public class MoveSpell extends Spell {
     }
 
     @Override
-    void deuse() {
+    void deuse(Player owner) {
         //deuse nadare (aura nemitoone move kone)
     }
 }

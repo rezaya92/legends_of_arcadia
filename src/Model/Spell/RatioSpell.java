@@ -2,6 +2,7 @@ package Model.Spell;
 
 import Model.Card.Tribe;
 import Model.HasHP;
+import Model.Player;
 import Model.SpellCastable;
 
 import java.util.ArrayList;
@@ -21,14 +22,15 @@ public class RatioSpell extends Spell{
     }
 
     @Override
-    void apply() {
+    void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
             ((HasHP)card).changeDamageReceivementRatio(coefficentofVariation);
         }
     }
 
     @Override
-    void deuse() {
+    void deuse(Player owner) {
+        setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
             ((HasHP)card).changeDamageReceivementRatio(1 / coefficentofVariation);
         }

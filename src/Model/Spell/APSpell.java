@@ -2,6 +2,7 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.Player;
 import Model.SpellCastable;
 
 import java.util.Set;
@@ -20,7 +21,7 @@ public class APSpell extends Spell {
     }
 
     @Override
-    void apply() {
+    void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
@@ -31,7 +32,8 @@ public class APSpell extends Spell {
     }
 
     @Override
-    void deuse() {
+    void deuse(Player owner) {
+        setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
             MonsterCard current = (MonsterCard) card;
             current.setAp(current.getAp() - changeAmount);

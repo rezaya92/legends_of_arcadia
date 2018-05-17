@@ -326,14 +326,14 @@ public class Player {    // todo before and after some actions deuse and use of 
     public void deuseAuraCards(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
-                ((SpellCard) spellCard).getSpell().deuse();
+                ((SpellCard) spellCard).getSpell().deuse(this);
         }
     }
 
     public void useAuraCards(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
-                ((SpellCard) spellCard).getSpell().use();
+                ((SpellCard) spellCard).getSpell().use(this);
         }
     }
 
@@ -341,7 +341,7 @@ public class Player {    // todo before and after some actions deuse and use of 
     public void startTurn(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
-                ((SpellCard) spellCard).getSpell().use();
+                ((SpellCard) spellCard).getSpell().use(this);
         }
         mana = ++maxMana;
         if (!deckCards.isEmpty()){    // else needed ??

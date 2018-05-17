@@ -2,6 +2,7 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.Player;
 import Model.PlayerHero;
 import Model.SpellCastable;
 
@@ -21,7 +22,7 @@ public class MPSpell extends Spell {
     }
 
     @Override
-    void apply() {
+    void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
             if (card instanceof PlayerHero) {
                 PlayerHero current = (PlayerHero) card;
@@ -32,7 +33,8 @@ public class MPSpell extends Spell {
     }
 
     @Override
-    void deuse() {
+    void deuse(Player owner) {
+        setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
             PlayerHero current = (PlayerHero) card;
             current.getOwner().setMana(current.getOwner().getMana() - changeAmount);

@@ -132,7 +132,7 @@ public class MonsterCard extends Card implements HasHP {
         // how about the player
         if (hp <= 0) {
             if (will != null) {
-                will.use();
+                will.use(owner);
             }
             this.transfer(owner.getGraveyardCards());
             return false;
@@ -158,7 +158,7 @@ public class MonsterCard extends Card implements HasHP {
                     isAwake = false;                // because card may be played more than once
                 }
                 if (battleCry != null)
-                    battleCry.use();
+                    battleCry.use(owner);
             }
             else {
                 View.slotIsFull(owner);
@@ -172,7 +172,7 @@ public class MonsterCard extends Card implements HasHP {
     public void castSpell() {
         if (spellCasterSpell != null) {
             if (!hasUsedSpell) {
-                spellCasterSpell.use();   // else ??
+                spellCasterSpell.use(owner);   // else ??
                 hasUsedSpell = true;
             }
         }

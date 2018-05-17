@@ -41,7 +41,7 @@ public class PlayerHero implements HasHP { // todo amulet
     }
 
     public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
-        item.use();
+        item.use(owner);
     }
 
     public boolean checkAlive(){
