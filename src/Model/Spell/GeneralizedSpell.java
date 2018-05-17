@@ -50,7 +50,7 @@ public class GeneralizedSpell implements Cloneable{
         return null;
     }
 
-    public void use(Player owner){
+    public void use(Player owner) throws RuntimeException{
         if (merge){
             spells[0].use(owner);
             for (int i = 1; i < spells.length; i++) {
