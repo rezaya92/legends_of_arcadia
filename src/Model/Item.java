@@ -3,22 +3,23 @@ package Model;
 import Model.Spell.GeneralizedSpell;
 
 public class Item implements Stuff{
-    private GeneralizedSpell spell;
+    private GeneralizedSpell effect;
     private String name;
     private int price;
-    private int manaCost;
 
     //TODO set owner for every spell in constructor
-    public Item(String name, int manaCost, int price, GeneralizedSpell spell){
-        this.name = name;
-        this.manaCost = manaCost;
+    public Item(GeneralizedSpell effect, int price){
+        this.effect = effect;
         this.price = price;
-        this.spell = spell;
+        this.name = effect.getName();
         Stuff.allStuff.add(this);
     }
 
-    public GeneralizedSpell getSpell() {
-        return spell;
+    public GeneralizedSpell getEffect() {
+        return effect;
+    }
+    public void setEffect(GeneralizedSpell effect) {
+        this.effect = effect;
     }
 
     public String getName() {
@@ -35,10 +36,8 @@ public class Item implements Stuff{
         this.price = price;
     }
 
-    public int getManaCost(){return manaCost;}
-
     public void use(){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
-        spell.use();
+        effect.use();
     }
 
     public boolean equalsInName(Object arg0){
@@ -48,11 +47,11 @@ public class Item implements Stuff{
     }
 
     public String info(){
-        return spell.getDetail();//TODO item has it's own description or is equal to it's "effect" description?
+        return effect.getDetail();//TODO item has it's own description or is equal to it's "effect" description?
     }
 
     @Override
     public String toString(){
-        return this.name + "Info:\n" + this.info();
+        return this.name + " Info:\n" + this.info() + "\n";
     }
 }

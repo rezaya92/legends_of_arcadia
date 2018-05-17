@@ -1,0 +1,8 @@
+Small HP Potion - 1000
+Medium HP Potion - 2000
+Large HP Potion - 4000
+Small MP Potion - 1000
+Medium MP Potion - 2000
+Large MP Potion - 4000
+Lesser Restorative - 2000
+Greater Restorative - 4000

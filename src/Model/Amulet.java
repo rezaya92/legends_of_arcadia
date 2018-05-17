@@ -8,7 +8,10 @@ public class Amulet implements Stuff {
     private int price;
 
     //TODO set owner for every spell in constructor
-    public Amulet(){
+    public Amulet(GeneralizedSpell effect, int price){
+        this.effect = effect;
+        this.price = price;
+        this.name = effect.getName();
         Stuff.allStuff.add(this);
     }
 
@@ -40,11 +43,11 @@ public class Amulet implements Stuff {
     }
 
     public String info(){
-        return effect.getDetail();//TODO item has it's own description or is equal to it's "effect" description?
+        return effect.getDetail();//TODO amulet has it's own description or is equal to it's "effect" description?
     }
 
-//    @Override
-//    public String toString(){
-//        return this.name + "\n" + this.info();
-//    }
+    @Override
+    public String toString(){
+        return this.name + ":\n" + this.info() + "\n";
+    }
 }

@@ -1,10 +1,12 @@
 package Controller;
 
+import Model.Amulet;
 import Model.Card.*;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
 import Model.Card.Tribe;
+import Model.Item;
 import Model.PlayerHero;
 import Model.Spell.*;
 import Model.Spell.SpellArea;
@@ -183,7 +185,7 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         EnumSet.of(Tribe.ELVEN),SpellChoiceType.RANDOM,800)
         },
-                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge",true);
+                "Increase a random friendly Elven monster card on the field’s HP by 800 and AP by 600","Noble Purge",true);//this spell has no name in doc!
         GeneralizedSpell reviveAllies = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.FRIENDLY_GRAVEYARD),
@@ -248,7 +250,7 @@ public class PreProcess {
                         new Class[]{Card.class},
                         SpellChoiceType.RANDOM,SpellArea.FRIENDLY_HAND)
         },
-                "draw two cards from deck to hand","Dragon’s Call");
+                "draw two cards from deck to hand","Dragon's Call");
         GeneralizedSpell kingsGrace = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
@@ -259,21 +261,21 @@ public class PreProcess {
                         new Class[]{NormalCard.class,GeneralCard.class,SpellcasterCard.class},
                         SpellChoiceType.ALL,SpellArea.FRIENDLY_GRAVEYARD)
         },
-                "Send all non-Hero monster cards on both sides of field to their graveyards","King’s Grace");
+                "Send all non-Hero monster cards on both sides of field to their graveyards","King's Grace");
         GeneralizedSpell kingsWingSlash = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.ALL,-600)
         },
-                "Deal 600 damage to all enemy monster cards and player","King’s Wing Slash");
+                "Deal 600 damage to all enemy monster cards and player","King's Wing Slash");
         GeneralizedSpell kingsWail = new GeneralizedSpell(new Spell[]{
                 new APSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
                         new Class[]{MonsterCard.class},
                         SpellChoiceType.ALL,-400)
         },
-                "Decrease all enemy monster cards’ AP by 400","King’s Wail");
+                "Decrease all enemy monster cards’ AP by 400","King's Wail");
         GeneralizedSpell songoftheSiren = new GeneralizedSpell(new Spell[]{
                 new APSpell(
                         EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD),
@@ -291,7 +293,7 @@ public class PreProcess {
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.SELECT,-1000)
         },
-                "Deal 1000 damage to an enemy monster card or player","Serpent’s Bite");
+                "Deal 1000 damage to an enemy monster card or player","Serpent's Bite");
         GeneralizedSpell titansPresence = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD),
@@ -302,14 +304,14 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         SpellChoiceType.SELECT,-200)
         },
-                "Return one random enemy monster card from field to hand and reduce all enemy monsters’ AP by 200","Titan’s Presence");
+                "Return one random enemy monster card from field to hand and reduce all enemy monsters AP by 200","Titan's Presence");
         GeneralizedSpell titansFall = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.ALL,-400)
         },
-                "Deal 400 damage to all enemy monster cards and player","Titan’s Fall");
+                "Deal 400 damage to all enemy monster cards and player","Titan's Fall");
         GeneralizedSpell calltoArms = new GeneralizedSpell(new Spell[]{
                 new MoveSpell(
                         EnumSet.of(SpellArea.FRIENDLY_HAND),
@@ -342,7 +344,7 @@ public class PreProcess {
                         new Class[]{MonsterCard.class},
                         EnumSet.of(Tribe.ATLANTIAN),SpellChoiceType.ALL,500)
         },
-                "Deal 400 damage to all enemy monster cards and player and increase all friendly Atlantian monster cards’ AP by 500","Ocean’s Cry");
+                "Deal 400 damage to all enemy monster cards and player and increase all friendly Atlantian monster cards’ AP by 500","Ocean's Cry");
         GeneralizedSpell mend = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
@@ -586,31 +588,13 @@ public class PreProcess {
                         SpellChoiceType.ALL,3)
         },
                 "Increase Player’s Max MP by 3","Diamond Ring");
-
-
-
-
-
-
-
-
-
-        allSpells.add(throwingKnives);
-        allSpells.add(poisonousCauldron);
-        allSpells.add(firstAidKit);
-        allSpells.add(reapersScythe);
-        allSpells.add(meteorShower);
-        allSpells.add(lunarBlessing);
-        allSpells.add(strategicRetreat);
-        allSpells.add(warDrum);
-        allSpells.add(healingWard);
-        allSpells.add(bloodFeast);
-        allSpells.add(tsunami);
-        allSpells.add(takeAllYouCan);
-        allSpells.add(arcaneBolt);
-        allSpells.add(greaterPurge);
-        allSpells.add(magicSeal);
-
+        GeneralizedSpell DemonKingsCrown = new GeneralizedSpell(new Spell[]{
+                new RatioSpell(
+                        EnumSet.of(SpellArea.FRIENDLY_MONSTERFIELD,SpellArea.FRIENDLY_PLAYER),
+                        new Class[]{PlayerHero.class,MonsterCard.class},
+                        SpellChoiceType.ALL,0.8)
+        },
+                "Decrease All Incoming Damages by 20%","Demon King’s Crown");
     }
 
 
@@ -622,16 +606,86 @@ public class PreProcess {
             String line = null;
             while((line = bufferedReader.readLine()) != null){
                 String[] constructorInputs = line.split(" - ");
-                GeneralizedSpell wantedSpell = null;
-                for(GeneralizedSpell generalizedSpell : allSpells){
-                    if(constructorInputs[0].equals(generalizedSpell.getName())){
-                        wantedSpell = generalizedSpell;
-                        break;
-                    }
-                }
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
                 int manaCost = Integer.parseInt(constructorInputs[1]);
                 SpellCardType spellCardType = SpellCardType.nameToSpellCardType(constructorInputs[2]);
-                allStuff.add(new SpellCard(wantedSpell, manaCost, spellCardType));
+                new SpellCard(wantedSpell, manaCost, spellCardType);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateMonsterCards(){
+        try {
+            FileReader fileReader = new FileReader("MonsterCards.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            Tribe tribeOfSection = null;
+            while((line = bufferedReader.readLine()) != null){
+                if(!line.contains("-")){
+                    tribeOfSection = Tribe.getTribeByName(line);
+                    continue;
+                }
+                String[] constructorInputs = line.split(" - ");
+                int defaultHP = Integer.parseInt(constructorInputs[1]);
+                int defaultAP = Integer.parseInt(constructorInputs[2]);
+                int defaultManaCost = Integer.parseInt(constructorInputs[3]);
+                boolean isDefender = (constructorInputs[5].equalsIgnoreCase("Defender") || constructorInputs[5].equalsIgnoreCase("Both"));
+                boolean isNimble = (constructorInputs[5].equalsIgnoreCase("Nimble") || constructorInputs[5].equalsIgnoreCase("Both"));
+                if(constructorInputs[4].equalsIgnoreCase("Normal")){
+                    new NormalCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble);
+                }else if(constructorInputs[4].equalsIgnoreCase("Spell Caster")){
+                    GeneralizedSpell spell = getSpellByName(constructorInputs[6]);
+                    new SpellcasterCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, spell);
+                }else if(constructorInputs[4].equalsIgnoreCase("General")){
+                    GeneralizedSpell battleCry = getSpellByName(constructorInputs[6]);
+                    GeneralizedSpell will = getSpellByName(constructorInputs[7]);
+                    new GeneralCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, battleCry, will);
+                }else if(constructorInputs[4].equalsIgnoreCase("Hero")){
+                    GeneralizedSpell battleCry = getSpellByName(constructorInputs[6]);
+                    GeneralizedSpell spell = getSpellByName(constructorInputs[7]);
+                    GeneralizedSpell will = getSpellByName(constructorInputs[8]);
+                    new HeroCard(tribeOfSection, constructorInputs[0], defaultHP, defaultAP, defaultManaCost, isDefender, isNimble, battleCry, spell, will);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateItems(){
+        try {
+            FileReader fileReader = new FileReader("Items.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] constructorInputs = line.split(" - ");
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
+                int price = Integer.parseInt(constructorInputs[1]);
+                new Item(wantedSpell, price);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void instantiateAmulets(){
+        try {
+            FileReader fileReader = new FileReader("Amulets.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] constructorInputs = line.split(" - ");
+                GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
+                int price = Integer.parseInt(constructorInputs[1]);
+                new Amulet(wantedSpell, price);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -1,0 +1,6 @@
+Iron Pendant - 2000
+Gold Pendant - 4000
+Diamond Pendant - 8000
+Iron Ring - 2000
+Gold Ring - 4000
+Diamond Ring - 8000

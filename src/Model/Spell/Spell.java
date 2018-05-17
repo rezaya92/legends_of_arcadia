@@ -1,9 +1,8 @@
 package Model.Spell;
 
-import Model.Card.Card;
-import Model.Card.SpellCard;
+import Model.Card.MonsterCard;
 import Model.Card.Tribe;
-import Model.HasTribe;
+import Model.Player;
 import Model.SpellCastable;
 import View.View;
 
@@ -16,7 +15,6 @@ public abstract class Spell {
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;
     private Set<Tribe> effectableTribe;
-    SpellCastable owner;
     SpellChoiceType choiceType;
     ArrayList<SpellCastable> effectableCard = new ArrayList<>();
     //ArrayList<SpellCastable> effectedCard = new ArrayList<>();
@@ -33,62 +31,62 @@ public abstract class Spell {
         this(effectableArea, effectableCardType,EnumSet.of(Tribe.DEMONIC, Tribe.ELVEN, Tribe.DRAGONBREED, Tribe.ATLANTIAN), choiceType);
     }
 
-    private void setEffectableAreaCards(){
+    private void setEffectableAreaCards(Player owner){
         for (SpellArea spellArea: effectableArea) {
             ArrayList<SpellCastable> toAdd = new ArrayList<>();
             switch (spellArea){
                 case FRIENDLY_MONSTERFIELD:
-                    toAdd = new ArrayList<>(owner.getOwner().getMonsterFieldCards());
+                    toAdd = new ArrayList<>(owner.getMonsterFieldCards());
                     break;
                 case FRIENDLY_SPELLFIELD:
-                    toAdd = new ArrayList<>(owner.getOwner().getSpellFieldCards());
+                    toAdd = new ArrayList<>(owner.getSpellFieldCards());
                     break;
                 case FRIENDLY_HAND:
-                    toAdd = new ArrayList<>(owner.getOwner().getHandCards());
+                    toAdd = new ArrayList<>(owner.getHandCards());
                     break;
                 case FRIENDLY_DECK:
-                    toAdd = new ArrayList<>(owner.getOwner().getDeckCards());
+                    toAdd = new ArrayList<>(owner.getDeckCards());
                     break;
                 case FRIENDLY_GRAVEYARD:
-                    toAdd = new ArrayList<>(owner.getOwner().getGraveyardCards());
+                    toAdd = new ArrayList<>(owner.getGraveyardCards());
                     break;
                 case FRIENDLY_PLAYER:
                     toAdd = new ArrayList<>();
-                    toAdd.add(owner.getOwner().getPlayerHero());
+                    toAdd.add(owner.getPlayerHero());
                     break;
                 case ENEMY_MONSTERFIELD:
-                    toAdd = new ArrayList<>(owner.getOwner().getOpponent().getMonsterFieldCards());
+                    toAdd = new ArrayList<>(owner.getOpponent().getMonsterFieldCards());
                     break;
                 case ENEMY_SPELLFIELD:
-                    toAdd = new ArrayList<>(owner.getOwner().getOpponent().getSpellFieldCards());
+                    toAdd = new ArrayList<>(owner.getOpponent().getSpellFieldCards());
                     break;
                 case ENEMY_HAND:
-                    toAdd = new ArrayList<>(owner.getOwner().getOpponent().getHandCards());
+                    toAdd = new ArrayList<>(owner.getOpponent().getHandCards());
                     break;
                 case ENEMY_DECK:
-                    toAdd = new ArrayList<>(owner.getOwner().getOpponent().getDeckCards());
+                    toAdd = new ArrayList<>(owner.getOpponent().getDeckCards());
                     break;
                 case ENEMY_GRAVEYARD:
-                    toAdd = new ArrayList<>(owner.getOwner().getOpponent().getGraveyardCards());
+                    toAdd = new ArrayList<>(owner.getOpponent().getGraveyardCards());
                     break;
                 case ENEMY_PLAYER:
                     toAdd = new ArrayList<>();
-                    toAdd.add(owner.getOwner().getOpponent().getPlayerHero());
+                    toAdd.add(owner.getOpponent().getPlayerHero());
                     break;
             }
             effectableAreaCards.add(toAdd);
         }
     }
 
-    private void setEffectableCards(){
-        setEffectableAreaCards();
+    void setEffectableCards(Player owner){
+        setEffectableAreaCards(owner);
         effectableCard = new ArrayList<>();
         for (ArrayList<SpellCastable> cardArray: effectableAreaCards) {
             for (SpellCastable card:cardArray) {
                 differentSituations:
                 for (Class cardType: effectableCardType){
                     for (Tribe tribe: effectableTribe) {
-                        if (cardType.isInstance(card) && (card instanceof SpellCard || ((HasTribe)card).getTribe().equals(tribe) || ((HasTribe)card).getTribe().equals(Tribe.HUMAN))) {
+                        if (cardType.isInstance(card) && ( !(card instanceof MonsterCard) || ((MonsterCard)card).getTribe().equals(tribe) )) {
                             effectableCard.add(card);
                             break differentSituations;
                         }
@@ -100,12 +98,12 @@ public abstract class Spell {
     }
 
 
-    private void choose(){
+    private void choose(Player owner){
         switch (choiceType){
             case ALL:
                 return;
             case SELECT:
-                if (owner.getOwner() == human) {
+                if (owner == human) {
                     View.viewSpellEffectableCards(effectableCard);
                     Scanner scanner = new Scanner(System.in);
                     int index = scanner.nextInt() - 1;
@@ -123,10 +121,10 @@ public abstract class Spell {
         }
     }
 
-    void use(){
-        setEffectableCards();
-        choose();
-        apply();
+    void use(Player owner){
+        setEffectableCards(owner);
+        choose(owner);
+        apply(owner);
     //    effectedCard.addAll(effectableCard);
     //    effectableCard.clear();
     }
@@ -139,9 +137,9 @@ public abstract class Spell {
     //    effectableCard.clear();
     }*/
 
-    abstract void apply();
+    abstract void apply(Player owner);
 
-    abstract void deuse();
+    abstract void deuse(Player owner);
 
     public ArrayList<SpellCastable> getEffectableCard() {
         return effectableCard;
@@ -154,10 +152,6 @@ public abstract class Spell {
     //public ArrayList<SpellCastable> getEffectedCard() {
     //    return effectedCard;
     //}
-
-    void setOwner(SpellCastable owner) {
-        this.owner = owner;
-    }
 
     public void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
         this.effectableCard = effectableCard;

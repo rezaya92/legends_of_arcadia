@@ -25,13 +25,15 @@ public class SpellCard extends Card {
         this.spell = spell;
         this.spellCardType = spellCardType;
         this.name = spell.getName();
+        this.price = 700*defaultManaCost;
+        allStuff.add(this);
     }
 
     @Override
     public void play(int slotNumber) {   // -1 case card is instant spell  // only plays from hand
         if (manaCost <= owner.getMana()) {
             if (slotNumber == -1) {
-                spell.use();   // use can be boolean and this can be in if
+                spell.use(owner);   // use can be boolean and this can be in if
                 cardPlace.remove(this);
                 owner.setMana(owner.getMana() - manaCost);
                 owner.getGraveyardCards().add(this);    // can use transfer instead
@@ -63,6 +65,7 @@ public class SpellCard extends Card {
 
     @Override
     public void restoreValues(){
+        spell.checkDead(owner);
         manaCost = defaultManaCost;
     }
 

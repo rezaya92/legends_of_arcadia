@@ -2,6 +2,8 @@ package Model.Spell;
 
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
+import Model.HasHP;
+import Model.Player;
 import Model.PlayerHero;
 import Model.SpellCastable;
 
@@ -21,36 +23,33 @@ public class HPSpell extends Spell {
     }
 
     @Override
-    void apply() {
+    void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else if (card instanceof PlayerHero){
-                PlayerHero current = (PlayerHero) card;
-                current.setHp(current.getHp() + changeAmount);
-                current.checkAlive();
-            }
-            else
-                return;
+                if (changeAmount > 0)
+                    ((HasHP)card).heal(changeAmount);
+                else
+                    ((HasHP)card).takeDamage(changeAmount);
+                ((HasHP) card).checkAlive();
         }
-
     }
 
     @Override
-    void deuse() {
+    void deuse(Player owner) {
+        setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
-            if (card instanceof MonsterCard) {
-                MonsterCard current = (MonsterCard) card;
-                current.setHp(current.getHp() - changeAmount);
-                current.checkAlive();
-            }
-            else if (card instanceof PlayerHero){
-                PlayerHero current = (PlayerHero) card;
-                current.setHp(current.getHp() + changeAmount);
-            }
+            if (changeAmount > 0)
+                ((HasHP)card).heal(-changeAmount);
+            else
+                ((HasHP)card).takeDamage(-changeAmount);
+        }
+        //effectedCard.clear();
+        effectableCard.clear();
+    }
+
+    void checkDead(Player owner){
+        setEffectableCards(owner);
+        for (SpellCastable card: effectableCard) {
+            ((HasHP)card).checkAlive();
         }
         //effectedCard.clear();
         effectableCard.clear();

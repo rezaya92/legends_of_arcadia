@@ -42,17 +42,32 @@ public class GeneralizedSpell {
         return null;
     }*/
 
-    public void use(){
+    public static GeneralizedSpell getSpellByName(String name){
+        for(GeneralizedSpell spell : allSpells){
+            if(spell.getName().equals(name))
+                return spell;
+        }
+        return null;
+    }
+
+    public void use(Player owner){
         if (merge){
-            spells[0].use();
+            spells[0].use(owner);
             for (int i = 1; i < spells.length; i++) {
                 spells[i].setEffectableCard(spells[0].getEffectableCard());
-                spells[i].apply();
+                spells[i].apply(owner);
             }
         }
         else {
             for (Spell spell: spells)
-                spell.use();
+                spell.use(owner);
+        }
+    }
+
+    public void checkDead(Player owner){
+        for (Spell spell:spells) {
+            if (spell instanceof HPSpell)
+                ((HPSpell)spell).checkDead(owner);
         }
     }
 
@@ -65,18 +80,12 @@ public class GeneralizedSpell {
         }
     }*/
 
-    public void deuse(){
+    public void deuse(Player owner){
         for (Spell spell : spells)
-            spell.deuse();
+            spell.deuse(owner);
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setOwner(SpellCastable owner) {
-        for (Spell spell: spells) {
-            spell.setOwner(owner);
-        }
     }
 }

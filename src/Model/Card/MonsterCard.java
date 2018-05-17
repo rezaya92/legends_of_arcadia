@@ -1,5 +1,6 @@
 package Model.Card;
 
+import Model.HasHP;
 import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Stuff;
@@ -9,10 +10,11 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public class MonsterCard extends Card {
+public class MonsterCard extends Card implements HasHP {
 
     final boolean isNimble;
     final boolean isDefender;
+    private double damageReceivementRatio = 1;
     boolean isAwake = false;
     final int defaultHP;
     final int defaultAP;
@@ -44,7 +46,9 @@ public class MonsterCard extends Card {
     public GeneralizedSpell getSpellCasterSpell(){return spellCasterSpell;}
     public GeneralizedSpell getWill(){return will;}
 
-    public MonsterCard(int defaultManaCost, int defaultHP, int defaultAP, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will, boolean isNimble, boolean isDefender) {
+    public MonsterCard(Tribe tribe, String name, int defaultHP, int defaultAP, int defaultManaCost, boolean isDefender, boolean isNimble, GeneralizedSpell battleCry, GeneralizedSpell spellCasterSpell, GeneralizedSpell will) {
+        this.tribe = tribe;
+        this.name = name;
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.hp = this.defaultHP = defaultHP;
         this.ap = this.defaultAP = defaultAP;
@@ -70,8 +74,8 @@ public class MonsterCard extends Card {
     public void attack(MonsterCard monsterCard) {   // todo return string
         if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
             if (!hasAttacked) {
-                monsterCard.hp -= ap;
-                hp -= monsterCard.ap;
+                monsterCard.takeDamage(ap);
+                this.takeDamage(monsterCard.ap);
                 this.checkAlive();
                 monsterCard.checkAlive();
                 hasAttacked = true;
@@ -99,7 +103,7 @@ public class MonsterCard extends Card {
             Player opponent = this.owner.getOpponent();
             if (!opponent.isDefenderPresent()) {
                 if (!hasAttacked) {
-                    opponent.getPlayerHero().setHp(opponent.getPlayerHero().getHp() - ap);
+                    opponent.getPlayerHero().takeDamage(ap);
                     opponent.getPlayerHero().checkAlive();
                     // this.checkAlive in case of weapon for playerHero
                     hasAttacked = true;
@@ -116,14 +120,25 @@ public class MonsterCard extends Card {
         }
     }
 
-    public void checkAlive() {
+    public void takeDamage(int damageAmount){
+        hp -= (int)(damageAmount*damageReceivementRatio);
+    }
+
+    public void heal(int healAmount){
+        hp += healAmount;
+    }
+
+    public boolean checkAlive() {
         // how about the player
         if (hp <= 0) {
             if (will != null) {
-                will.use();
+                will.use(owner);
             }
             this.transfer(owner.getGraveyardCards());
+            return false;
         }
+        else
+            return true;
     }
 
     @Override
@@ -143,7 +158,7 @@ public class MonsterCard extends Card {
                     isAwake = false;                // because card may be played more than once
                 }
                 if (battleCry != null)
-                    battleCry.use();
+                    battleCry.use(owner);
             }
             else {
                 View.slotIsFull(owner);
@@ -157,7 +172,7 @@ public class MonsterCard extends Card {
     public void castSpell() {
         if (spellCasterSpell != null) {
             if (!hasUsedSpell) {
-                spellCasterSpell.use();   // else ??
+                spellCasterSpell.use(owner);   // else ??
                 hasUsedSpell = true;
             }
         }
@@ -175,14 +190,12 @@ public class MonsterCard extends Card {
         return hp;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
 
     @Override
     public String toString() {
         String output = this.name + " Info:\n";
-        String cardType = this.getClass().getName();
+        String[] tmp = this.getClass().getName().split("\\.");
+        String cardType = tmp[tmp.length-1];
         cardType = cardType.substring(0, cardType.length() - 4);// not perfect
         output += "Name: " + this.name + "\n";
         output += "HP: " + this.defaultHP + "\n";
@@ -232,5 +245,10 @@ public class MonsterCard extends Card {
         ap = defaultAP;
         manaCost = defaultManaCost;
         isAwake = false;
+        damageReceivementRatio = 1;
+    }
+
+    public void changeDamageReceivementRatio(double coefficentofVariation) {
+        this.damageReceivementRatio *= coefficentofVariation;
     }
 }
