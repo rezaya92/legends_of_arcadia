@@ -34,8 +34,12 @@ public class Main {
         instantiateMonsterCards();
         instantiateItems();
         instantiateAmulets();
-        System.out.println(allSpells);
-        System.out.println(allStuff);
+
+        Stuff stuff = (Stuff)allStuff.get(0).clone();
+        //((Card)allStuff.get(0)).setName("23");//.setName("23");
+        //System.out.println(allSpells);
+        System.out.println(allStuff.get(0));
+        System.out.println(stuff);
         //System.out.println(allStuff.get(0));
         //System.out.println(allStuff.get(1));
         afterMatch();

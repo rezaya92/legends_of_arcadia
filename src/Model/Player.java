@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Cloneable{
     private final int deckCapacity = 30;
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -449,5 +449,11 @@ public class Player {
             output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName();
         }
         return output;
+    }
+
+    //Object object = new Object().clone();
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

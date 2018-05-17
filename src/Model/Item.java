@@ -2,7 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 
-public class Item implements Stuff{
+public class Item implements Stuff, Cloneable{
     private GeneralizedSpell effect;
     private String name;
     private int price;
@@ -53,5 +53,10 @@ public class Item implements Stuff{
     @Override
     public String toString(){
         return this.name + " Info:\n" + this.info() + "\n";
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

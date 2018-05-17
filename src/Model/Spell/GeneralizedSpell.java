@@ -5,7 +5,7 @@ import Model.SpellCastable;
 
 import java.util.ArrayList;
 
-public class GeneralizedSpell {
+public class GeneralizedSpell implements Cloneable{
     final private Spell[] spells;
     final private String detail;
     final private String name;
@@ -87,5 +87,10 @@ public class GeneralizedSpell {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

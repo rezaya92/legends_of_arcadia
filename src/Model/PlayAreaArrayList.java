@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/10/2018.
  */
-public class PlayAreaArrayList<E> extends ArrayList<E> {
+public class PlayAreaArrayList<E> extends ArrayList<E> implements Cloneable {
 
     public PlayAreaArrayList(){
         super();
@@ -31,5 +31,10 @@ public class PlayAreaArrayList<E> extends ArrayList<E> {
             return false;
         this.set(indexOfNull, e);
         return true;
+    }
+
+    @Override
+    public Object clone(){
+        return super.clone();
     }
 }

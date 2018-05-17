@@ -8,7 +8,7 @@ import Model.SpellCastable;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class RatioSpell extends Spell{
+public class RatioSpell extends Spell implements Cloneable{
     private double coefficentofVariation;
 
     public RatioSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType,double coefficentofVariation) {
@@ -34,5 +34,10 @@ public class RatioSpell extends Spell{
         for (SpellCastable card: effectableCard) {
             ((HasHP)card).changeDamageReceivementRatio(1 / coefficentofVariation);
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }
