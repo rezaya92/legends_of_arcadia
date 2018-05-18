@@ -60,7 +60,9 @@ public class Main {
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
                 opponentNumber++;
+                ArrayList<Item> humanItemsAfterMatch = human.getItems();
                 human = humanBeforeMatch;
+                human.setItems(humanItemsAfterMatch);
             }
             else{
                 if (mysticHourGlass > 0){
@@ -300,14 +302,14 @@ public class Main {
                     View.successfulAmuletEquip(amuletName);
                 else
                     throw new Exception();
-            }else if(action.equals("2") || action.matches("[rR]emove [aA]mulet")){
+            }else if(action.equals("2") || action.equalsIgnoreCase("Remove Amulet")){
                 String amuletName = human.removeEquippedAmulet();
                 if(amuletName == null)
                     throw new Exception();
                 View.successfulRemoveEquippedAmulet(amuletName);
-            }else if(action.startsWith("Info ") || action.startsWith("info")){
+            }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
-            }else if(action.equals("4") || action.matches("[Ee]xit")){
+            }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
                 return;
             }else{
                 throw new Exception();
