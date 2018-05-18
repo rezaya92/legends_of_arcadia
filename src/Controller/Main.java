@@ -101,6 +101,7 @@ public class Main {
                 editInventory();
                 break;
             case "3":
+                editDeck(true);
                 return;
                 default:
                     View.invalidCommand();
@@ -144,7 +145,7 @@ public class Main {
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
             else if(action.equals("4") || action.equals("Edit deck") || action.equals("edit deck"))
-                editDeck();
+                editDeck(false);
             else if(action.equals("5") || action.equals("Exit") || action.equals("exit"))
                 return;
             else
@@ -217,7 +218,7 @@ public class Main {
                 stuffInventory(TypeOfStuffToBuyAndSell.AMULET);
                 break;
             case "4":
-                editDeck();
+                editDeck(false);
                 break;
             case "5":
                 editAmulet();
@@ -247,11 +248,11 @@ public class Main {
         stuffInventory(typeOfStuffToBuyAndSell);
     }
 
-    private static void editDeck() throws Exception{
+    private static void editDeck(boolean nextIsBattle) throws Exception{
         View.editDeck();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("editDeck");
-        helpHandler(lastViewMethod);
+        helpHandler(lastViewMethod, nextIsBattle);
         try {
             if (action.startsWith("Add ") || action.startsWith("add ")) {
                 int splitIndex = 0;
@@ -284,7 +285,7 @@ public class Main {
         }catch (Exception e){
             View.invalidCommand();
         }
-        editDeck();
+        editDeck(nextIsBattle);
     }
 
     private static void editAmulet() throws Exception{
@@ -375,10 +376,24 @@ public class Main {
         }
     }
 
+    //for stuffInventory(TypeOfStuffToBuyAndSell)
     private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
                 Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
+            else if(action.equalsIgnoreCase("Again"))
+                lastViewMethod.invoke(null);
+            else
+                break;
+            action = scanner.nextLine();
+        }
+    }
+
+    //for editDeck(boolean)
+    private static void helpHandler(Method lastViewMethod, boolean nextIsBattle) throws Exception{
+        while(true){
+            if(action.equalsIgnoreCase("Help"))
+                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else

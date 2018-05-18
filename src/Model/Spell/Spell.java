@@ -120,10 +120,22 @@ public abstract class Spell implements Cloneable{
                 if (owner == human) {
                     View.viewSpellEffectableCards(effectableCard);
                     Scanner scanner = new Scanner(System.in);
-                    int index = scanner.nextInt() - 1;
-                    SpellCastable choice = effectableCard.get(index);
-                    effectableCard.clear();
-                    effectableCard.add(choice);
+                    String action = scanner.next();
+                    while (!action.equals("Exit")) {
+                        switch (action) {
+                            case "Target":
+                                int index = scanner.nextInt() - 1;
+                                SpellCastable choice = effectableCard.get(index);
+                                effectableCard.clear();
+                                effectableCard.add(choice);
+                                View.spellTargeted(choice);
+                                break;
+                            case "Help":
+                                View.spellCastHelp();
+                                default:
+                                    View.invalidCommand();
+                        }
+                    }
                     return;
                 }
             case RANDOM:
