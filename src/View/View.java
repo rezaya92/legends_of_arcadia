@@ -368,25 +368,31 @@ abstract public class View {
     public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
         int index =  1;
         System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
-        String friendliness = "Friendly";
+        boolean friendlinessChanged = false;
         ArrayList<String> cardPlaceNames = new ArrayList<>();
         ArrayList<Card> currentPlace = new ArrayList<>();
         for (SpellCastable spellCastable: effectableCards){
             if (spellCastable instanceof Card && currentPlace != ((Card)spellCastable).getCardPlace()){
                 currentPlace = ((Card)spellCastable).getCardPlace();
                 if (cardPlaceNames.contains(((Card)spellCastable).getCardPlacebyName()))
-                    friendliness = "Enemy";
+                    friendlinessChanged = true;
                 else
                     cardPlaceNames.add(((Card)spellCastable).getCardPlacebyName());
-                System.out.println(friendliness + " " + ((Card)spellCastable).getCardPlacebyName() + ":");
+                if (friendlinessChanged)
+                    System.out.println("Enemy " + ((Card)spellCastable).getCardPlacebyName() + ":");
+                else
+                    System.out.println(((Card)spellCastable).getCardPlacebyName() + ":");
             }
             else if (spellCastable instanceof PlayerHero){
                 currentPlace = new ArrayList<>();
                 if (cardPlaceNames.contains("Player"))
-                    friendliness = "Enemy";
+                    friendlinessChanged = true;
                 else
                     cardPlaceNames.add("Player");
-                System.out.println(friendliness + " " + "Player:");
+                if (friendlinessChanged)
+                    System.out.println("Enemy Player:");
+                else
+                    System.out.println("Player:");
             }
             System.out.println(index + "." + spellCastable.getName());
             index++;
