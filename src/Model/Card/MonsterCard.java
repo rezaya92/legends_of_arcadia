@@ -215,7 +215,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         output += "AP: " + this.defaultAP + "\n";
         output += "MP cost: " + this.defaultManaCost + "\n";
         output += "Card Type: " + cardType + "\n";
-        output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
+        output += "Card Tribe: " + tribe.name() + "\n";
         output += "Is Defensive: " + isDefender + "\n";
         output += "Is Nimble: " + isNimble + "\n";
         if (battleCry != null)

@@ -1,18 +1,15 @@
 package Model;
 
 import Model.Card.*;
-import Model.Spell.GeneralizedSpell;
-//import Model.PlayerHero;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player implements Cloneable{
-    private final int deckCapacity = 30;
+    //private final int deckCapacity = 30; TODO check if using final doesn't corrupt cloning
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
     private ArrayList<Card> deckCards = new ArrayList<>();
-    //private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();//TODO whenever a card comes to deck, it's slot number must be added or updated (also when removed)
     private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
     private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
     private ArrayList<Card> graveyardCards = new ArrayList<>();
