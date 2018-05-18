@@ -4,6 +4,7 @@ import Model.Card.*;
 import Model.Spell.GeneralizedSpell;
 //import Model.PlayerHero;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player implements Cloneable{
@@ -378,17 +379,32 @@ public class Player implements Cloneable{
     public void useAuraCards(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
-                ((SpellCard) spellCard).getSpell().use(this);
+                try {
+                    ((SpellCard) spellCard).getSpell().use(this);
+                }
+                catch (IOException ignored){
+
+                }
         }
         if (equippedAmulet != null)
-            equippedAmulet.getEffect().use(this);
+            try {
+                equippedAmulet.getEffect().use(this);
+            }
+            catch (IOException ignored){
+
+            }
     }
 
 //------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
     public void startTurn(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
+                try {
                 ((SpellCard) spellCard).getSpell().use(this);
+                }
+                catch (IOException ignored){
+                
+                }
         }
         mana = ++maxMana;
         if (!deckCards.isEmpty()){    // else needed ??

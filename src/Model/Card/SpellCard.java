@@ -4,6 +4,7 @@ import Model.Spell.GeneralizedSpell;
 import Model.Spell.Spell;
 import View.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +35,11 @@ public class SpellCard extends Card implements Cloneable{
     public void play(int slotNumber) {   // -1 case card is instant spell  // only plays from hand
         if (manaCost <= owner.getMana()) {
             if (slotNumber == -1) {
-                spell.use(owner);   // use can be boolean and this can be in if
+                try {
+                    spell.use(owner);   // use can be boolean and this can be in if
+                } catch (IOException ignored) {
+
+                }
                 cardPlace.remove(this);
                 owner.setMana(owner.getMana() - manaCost);
                 owner.getGraveyardCards().add(this);    // can use transfer instead

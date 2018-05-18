@@ -2,6 +2,8 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 
+import java.io.IOException;
+
 public class Item implements Stuff, Cloneable{
     private GeneralizedSpell effect;
     private String name;
@@ -37,7 +39,10 @@ public class Item implements Stuff, Cloneable{
     }
 
     public void use(Player player){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
-        effect.use(player);
+        try {
+            effect.use(player);
+        } catch (IOException ignored) {
+        }
     }
 
     public boolean equalsInName(Object arg0){

@@ -5,6 +5,8 @@ import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Stuff;
 import View.View;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -130,7 +132,11 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public boolean checkAlive() {
         if (hp <= 0) {
             if (will != null) {
-                will.use(owner);
+                try {
+                    will.use(owner);
+                } catch (IOException ignored) {
+
+                }
             }
             this.transfer(owner.getGraveyardCards());
             return false;
@@ -155,8 +161,13 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     owner.addSleepingPlayedCard(this);
                     isAwake = false;                // because card may be played more than once
                 }
-                if (battleCry != null)
-                    battleCry.use(owner);
+                if (battleCry != null) {
+                    try {
+                        battleCry.use(owner);
+                    } catch (IOException ignored) {
+
+                    }
+                }
             }
             else {
                 View.slotIsFull(owner);
@@ -170,7 +181,11 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public void castSpell() {
         if (spellCasterSpell != null) {
             if (!hasUsedSpell) {
-                spellCasterSpell.use(owner);   // else ??
+                try {
+                    spellCasterSpell.use(owner);   // else ??
+                } catch (IOException ignored) {
+
+                }
                 hasUsedSpell = true;
             }
         }

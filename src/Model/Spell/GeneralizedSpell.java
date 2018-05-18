@@ -3,6 +3,7 @@ package Model.Spell;
 import Model.Player;
 import Model.SpellCastable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GeneralizedSpell implements Cloneable{
@@ -50,7 +51,7 @@ public class GeneralizedSpell implements Cloneable{
         return null;
     }
 
-    public void use(Player owner) throws RuntimeException{
+    public void use(Player owner) throws IOException {
         if (merge){
             spells[0].use(owner);
             for (int i = 1; i < spells.length; i++) {

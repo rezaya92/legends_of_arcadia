@@ -3,6 +3,7 @@ package Model;
 import Model.Spell.GeneralizedSpell;
 import View.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -40,7 +41,11 @@ public class PlayerHero implements HasHP, Cloneable {
     }
 
     public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
-        item.use(owner);
+        try {
+            item.use(owner);
+        }catch (IOException ignored){
+
+        }
     }
 
     public boolean checkAlive(){
