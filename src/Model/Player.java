@@ -20,7 +20,7 @@ public class Player implements Cloneable{
     private ArrayList<Amulet> amulets = new ArrayList<>();
     private Amulet equippedAmulet;
     private Shop shop = new Shop();
-    private int gil;
+    private int gil = 10000;
     private int mana;
     private int maxMana;
     private String name;
@@ -455,7 +455,7 @@ public class Player implements Cloneable{
             numberOfItems.add(1);
         }
         for(int i=0; i<uniqueItems.size(); i++){
-            output += i + 1 + ". " + numberOfItems.get(i) + " " + uniqueItems.get(i).getName();
+            output += i + 1 + ". " + numberOfItems.get(i) + " " + uniqueItems.get(i).getName() + "\n";
         }
         return output;
     }
