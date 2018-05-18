@@ -2,6 +2,7 @@ package Model.Card;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.Spell;
+import View.View;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,9 @@ public class SpellCard extends Card implements Cloneable{
                     useAuraCards();
                 }
             }
+        }
+        else {
+            View.insufficientMana(owner);
         }
     }
 

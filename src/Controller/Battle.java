@@ -118,9 +118,10 @@ public class Battle {
                         scanner.next();
                         slotNumber = scanner.nextInt() - 1;
                         human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
-                    } catch (IndexOutOfBoundsException e){
-                        View.slotIsEmpty(human);
-                    } catch (InputMismatchException e){
+                    }// catch (IndexOutOfBoundsException e){
+                    //    View.slotIsEmpty(human);
+                    //}
+                    catch (InputMismatchException e){
                         View.invalidCommand();
                     }
                     break;
@@ -238,7 +239,7 @@ public class Battle {
                     View.itemHelp();
                     break;
                 case "Use":
-                    String itemName = scanner.nextLine();
+                    String itemName = scanner.nextLine().substring(1);
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){
                             item.use(human);
@@ -246,6 +247,9 @@ public class Battle {
                             if (!human.getOpponent().getPlayerHero().checkAlive())
                                 return false;
                             break;
+                        }
+                        else {
+                            View.itemDontExist();
                         }
                     }
                     break;
@@ -257,6 +261,7 @@ public class Battle {
                 default:
                     View.invalidCommand();
             }
+            action =scanner.next();
         }
         return true;
     }
