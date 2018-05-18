@@ -1,17 +1,19 @@
 package Controller;
 
-import Model.Amulet;
+import Model.*;
 import Model.Card.*;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
 import Model.Card.Tribe;
-import Model.Item;
-import Model.PlayerHero;
 import Model.Spell.*;
 import Model.Spell.SpellArea;
+
+import static Controller.Main.*;
 import static Model.Spell.GeneralizedSpell.*;
 import static Model.Stuff.allStuff;
+import static Model.Stuff.getStuffByName;
+import static Model.TypeOfStuffToBuyAndSell.getTypeOfStuffByName;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,7 +22,21 @@ import java.io.IOException;
 import java.util.EnumSet;
 
 public class PreProcess {
-    static void instantiateSpells(){
+    static void preProcess() throws Exception{
+        instantiateSpells();
+        instantiateSpellCards();
+        instantiateMonsterCards();
+        instantiateItems();
+        instantiateAmulets();
+        instantiateHumanShop();
+        instantiatePlayerInventory(human, "database/Inventories/HumanInventory.txt");
+        instantiatePlayerInventory(goblinChieftain, "database/Inventories/GoblinChieftainInventory.txt");
+        instantiatePlayerInventory(ogreWarlord, "database/Inventories/OgreWarlordInventory.txt");
+        instantiatePlayerInventory(vampireLord, "database/Inventories/VampireLordInventory.txt");
+        instantiatePlayerInventory(lucifer, "database/Inventories/LuciferInventory.txt");
+    }
+
+    private static void instantiateSpells(){
         GeneralizedSpell throwingKnives = new GeneralizedSpell(new Spell[]{
                 new HPSpell(
                         EnumSet.of(SpellArea.ENEMY_MONSTERFIELD,SpellArea.ENEMY_PLAYER),
@@ -594,14 +610,14 @@ public class PreProcess {
                         new Class[]{PlayerHero.class,MonsterCard.class},
                         SpellChoiceType.ALL,0.8)
         },
-                "Decrease All Incoming Damages by 20%","Demon King’s Crown");
+                "Decrease All Incoming Damages by 20%","Demon King's Crown");
     }
 
 
 
-    static void instantiateSpellCards() {
+    private static void instantiateSpellCards() {
         try {
-            FileReader fileReader = new FileReader("SpellCards.txt");
+            FileReader fileReader = new FileReader("database/SpellCards.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = null;
             while((line = bufferedReader.readLine()) != null){
@@ -618,9 +634,9 @@ public class PreProcess {
         }
     }
 
-    static void instantiateMonsterCards(){
+    private static void instantiateMonsterCards(){
         try {
-            FileReader fileReader = new FileReader("MonsterCards.txt");
+            FileReader fileReader = new FileReader("database/MonsterCards.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = null;
             Tribe tribeOfSection = null;
@@ -658,9 +674,9 @@ public class PreProcess {
         }
     }
 
-    static void instantiateItems(){
+    private static void instantiateItems(){
         try {
-            FileReader fileReader = new FileReader("Items.txt");
+            FileReader fileReader = new FileReader("database/Items.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = null;
             while((line = bufferedReader.readLine()) != null){
@@ -676,9 +692,9 @@ public class PreProcess {
         }
     }
 
-    static void instantiateAmulets(){
+    private static void instantiateAmulets(){
         try {
-            FileReader fileReader = new FileReader("Amulets.txt");
+            FileReader fileReader = new FileReader("database/Amulets.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = null;
             while((line = bufferedReader.readLine()) != null){
@@ -686,6 +702,67 @@ public class PreProcess {
                 GeneralizedSpell wantedSpell = getSpellByName(constructorInputs[0]);
                 int price = Integer.parseInt(constructorInputs[1]);
                 new Amulet(wantedSpell, price);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void instantiateHumanShop() throws Exception{
+        for(Stuff stuff : allStuff){
+            if(stuff instanceof MonsterCard && ((MonsterCard)stuff).getTribe().equals(Tribe.DEMONIC))
+                continue;
+            if(stuff instanceof Item){
+                human.getShop().addItem((Item)stuff.clone());
+            }else if(stuff instanceof Amulet && !stuff.getName().equalsIgnoreCase("Demon King's Crown")){
+                human.getShop().addAmulet((Amulet)stuff.clone());
+            }else if(stuff instanceof Card){
+                ((Card)stuff).setOwner(human);
+                if(stuff instanceof SpellCard && !stuff.getName().matches("Blood Feast|Reaper's Scythe|Meteor Shower")){
+                    if(((SpellCard) stuff).getDefaultManaCost() < 6)
+                        human.getShop().addCard((SpellCard)stuff.clone(), 3);
+                    else
+                        human.getShop().addCard((SpellCard)stuff.clone(), 2);
+                }else if(stuff instanceof NormalCard){
+                    human.getShop().addCard((NormalCard)stuff.clone(), 4);
+                }else if(stuff instanceof SpellcasterCard || stuff instanceof GeneralCard){
+                    human.getShop().addCard((MonsterCard)stuff.clone(), 2);//TODO casting to MonsterCard is no problem?
+                }else if (stuff instanceof HeroCard){
+                    human.getShop().addCard((HeroCard)stuff.clone());
+                }
+                ((Card)stuff).setOwner(null);
+            }
+        }
+    }
+
+    private static void instantiatePlayerInventory(Player player, String fileDestination) throws Exception{
+        try {
+            FileReader fileReader = new FileReader(fileDestination);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            TypeOfStuffToBuyAndSell currentStuff = TypeOfStuffToBuyAndSell.CARD;
+            while((line = bufferedReader.readLine()) != null){
+                if(!line.contains("-")){
+                    currentStuff = getTypeOfStuffByName(line);
+                    continue;
+                }
+                String[] constructorInputs = line.split(" - ");
+                Stuff stuff = getStuffByName(constructorInputs[0]);
+                int number = Integer.parseInt(constructorInputs[1]);
+                switch (currentStuff){
+                    case CARD:
+                        ((Card)stuff).setOwner(player);
+                        player.addInitialInventoryCard((Card)stuff.clone(), number);
+                        ((Card)stuff).setOwner(null);
+                        break;
+                    case ITEM:
+                        player.addInitialItems((Item)stuff.clone(), number);
+                        break;
+                    case AMULET:
+                        player.addInitialAmulets((Amulet)stuff.clone());
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

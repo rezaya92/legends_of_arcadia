@@ -5,7 +5,7 @@ import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
-public class Shop implements Cloneable{
+public class Shop implements Cloneable{//TODO (not vital): add a sentence to tell that the price in selling divides by 2
     private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
@@ -31,24 +31,28 @@ public class Shop implements Cloneable{
         this.amulets = amulets;
     }
 
-    void addCard(Card card){
+    public void addCard(Card card, int number) throws Exception{
+        for(int i=0; i<number; i++)
+            addCard((Card)card.clone());
+    }
+    public void addCard(Card card){
         cards.add(card);
     }
-    void removeCard(Card card){
+    public void removeCard(Card card){
         cards.remove(card);
     }
 
-    void addItem(Item item){
+    public void addItem(Item item){
         items.add(item);
     }
-    void removeItem(Item item){
+    public void removeItem(Item item){
         items.remove(item);
     }
 
-    void addAmulet(Amulet amulet){
+    public void addAmulet(Amulet amulet){
         amulets.add(amulet);
     }
-    void removeAmulet(Amulet amulet){
+    public void removeAmulet(Amulet amulet){
         amulets.remove(amulet);
     }
 

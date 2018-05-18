@@ -15,6 +15,7 @@ import static Model.Stuff.*;
  */
 public class Main {
     static public Player human = new Player();
+    static public Player goblinChieftain = new Player(), ogreWarlord = new Player(), vampireLord = new Player(), lucifer = new Player();
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
@@ -26,11 +27,22 @@ public class Main {
         Player humanBeforeMatch;
         int opponentNumber = 0;
 
-        instantiateSpells();
-        instantiateSpellCards();
-        instantiateMonsterCards();
-        instantiateItems();
-        instantiateAmulets();
+        preProcess();
+
+        //Stuff stuff = (Stuff)allStuff.get(0).clone();
+        //((Card)allStuff.get(0)).setName("23");//.setName("23");
+        //System.out.println(allSpells);
+        //System.out.println(allStuff.get(0));
+//        for(Stuff stuff : allStuff)
+//            if(stuff instanceof NormalCard)
+//                System.out.println(stuff);
+        //System.out.println(stuff);
+        //System.out.println(allStuff);
+        //System.out.println(allStuff.get(1));
+        //System.out.println(human.getShop().cardToString());
+        //System.out.println(human.inventoryToString());
+        //System.out.println(human.deckToString());
+        //System.out.println(lucifer.getEquippedAmulet());
 
         while (opponentNumber < opponents.size()){
             Player opponent = opponents.get(opponentNumber);
@@ -59,13 +71,6 @@ public class Main {
             View.wholeWinner();
         }
 
-        Stuff stuff = (Stuff)allStuff.get(0).clone();
-        //((Card)allStuff.get(0)).setName("23");//.setName("23");
-        //System.out.println(allSpells);
-        System.out.println(allStuff.get(0));
-        System.out.println(stuff);
-        //System.out.println(allStuff.get(0));
-        //System.out.println(allStuff.get(1));
         afterMatch();
     }
 

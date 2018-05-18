@@ -30,7 +30,10 @@ public class Player implements Cloneable{
     private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
     private boolean isPlaying = false;
 
-    public Player(){} //for now (human)
+    public Player(){
+        for (int i=0; i<30; i++)
+            defaultDeckCards.add(null);
+    } //for now (human)
 
     public Player(String name, int playerHeroDefaultHP){
         this.name = name;
@@ -51,6 +54,34 @@ public class Player implements Cloneable{
     }
     public void setInventoryCards(ArrayList<Card> inventoryCards) {
         this.inventoryCards = inventoryCards;
+    }
+    public void addInitialInventoryCard(Card card){
+        card.setOwner(this);
+        inventoryCards.add(card);
+        for(int i=0; i<30; i++){
+            if(defaultDeckCards.get(i) == null){
+                defaultDeckCards.set(i, card);
+                break;
+            }
+        }
+        card.transfer(deckCards);
+    }
+    public void addInitialInventoryCard(Card card, int number) throws Exception{
+        for(int i=0; i<number; i++)
+            addInitialInventoryCard((Card)card.clone());
+    }
+
+    public void addInitialItems(Item item){
+        items.add(item);
+    }
+    public void addInitialItems(Item item, int number) throws Exception{
+        for(int i=0; i<number; i++)
+            addInitialItems((Item)item.clone());
+    }
+
+    public void addInitialAmulets(Amulet amulet){
+        amulets.add(amulet);
+        equippedAmulet = amulet;
     }
 
     public ArrayList<Card> getDeckCards() {
@@ -176,7 +207,7 @@ public class Player implements Cloneable{
                 priceOfThatCard = stuff.getPrice();
             }
         }
-        if(numberOfThatCardInShop < numberToBuy)
+        if(numberOfThatCardInShop < numberToBuy && typeOfStuffToBuyAndSell != TypeOfStuffToBuyAndSell.ITEM)
             return 0;
         if(priceOfThatCard * numberToBuy > gil)
             return -1;
@@ -188,7 +219,7 @@ public class Player implements Cloneable{
                         inventoryCards.add((Card) stuff);
                         break;
                     case ITEM:
-                        shop.removeItem((Item) stuff);
+                        //shop.removeItem((Item) stuff);
                         items.add((Item) stuff);
                         break;
                     default:
@@ -237,7 +268,7 @@ public class Player implements Cloneable{
                     return false;
                 for(Item item : items){
                     if(item.getName().equals(name) && numberToSellCounter > 0){
-                        shop.addItem(item);
+                        //shop.addItem(item);
                         items.remove(item);
                         numberToSellCounter --;
                     }
@@ -260,7 +291,7 @@ public class Player implements Cloneable{
                     }
                 }
         }
-        gil += priceOfThatCard * numberToSell;
+        gil += priceOfThatCard / 2 * numberToSell;
         return true;
     }
     //----------------------------------------------------add & remove card from Inventory to deck---------------------------------------------------------------
@@ -373,7 +404,7 @@ public class Player implements Cloneable{
 //            output += deckCards.get(indexOfWantedCard) + "\n";
 //        }
         for(int i=0; i<defaultDeckCards.size(); i++) {
-            output += "Slot " + i + ": " + (defaultDeckCards.get(i) == null ? "Empty" : defaultDeckCards.get(i).getName()) + "\n";
+            output += "Slot " + (i+1) + ": " + (defaultDeckCards.get(i) == null ? "Empty" : defaultDeckCards.get(i).getName()) + "\n";
         }
         return output;
     }

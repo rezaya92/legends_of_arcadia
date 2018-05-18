@@ -73,7 +73,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
             cardPlace.remove(this);
         destination.add(this);
         cardPlace = destination;
-        this.restoreValues();   // is correct ??  "if there exist a spell that change hand card values no"
+        //this.restoreValues();   // is correct ??  "if there exist a spell that change hand card values no" TODO UNCOMMENT (commented temporary)
         if (owner != null && owner.getIsPlaying())
             useAuraCards();
     }
