@@ -55,7 +55,7 @@ public class Main {
         while (opponentNumber < opponents.size()){
             Player opponent = opponents.get(opponentNumber);
             humanBeforeCustomize = (Player)human.clone();
-            afterMatch();                                       // todo change afterMatch to beforeMatch
+            afterMatch();
             humanBeforeMatch = (Player)human.clone();
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
@@ -144,9 +144,9 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
-            else if(action.equals("4") || action.equals("Edit deck") || action.equals("edit deck"))
+            else if(action.equals("4") || action.equalsIgnoreCase("Edit deck"))
                 editDeck(false);
-            else if(action.equals("5") || action.equals("Exit") || action.equals("exit"))
+            else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
                 return;
             else
                 throw new Exception();
@@ -168,7 +168,7 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.ITEM, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
-            else if(action.equals("4") || action.equals("Exit") || action.equals("exit"))
+            else if(action.equals("4") || action.equalsIgnoreCase("Exit"))
                 return;
             else
                 throw new Exception();
@@ -190,9 +190,9 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
-            else if(action.equals("4") || action.equals("Edit amulet") || action.equals("edit Amulet"))
+            else if(action.equals("4") || action.equalsIgnoreCase("Edit amulet"))
                 editAmulet();
-            else if(action.equals("5") || action.equals("Exit") || action.equals("exit"))
+            else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
                 return;
             else
                 throw new Exception();
@@ -236,7 +236,7 @@ public class Main {
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
         helpHandler(lastViewMethod, typeOfStuffToBuyAndSell);
-        if(action.equals("2") || action.equals("Exit") || action.equals("exit"))
+        if(action.equals("2") || action.equalsIgnoreCase("Exit"))
             return;
         try{
             if(!(action.startsWith("Info ") || action.startsWith("info")))
@@ -277,7 +277,7 @@ public class Main {
                     View.successfulRemoveFromDeck(cardName, slotNumber);
             }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
-            }else if(action.equals("4") || action.equals("Exit") || action.equals("exit")){
+            }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
                 return;
             }else{
                 throw new Exception();
@@ -356,7 +356,7 @@ public class Main {
 
     static boolean printInfoStuff(String stuffName){
         for(Stuff stuff : Stuff.allStuff){
-            if(stuff.getName().equals(stuffName)){
+            if(stuff.getName().equalsIgnoreCase(stuffName)){
                 View.printStuffInfo(stuff);
                 return true;
             }
