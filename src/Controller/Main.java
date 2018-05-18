@@ -41,7 +41,7 @@ public class Main {
         //System.out.println(allStuff.get(1));
         //System.out.println(human.getShop().cardToString());
         //System.out.println(human.inventoryToString());
-        //System.out.println(human.deckToString());
+        //System.out.println(human.deckToString());//
         //System.out.println(lucifer.getEquippedAmulet());
 
         while (opponentNumber < opponents.size()){
