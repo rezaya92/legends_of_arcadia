@@ -108,7 +108,7 @@ public class Battle {
                         } catch (NumberFormatException e){
                             View.invalidCommand();
                         } catch (IndexOutOfBoundsException e){
-                            View.slotIsEmpty(human);
+                            View.indexOutOfBound();
                         }
                     }
                     break;
@@ -200,6 +200,8 @@ public class Battle {
                             monsterCard.attack(Integer.parseInt(beingAttackedSlot));  //must be < 5
                         } catch (NumberFormatException e){
                             View.invalidCommand();
+                        } catch (IndexOutOfBoundsException e){
+                            View.indexOutOfBound();
                         }
                     }
                     break;
