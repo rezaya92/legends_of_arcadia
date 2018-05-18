@@ -46,6 +46,9 @@ public class Player implements Cloneable{
     }
 
     public ArrayList<Item> getItems(){return items;}
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
 
     public void setIsPlaying(boolean isPlaying){this.isPlaying = isPlaying;}
     public boolean getIsPlaying(){return isPlaying;}
