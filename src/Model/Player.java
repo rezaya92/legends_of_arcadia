@@ -308,7 +308,7 @@ public class Player implements Cloneable{
     public boolean addToDeck(String cardName, int slotNumber){
         slotNumber--;
         for(Card card : inventoryCards){
-            if(card.getName().equals(cardName) && card.getCardPlace() != deckCards){
+            if(card.getName().equalsIgnoreCase(cardName) && card.getCardPlace() != deckCards){
                 removeFromDeck(slotNumber + 1);
                 card.transfer(deckCards);
                 defaultDeckCards.set(slotNumber, card);

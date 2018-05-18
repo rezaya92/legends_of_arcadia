@@ -158,6 +158,10 @@ abstract public class View {
         System.out.println("Not enough " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s!");
     }
 
+    public static void notEnoughCardsToInitiateBattle(){
+        System.out.println("Not enough cards to initiate a battle. please add more cards to your deck.");
+    }
+
     public static void successfulSell(String soldThingName, int numberToSell){
         System.out.println("Successfully sold " + numberToSell + " of " + soldThingName + "!");
     }

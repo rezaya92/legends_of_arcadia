@@ -83,13 +83,15 @@ public class Battle {
         human.startTurn();
         View.showPlayerMana(human);
         String action = scanner.next();
-        while (!action.equals("Done")) {
+        while (!action.equalsIgnoreCase("Done")) {
             int slotNumber;
             switch (action) {
                 case "Help":
+                case "help":
                     View.battleHelp();
                     break;
                 case "Use":
+                case "use":
                     String s = scanner.next();
                     if (s.equals("Item")){
                         if (!itemUseMenu())
@@ -113,6 +115,7 @@ public class Battle {
                     }
                     break;
                 case "Set":                // todo correct for instant spells
+                case "set":
                     try {
                         int handIndex = scanner.nextInt() - 1;
                         scanner.next();
@@ -126,6 +129,7 @@ public class Battle {
                     }
                     break;
                 case "View":
+                case "view":
                     String place = scanner.next();
                     switch (place){
                         case "Hand":
@@ -146,6 +150,7 @@ public class Battle {
                     }
                     break;
                 case "Info":
+                case "info":
                     String cardName = scanner.nextLine().substring(1);  // must be a card name (??)
                     Stuff card = Stuff.getStuffByName(cardName);
                     if (card != null)
@@ -177,18 +182,22 @@ public class Battle {
     public static boolean monsterCardUseMenu(MonsterCard monsterCard){  // returns false if opponent hero dies
         View.usingMonsterCardInfo(monsterCard);
         String action = scanner.next();
-        while (!action.equals("Exit")){
+        while (!action.equalsIgnoreCase("Exit")){
             switch (action){
                 case "Again":
+                case "again":
                     View.usingMonsterCardInfo(monsterCard);
                     break;
                 case "Help":
+                case "help":
                     View.usingMonsterCardHelp(monsterCard.hasGotSpell());
                     break;
                 case "Info":
+                case "info":
                     System.out.println(monsterCard);
                     break;
                 case "Attack":
+                case "attack":
                     String beingAttackedSlot = scanner.next();
                     if (beingAttackedSlot.equals("Player")) {
                         monsterCard.attackOpponentHero();
@@ -206,6 +215,7 @@ public class Battle {
                     }
                     break;
                 case "Cast":
+                case "cast":
                     String s = scanner.next();
                     if (!monsterCard.hasGotSpell() || !s.equals("Spell"))
                         View.invalidCommand();
@@ -232,15 +242,18 @@ public class Battle {
     public static boolean itemUseMenu(){
         View.availableItems(human);
         String action = scanner.next();
-        while (!action.equals("Exit")){
+        while (!action.equalsIgnoreCase("Exit")){
             switch (action){
                 case "Again":
+                case "again":
                     View.availableItems(human);
                     break;
                 case "Help":
+                case "help":
                     View.itemHelp();
                     break;
                 case "Use":
+                case "use":
                     String itemName = scanner.nextLine().substring(1);
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){

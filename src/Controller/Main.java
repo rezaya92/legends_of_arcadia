@@ -278,8 +278,11 @@ public class Main {
                     View.successfulRemoveFromDeck(cardName, slotNumber);
             }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
-            }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
-                return;
+            }else if(action.equals("4") || action.equalsIgnoreCase(nextIsBattle ? "Next" : "Exit")){
+                if(nextIsBattle && human.getDeckCards().size() < 25)
+                    View.notEnoughCardsToInitiateBattle();
+                else
+                    return;
             }else{
                 throw new Exception();
             }
