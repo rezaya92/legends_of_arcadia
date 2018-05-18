@@ -119,7 +119,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         }
     }
 
-    public void takeDamage(int damageAmount){
+    public void takeDamage(int damageAmount){   // todo set if when ratio is 1 (double may cause change)
         hp -= (int)(damageAmount*damageReceivementRatio);
     }
 

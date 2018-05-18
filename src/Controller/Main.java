@@ -18,22 +18,46 @@ public class Main {
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
-    private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
-//    private static ArrayList<Card> allCards = new ArrayList<>();//TODO add from constructors
-//    private static ArrayList<Item> allItems = new ArrayList<>();//TODO add from constructors
-//    private static ArrayList<Amulet> allAmulets = new ArrayList<>();//TODO add from constructors
+    private static ArrayList<Player> opponents = new ArrayList<>();
+    private static int mysticHourGlass = 3;  // todo change place?
 
     public static void main(String[] args) throws Exception{
-        int numberOfCards = 40;
-        Card[] cards = new Card[numberOfCards];
-
-        //Player winner = startGameAgainst(opponent);
+        Player humanBeforeCustomize;
+        Player humanBeforeMatch;
+        int opponentNumber = 0;
 
         instantiateSpells();
         instantiateSpellCards();
         instantiateMonsterCards();
         instantiateItems();
         instantiateAmulets();
+
+        while (opponentNumber < opponents.size()){
+            Player opponent = opponents.get(opponentNumber);
+            humanBeforeCustomize = (Player)human.clone();
+            afterMatch();                                       // todo change afterMatch to beforeMatch
+            humanBeforeMatch = (Player)human.clone();
+            Player winner = Battle.startGameAgainst(opponent);
+            if (winner == human){
+                opponentNumber++;
+                human = humanBeforeMatch;
+            }
+            else{
+                if (mysticHourGlass > 0){
+                    human = humanBeforeCustomize;
+                    mysticHourGlass--;
+                    View.mysticHourGlassUsed();
+                }
+                else{
+                    View.gameOver(human);
+                    break;
+                }
+            }
+        }
+
+        if (opponentNumber == opponents.size()){
+            View.wholeWinner();
+        }
 
         Stuff stuff = (Stuff)allStuff.get(0).clone();
         //((Card)allStuff.get(0)).setName("23");//.setName("23");

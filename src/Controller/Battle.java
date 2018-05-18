@@ -210,7 +210,7 @@ public class Battle {
 
 
     public static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
-        // todo
+        monsterCard.castSpell();  // todo is this enough ??
         return true;
     }
 

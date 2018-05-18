@@ -387,6 +387,10 @@ abstract public class View {
             System.out.println("You Won!");
     }
 
+    public static void mysticHourGlassUsed(){
+        System.out.println("Mystic Hourglass Used!");
+    }
+
     public static void gameOver(Player player){
         if (player == human) {
             System.out.println("You are out of Mystic Hourglass");
@@ -394,12 +398,17 @@ abstract public class View {
         }
     }
 
+    public static void wholeWinner(){
+        System.out.println("You won all the games!");
+        System.out.println("Game over!");
+    }
+
 //--------------------------------------Items menu-------------------------------------------------------
     public static void availableItems(Player player){
-        System.out.println("Available Items: (you have " + player.getMana() + " MP");
+        System.out.println("Available Items:");
         int i = 0;
         for (Item item: player.getItems()){
-            System.out.println((++i) + ". " + item.getName() + " : " + item.getManaCost() + " MP");
+            System.out.println((++i) + ". " + item.getName());
         }
         if (i == 0)
             System.out.println("There's no available item!");
@@ -407,7 +416,7 @@ abstract public class View {
 
     public static void itemHelp(){
         System.out.println("1. Use \"Item Name\": To cast the spell of the item");
-        System.out.println("2. Info \"Item Name\": To view full information about a card");
+        System.out.println("2. Info \"Item Name\": To view full information about the item");
         System.out.println("2. Exit");
     }
 
