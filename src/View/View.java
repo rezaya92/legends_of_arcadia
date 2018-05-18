@@ -360,7 +360,26 @@ abstract public class View {
 
     public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
         int index =  1;
+        String friendliness = "Friendly";
+        ArrayList<String> cardPlaceNames = new ArrayList<>();
+        ArrayList<Card> currentPlace = new ArrayList<>();
         for (SpellCastable spellCastable: effectableCards){
+            if (spellCastable instanceof Card && currentPlace != ((Card)spellCastable).getCardPlace()){
+                currentPlace = ((Card)spellCastable).getCardPlace();
+                if (cardPlaceNames.contains(((Card)spellCastable).getCardPlacebyName()))
+                    friendliness = "Enemy";
+                else
+                    cardPlaceNames.add(((Card)spellCastable).getCardPlacebyName());
+                System.out.println(friendliness + " " + ((Card)spellCastable).getCardPlacebyName() + ":");
+            }
+            else if (spellCastable instanceof PlayerHero){
+                currentPlace = new ArrayList<>();
+                if (cardPlaceNames.contains("Player"))
+                    friendliness = "Enemy";
+                else
+                    cardPlaceNames.add("Player");
+                System.out.println(friendliness + " " + "Player:");
+            }
             System.out.println(index + "." + spellCastable.getName());
         }
     }

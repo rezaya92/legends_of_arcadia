@@ -87,6 +87,28 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         owner.getOpponent().useAuraCards();
     }
 
+    public String getCardPlacebyName(){
+        try {
+            if (cardPlace == owner.getMonsterFieldCards())
+                return "Monster Field";
+            else if (cardPlace == owner.getDeckCards())
+                return "Deck";
+            else if (cardPlace == owner.getHandCards())
+                return "Hand";
+            else if (cardPlace == owner.getSpellFieldCards()) {
+                return "Spell Field";
+            } else if (cardPlace == owner.getGraveyardCards()) {
+                return "Graveyard";
+            } else if (cardPlace == owner.getInventoryCards())
+                return "Inventory";
+            else
+                return "nowhere!";
+        }
+        finally {
+            return "shop";
+        }
+    }
+
     public abstract void restoreValues();
 
 //    @Override
