@@ -475,8 +475,22 @@ abstract public class View {
     public static void itemDontExist(){
         System.out.println("Item doesn't exist!");
     }
+
 //-------------------------------------------------------exception-----------------------------------
     public static void indexOutOfBound(){
         System.out.println("Selected slot is not in range!");
+    }
+
+//------------------------------------------------------Played cards-------------------------------------
+    public static void playedInMonsterField(String name){
+        System.out.println(name + "  played in MonsterField");
+    }
+
+    public static void playedInSpellField(String name){
+        System.out.println(name + "  played in SpellField");
+    }
+
+    public static void spellCardCasted(String name){
+        System.out.println(name + "  casted and went to Graveyard");
     }
 }

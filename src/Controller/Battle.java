@@ -168,7 +168,25 @@ public class Battle {
         System.out.println(bot.getName() + "'s turn.");
 
         bot.startTurn();
-        // todo
+
+        for (int i = 0; i < bot.getHandCards().size(); i++){
+            if (bot.getHandCards().get(i) != null && bot.getHandCards().get(i).play()) {
+                i--;
+            }
+        }
+        for (Card card: bot.getMonsterFieldCards()){
+            if (card != null)
+                ((MonsterCard)card).castSpell();
+        }
+        for (Card card: bot.getMonsterFieldCards()){
+            if (card != null) {
+                ((MonsterCard) card).attackOpponentHero();
+                for (int i = 0; i < bot.getOpponent().getMonsterFieldCards().size(); i++) {
+                    ((MonsterCard) card).attack(i);
+                }
+            }
+        }
+
         bot.endTurn();
         return true;
     }

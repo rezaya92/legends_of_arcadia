@@ -31,27 +31,56 @@ public class SpellCard extends Card implements Cloneable{
     }
 
     @Override
-    public void play(int slotNumber) {   // -1 case card is instant spell  // only plays from hand
+    public boolean play(int slotNumber) {   // -1 case card is instant spell  // only plays from hand
         if (manaCost <= owner.getMana()) {
             if (slotNumber == -1) {
-                spell.use(owner);   // use can be boolean and this can be in if
-                cardPlace.remove(this);
-                owner.setMana(owner.getMana() - manaCost);
-                owner.getGraveyardCards().add(this);    // can use transfer instead
+                if (spellCardType == SpellCardType.INSTANT) {
+                    spell.use(owner);   // use can be boolean and this can be in if
+                    cardPlace.remove(this);
+                    owner.setMana(owner.getMana() - manaCost);
+                    owner.getGraveyardCards().add(this);    // can use transfer instead
+                    View.spellCardCasted(name);
+                    return true;
+                }
+                else{
+                    View.indexOutOfBound();
+                }
             }
             else{
-                if (owner.getSpellFieldCards().get(slotNumber) == null){
-                    deuseAuraCards();
-                    cardPlace.remove(this);    // cardPlace = hand here
-                    owner.getSpellFieldCards().set(slotNumber, this);
-                    cardPlace = owner.getSpellFieldCards();
-                    useAuraCards();
+                if (spellCardType != SpellCardType.INSTANT) {
+                    if (owner.getSpellFieldCards().get(slotNumber) == null) {
+                        deuseAuraCards();
+                        cardPlace.remove(this);    // cardPlace = hand here
+                        owner.getSpellFieldCards().set(slotNumber, this);
+                        cardPlace = owner.getSpellFieldCards();
+                        useAuraCards();
+                        View.playedInSpellField(name);
+                        return true;
+                    } else {
+                        View.slotIsFull(owner);
+                    }
+                }
+                else{
+                    View.indexOutOfBound();
                 }
             }
         }
         else {
             View.insufficientMana(owner);
         }
+        return false;
+    }
+
+    @Override
+    public boolean play(){
+        if (spellCardType == SpellCardType.INSTANT)
+            return play(-1);
+        else{
+            int slot = owner.getSpellFieldCards().indexOf(null);
+            if (slot != -1)
+                return play(slot);
+        }
+        return false;
     }
 
 /*    @Override     // this is not needed since transfer does the deuse and use of AuraCards.

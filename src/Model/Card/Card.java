@@ -58,7 +58,8 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
     }
 
 
-    public abstract void play(int slotNumber);
+    public abstract boolean play(int slotNumber);
+    public abstract boolean play();    // greedy way
 
     public boolean equalsInName(Object arg0){
         if(!(arg0 instanceof Card))

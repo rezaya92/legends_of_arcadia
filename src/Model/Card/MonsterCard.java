@@ -140,7 +140,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     @Override
-    public void play(int slotNumber) { // must be < 5   "just from hand to monsterField"
+    public boolean play(int slotNumber) { // must be < 5   "just from hand to monsterField"
         if (manaCost <= owner.getMana()) {
             if (owner.getMonsterFieldCards().get(slotNumber) == null) {
                 deuseAuraCards();
@@ -157,6 +157,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 }
                 if (battleCry != null)
                     battleCry.use(owner);
+                View.playedInMonsterField(name);
+                return true;                       // case battleCry didn't cast ?
             }
             else {
                 View.slotIsFull(owner);
@@ -165,6 +167,15 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         else {
             View.insufficientMana(owner);
         }
+        return false;
+    }
+
+    @Override
+    public boolean play(){
+        int slot = owner.getMonsterFieldCards().indexOf(null);
+        if (slot != -1)
+            return play(slot);
+        return false;
     }
 
     public void castSpell() {

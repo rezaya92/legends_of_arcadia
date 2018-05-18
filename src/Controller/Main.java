@@ -15,7 +15,7 @@ import static Model.Stuff.*;
  */
 public class Main {
     static public Player human = new Player("human", 10000);
-    static public Player goblinChieftain = new Player("Goblin Chieftain", 10000);
+    static public Player goblinChieftain = new Player("Goblin Chieftain", 1000);
     static public Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static public Player vampireLord = new Player("Vampire Lord", 10000);
     static public Player lucifer = new Player("Lucifer", 10000);
