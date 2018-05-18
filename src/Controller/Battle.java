@@ -105,6 +105,8 @@ public class Battle {
                                 View.slotIsEmpty(human);
                         } catch (NumberFormatException e){
                             View.invalidCommand();
+                        } catch (IndexOutOfBoundsException e){
+                            View.slotIsEmpty(human);
                         }
                     }
                     break;
