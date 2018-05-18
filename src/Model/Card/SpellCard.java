@@ -37,7 +37,7 @@ public class SpellCard extends Card implements Cloneable{
             if (slotNumber == -1) {
                 try {
                     spell.use(owner);   // use can be boolean and this can be in if
-                } catch (IOException ignored) {
+                } catch (Exception ignored) {
 
                 }
                 cardPlace.remove(this);

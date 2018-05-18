@@ -385,7 +385,7 @@ public class Player implements Cloneable{
                 try {
                     ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (IOException ignored){
+                catch (Exception ignored){
 
                 }
         }
@@ -393,7 +393,7 @@ public class Player implements Cloneable{
             try {
                 equippedAmulet.getEffect().use(this);
             }
-            catch (IOException ignored){
+            catch (Exception ignored){
 
             }
     }
@@ -405,7 +405,7 @@ public class Player implements Cloneable{
                 try {
                 ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (IOException ignored){
+                catch (Exception ignored){
                 
                 }
         }

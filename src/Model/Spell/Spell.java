@@ -111,9 +111,9 @@ public abstract class Spell implements Cloneable{
     }
 
 
-    private void choose(Player owner) throws IOException {
+    private void choose(Player owner) throws Exception {
         if (effectableCard.size() == 0 && choiceType == SpellChoiceType.SELECT)
-            throw new IOException("No Effectable Card");
+            throw new Exception("No Effectable Card");
         switch (choiceType){
             case ALL:
                 return;
@@ -150,7 +150,7 @@ public abstract class Spell implements Cloneable{
         }
     }
 
-    void use(Player owner) throws IOException{
+    void use(Player owner) throws Exception{
         setEffectableCards(owner);
         choose(owner);
         apply(owner);

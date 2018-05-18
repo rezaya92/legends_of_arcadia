@@ -192,7 +192,7 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
-            else if(action.equals("4") || action.equalsIgnoreCase("Edit amulet"))
+            else if(action.equals("4") || action.equalsIgnoreCase("Edit Amulets"))
                 editAmulet();
             else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
                 return;

@@ -134,7 +134,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             if (will != null) {
                 try {
                     will.use(owner);
-                } catch (IOException ignored) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -164,7 +164,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 if (battleCry != null) {
                     try {
                         battleCry.use(owner);
-                    } catch (IOException ignored) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -183,7 +183,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             if (!hasUsedSpell) {
                 try {
                     spellCasterSpell.use(owner);   // else ??
-                } catch (IOException ignored) {
+                } catch (Exception ignored) {
 
                 }
                 hasUsedSpell = true;

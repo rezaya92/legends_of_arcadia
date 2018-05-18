@@ -41,7 +41,7 @@ public class Item implements Stuff, Cloneable{
     public void use(Player player){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
         try {
             effect.use(player);
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
         }
     }
 
