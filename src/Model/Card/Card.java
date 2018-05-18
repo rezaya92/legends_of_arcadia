@@ -89,7 +89,6 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
     }
 
     public String getCardPlacebyName(){
-        try {
             if (cardPlace == owner.getMonsterFieldCards())
                 return "Monster Field";
             else if (cardPlace == owner.getDeckCards())
@@ -104,10 +103,6 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
                 return "Inventory";
             else
                 return "nowhere!";
-        }
-        finally {
-            return "shop";
-        }
     }
 
     public abstract void restoreValues();
