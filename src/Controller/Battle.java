@@ -186,6 +186,9 @@ public class Battle {
         for (Card card: bot.getMonsterFieldCards()){
             if (card != null) {
                 ((MonsterCard) card).attackOpponentHero();
+                if (!bot.getOpponent().getPlayerHero().checkAlive()){
+                    return false;
+                }
                 for (int i = 0; i < bot.getOpponent().getMonsterFieldCards().size(); i++) {
                     ((MonsterCard) card).attack(i);
                 }
