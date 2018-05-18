@@ -118,9 +118,9 @@ public class Battle {
                         scanner.next();
                         slotNumber = scanner.nextInt() - 1;
                         human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
-                    }// catch (IndexOutOfBoundsException e){
-                    //    View.slotIsEmpty(human);
-                    //}
+                    } catch (IndexOutOfBoundsException e){
+                        View.slotIsEmpty(human);
+                    }
                     catch (InputMismatchException e){
                         View.invalidCommand();
                     }
