@@ -39,7 +39,6 @@ public class APSpell extends Spell implements Cloneable{
             current.setAp(current.getAp() - changeAmount);
         }
         //        effectedCard.clear();
-        effectableCard.clear();
     }
 
     @Override

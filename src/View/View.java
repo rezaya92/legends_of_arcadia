@@ -389,6 +389,7 @@ abstract public class View {
                 System.out.println(friendliness + " " + "Player:");
             }
             System.out.println(index + "." + spellCastable.getName());
+            index++;
         }
     }
 
@@ -398,7 +399,11 @@ abstract public class View {
     }
 
     public static void spellTargeted(SpellCastable target){
-        System.out.println(target.getName() + "has been targeted.");
+        System.out.println(target.getName() + " has been targeted.");
+    }
+
+    public static void noTargetChosen(){
+        System.out.println("No Target was chosen. Such a waste ...");
     }
 
     public static void spellCasted(String caster, GeneralizedSpell spell){

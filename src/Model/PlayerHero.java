@@ -14,7 +14,7 @@ public class PlayerHero implements HasHP, Cloneable {
     private int defaultHP;
     private int hp;
     private double damageReceivementRatio = 1;
-    private String name = "Enemy Player";
+    private String name = "Player";
     private Player owner;
 
     public PlayerHero(int defaultHP, Player owner){

@@ -68,6 +68,8 @@ public class GeneralizedSpell implements Cloneable{
         for (Spell spell:spells) {
             if (spell instanceof HPSpell)
                 ((HPSpell)spell).checkDead(owner);
+            spell.effectableAreaCards.clear();
+            spell.effectableCard.clear();
         }
     }
 
@@ -81,8 +83,11 @@ public class GeneralizedSpell implements Cloneable{
     }*/
 
     public void deuse(Player owner){
-        for (Spell spell : spells)
+        for (Spell spell : spells) {
             spell.deuse(owner);
+            spell.effectableCard.clear();
+            spell.effectableAreaCards.clear();
+        }
     }
 
     public String getName() {

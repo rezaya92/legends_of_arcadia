@@ -11,7 +11,7 @@ import java.util.*;
 import static Controller.Main.human;
 
 public abstract class Spell implements Cloneable{
-    private ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
+    ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;
     private Set<Tribe> effectableTribe;
@@ -129,13 +129,15 @@ public abstract class Spell implements Cloneable{
                                 effectableCard.clear();
                                 effectableCard.add(choice);
                                 View.spellTargeted(choice);
-                                break;
+                                return;
                             case "Help":
                                 View.spellCastHelp();
                                 default:
                                     View.invalidCommand();
                         }
+                        action = scanner.next();
                     }
+                    View.noTargetChosen();
                     return;
                 }
             case RANDOM:
@@ -151,6 +153,8 @@ public abstract class Spell implements Cloneable{
         setEffectableCards(owner);
         choose(owner);
         apply(owner);
+        effectableCard.clear();
+        effectableAreaCards.clear();
         //    effectedCard.addAll(effectableCard);
     //    effectableCard.clear();
     }
