@@ -203,7 +203,7 @@ public class Player implements Cloneable{
         }
 
         for(Stuff stuff : shopStuff){
-            if(stuff.getName().equals(name)){
+            if(stuff.getName().equalsIgnoreCase(name)){
                 numberOfThatCardInShop ++;
                 priceOfThatCard = stuff.getPrice();
             }
@@ -212,20 +212,22 @@ public class Player implements Cloneable{
             return 0;
         if(priceOfThatCard * numberToBuy > gil)
             return -1;
-        for(Stuff stuff : shopStuff) {
-            if (stuff.getName().equals(name) && numberToBuyCounter > 0) {
+        for(int i=0; i<shopStuff.size(); i++){
+            if (shopStuff.get(i).getName().equalsIgnoreCase(name) && numberToBuyCounter > 0) {
                 switch (typeOfStuffToBuyAndSell) {
                     case CARD:
-                        shop.removeCard((Card) stuff);
-                        inventoryCards.add((Card) stuff);
+                        inventoryCards.add((Card)shopStuff.get(i));
+                        shop.removeCard((Card)shopStuff.get(i));
+                        i--;
                         break;
                     case ITEM:
                         //shop.removeItem((Item) stuff);
-                        items.add((Item) stuff);
+                        items.add((Item) shopStuff.get(i));
                         break;
                     default:
-                        shop.removeAmulet((Amulet) stuff);
-                        amulets.add((Amulet) stuff);
+                        amulets.add((Amulet) shopStuff.get(i));
+                        shop.removeAmulet((Amulet) shopStuff.get(i));
+                        i--;
                 }
                 numberToBuyCounter--;
             }
@@ -243,51 +245,56 @@ public class Player implements Cloneable{
         switch (typeOfStuffToBuyAndSell) {
             case CARD:
                 for(Card card : inventoryCards){
-                    if(card.getName().equals(name) && !deckCards.contains(card)){
+                    if(card.getName().equalsIgnoreCase(name) && !defaultDeckCards.contains(card)){
                         availableNumberOfThatCard ++;
                         priceOfThatCard = card.getPrice();
                     }
                 }
                 if(availableNumberOfThatCard < numberToSell)
                     return false;
-                for(Card card : inventoryCards){
-                    if(card.getName().equals(name) && !deckCards.contains(card) && numberToSellCounter > 0){
-                        shop.addCard(card);
-                        inventoryCards.remove(card);
+                for(int i=0; i<inventoryCards.size(); i++){
+                    if(inventoryCards.get(i).getName().equalsIgnoreCase(name) && !defaultDeckCards.contains(inventoryCards.get(i)) && numberToSellCounter > 0){
+                        shop.addCard(inventoryCards.get(i));//card.transfer(shop)?
+                        inventoryCards.remove(i);
+                        i--;
                         numberToSellCounter --;
                     }
                 }
                 break;
             case ITEM:
                 for(Item item : items){
-                    if(item.getName().equals(name)){
+                    if(item.getName().equalsIgnoreCase(name)){
                         availableNumberOfThatCard ++;
                         priceOfThatCard = item.getPrice();
                     }
                 }
                 if(availableNumberOfThatCard < numberToSell)
                     return false;
-                for(Item item : items){
-                    if(item.getName().equals(name) && numberToSellCounter > 0){
+                for(int i=0; i<items.size(); i++){
+                    if(items.get(i).getName().equalsIgnoreCase(name) && numberToSellCounter > 0){
                         //shop.addItem(item);
-                        items.remove(item);
+                        items.remove(i);
+                        i--;
                         numberToSellCounter --;
                     }
                 }
                 break;
             default:
+                System.out.println("         " + amuletToString());
                 for(Amulet amulet : amulets){
-                    if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet)){
+                    if(amulet.getName().equalsIgnoreCase(name) && equippedAmulet != amulet){
                         availableNumberOfThatCard ++;
                         priceOfThatCard = amulet.getPrice();
                     }
                 }
+                System.out.println(availableNumberOfThatCard + "         " + numberToSell);
                 if(availableNumberOfThatCard < numberToSell)
                     return false;
-                for(Amulet amulet : amulets){
-                    if(amulet.getName().equals(name) && !equippedAmulet.equals(amulet) && numberToSellCounter > 0){
-                        shop.addAmulet(amulet);
-                        amulets.remove(amulet);
+                for(int i=0; i<amulets.size(); i++){
+                    if(amulets.get(i).getName().equalsIgnoreCase(name) && equippedAmulet != amulets.get(i) && numberToSellCounter > 0){
+                        shop.addAmulet(amulets.get(i));
+                        amulets.remove(i);
+                        i--;
                         numberToSellCounter --;
                     }
                 }
