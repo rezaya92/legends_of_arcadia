@@ -113,13 +113,14 @@ public class Battle {
                     break;
                 case "Set":                // todo correct for instant spells
                     try {
-                        int handIndex = scanner.nextInt();
+                        int handIndex = scanner.nextInt() - 1;
                         scanner.next();
                         slotNumber = scanner.nextInt();
                         human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
-                    } catch (IndexOutOfBoundsException e){
-                        View.slotIsEmpty(human);
-                    } catch (InputMismatchException e){
+                    }// catch (IndexOutOfBoundsException e){
+                    //    View.slotIsEmpty(human);
+                    //}
+                    catch (InputMismatchException e){
                         View.invalidCommand();
                     }
                     break;
