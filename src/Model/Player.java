@@ -20,7 +20,7 @@ public class Player implements Cloneable{
     private ArrayList<Amulet> amulets = new ArrayList<>();
     private Amulet equippedAmulet;
     private Shop shop = new Shop();
-    private int gil;
+    private int gil = 10000;
     private int mana;
     private int maxMana;
     private String name;

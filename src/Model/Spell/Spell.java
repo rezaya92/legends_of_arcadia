@@ -55,23 +55,35 @@ public abstract class Spell implements Cloneable{
                     toAdd.add(owner.getPlayerHero());
                     break;
                 case ENEMY_MONSTERFIELD:
-                    toAdd = new ArrayList<>(owner.getOpponent().getMonsterFieldCards());
+                    if (owner.getOpponent()!= null) {
+                        toAdd = new ArrayList<>(owner.getOpponent().getMonsterFieldCards());
+                    }
                     break;
                 case ENEMY_SPELLFIELD:
-                    toAdd = new ArrayList<>(owner.getOpponent().getSpellFieldCards());
+                    if (owner.getOpponent()!= null) {
+                        toAdd = new ArrayList<>(owner.getOpponent().getSpellFieldCards());
+                    }
                     break;
                 case ENEMY_HAND:
-                    toAdd = new ArrayList<>(owner.getOpponent().getHandCards());
+                    if (owner.getOpponent()!= null) {
+                        toAdd = new ArrayList<>(owner.getOpponent().getHandCards());
+                    }
                     break;
                 case ENEMY_DECK:
-                    toAdd = new ArrayList<>(owner.getOpponent().getDeckCards());
+                    if (owner.getOpponent()!= null) {
+                        toAdd = new ArrayList<>(owner.getOpponent().getDeckCards());
+                    }
                     break;
                 case ENEMY_GRAVEYARD:
-                    toAdd = new ArrayList<>(owner.getOpponent().getGraveyardCards());
+                    if (owner.getOpponent()!= null){
+                        toAdd = new ArrayList<>(owner.getOpponent().getGraveyardCards());
+                    }
                     break;
                 case ENEMY_PLAYER:
-                    toAdd = new ArrayList<>();
-                    toAdd.add(owner.getOpponent().getPlayerHero());
+                    if (owner.getOpponent()!= null) {
+                        toAdd = new ArrayList<>();
+                        toAdd.add(owner.getOpponent().getPlayerHero());
+                    }
                     break;
             }
             effectableAreaCards.add(toAdd);

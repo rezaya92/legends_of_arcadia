@@ -8,6 +8,7 @@ import Model.Stuff;
 import View.View;
 
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -106,21 +107,28 @@ public class Battle {
                                 View.slotIsEmpty(human);
                         } catch (NumberFormatException e){
                             View.invalidCommand();
+                        } catch (IndexOutOfBoundsException e){
+                            View.slotIsEmpty(human);
                         }
                     }
                     break;
                 case "Set":                // todo correct for instant spells
-                    int handIndex = scanner.nextInt() - 1;
-                    scanner.next();
-                    slotNumber = scanner.nextInt() - 1;
-                    human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
+                    try {
+                        int handIndex = scanner.nextInt() - 1;
+                        scanner.next();
+                        slotNumber = scanner.nextInt() - 1;
+                        human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
+                    } catch (IndexOutOfBoundsException e){
+                        View.slotIsEmpty(human);
+                    } catch (InputMismatchException e){
+                        View.invalidCommand();
+                    }
                     break;
                 case "View":
                     String place = scanner.next();
                     switch (place){
                         case "Hand":
                             View.showPlayerMana(human);
-                            human.getHandCards();
                             View.viewHand(human);
                             break;
                         case "Graveyard":
@@ -137,8 +145,7 @@ public class Battle {
                     }
                     break;
                 case "Info":
-                    String cardName = scanner.nextLine();  // must be a card name (??)
-                    cardName = cardName.substring(1);
+                    String cardName = scanner.nextLine().substring(1);  // must be a card name (??)
                     Stuff card = Stuff.getStuffByName(cardName);
                     if (card != null)
                         System.out.println(card);
