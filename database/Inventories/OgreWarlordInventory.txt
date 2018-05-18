@@ -1,0 +1,8 @@
+Cards
+Ogre Warrior - 6
+Ogre Frontliner - 4
+Ogre Magi - 2
+Ogre Warchief - 1
+Throwing Knives - 3
+First Aid Kit - 3
+Poisonous Cauldron - 1

@@ -1,0 +1,25 @@
+Cards
+Elven Ranger - 2
+Elven Hunter - 2
+Elven Guardsman - 1
+Elven Assasin - 1
+Elven Druid - 1
+Lesser Whelp - 2
+Dragonling - 2
+Armored Dragon - 1
+Yellow Drake - 1
+Blue Dragon - 1
+Murloc Crawler - 2
+Murloc Warrior - 2
+Giant Crab - 1
+Shark Man - 1
+Naga Siren - 1
+First Aid Kit - 3
+Throwing Knives - 3
+Poisonous Cauldron - 1
+Healing Ward - 1
+War Drum - 1
+
+Items
+Small HP Potion - 2
+Small MP Potion - 2
