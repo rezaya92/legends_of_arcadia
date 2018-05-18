@@ -3,6 +3,7 @@ package View;
 import Model.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.Spell.GeneralizedSpell;
 
 import java.util.ArrayList;
 
@@ -360,6 +361,7 @@ abstract public class View {
 
     public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
         int index =  1;
+        System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
         String friendliness = "Friendly";
         ArrayList<String> cardPlaceNames = new ArrayList<>();
         ArrayList<Card> currentPlace = new ArrayList<>();
@@ -382,6 +384,20 @@ abstract public class View {
             }
             System.out.println(index + "." + spellCastable.getName());
         }
+    }
+
+    public static void spellCastHelp(){
+        System.out.println("1. Target #TargetNum To cast the spell on the specified target");
+        System.out.println("2. Exit: To skip spell casting");
+    }
+
+    public static void spellTargeted(SpellCastable target){
+        System.out.println(target.getName() + "has been targeted.");
+    }
+
+    public static void spellCasted(String caster, GeneralizedSpell spell){
+        System.out.println(caster + " has cast a spell:");
+        System.out.println(spell.getName() + ": " + spell.getDetail());
     }
 
 //------------------------------------------------------------------------------------------

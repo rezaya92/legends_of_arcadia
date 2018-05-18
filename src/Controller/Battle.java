@@ -241,6 +241,7 @@ public class Battle {
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){
                             item.use(human);
+                            View.spellCasted(itemName,item.getEffect());
                             human.getItems().remove(item);
                             if (!human.getOpponent().getPlayerHero().checkAlive())
                                 return false;
