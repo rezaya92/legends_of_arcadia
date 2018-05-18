@@ -118,11 +118,14 @@ abstract public class View {
         System.out.println(human.inventoryToString());
     }
 
-    public static void editDeckHelp(){
+    public static void editDeckHelp(boolean nextIsBattle){
         System.out.println("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck");
         System.out.println("2. Remove #CardSlotNum: To remove cards from your deck");
         System.out.println("3. Info \"Card Name\": To get more information about a specific card");
-        System.out.println("4. Exit: To return to the previous section");
+        if(nextIsBattle)
+            System.out.println("4. Next: To go to battlefield");
+        else
+            System.out.println("4. Exit: To return to the previous section");
     }
 
     public static void editAmulet(){
