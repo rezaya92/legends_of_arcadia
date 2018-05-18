@@ -5,6 +5,8 @@ import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Stuff;
 import View.View;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -130,7 +132,11 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public boolean checkAlive() {
         if (hp <= 0) {
             if (will != null) {
-                will.use(owner);
+                try {
+                    will.use(owner);
+                } catch (Exception ignored) {
+
+                }
             }
             this.transfer(owner.getGraveyardCards());
             return false;
@@ -155,8 +161,13 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     owner.addSleepingPlayedCard(this);
                     isAwake = false;                // because card may be played more than once
                 }
-                if (battleCry != null)
-                    battleCry.use(owner);
+                if (battleCry != null) {
+                    try {
+                        battleCry.use(owner);
+                    } catch (Exception ignored) {
+
+                    }
+                }
                 View.playedInMonsterField(name);
                 return true;                       // case battleCry didn't cast ?
             }
@@ -181,7 +192,11 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public void castSpell() {
         if (spellCasterSpell != null) {
             if (!hasUsedSpell) {
-                spellCasterSpell.use(owner);   // else ??
+                try {
+                    spellCasterSpell.use(owner);   // else ??
+                } catch (Exception ignored) {
+
+                }
                 hasUsedSpell = true;
             }
         }
@@ -211,7 +226,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         output += "AP: " + this.defaultAP + "\n";
         output += "MP cost: " + this.defaultManaCost + "\n";
         output += "Card Type: " + cardType + "\n";
-        output += "Card Tribe: " + tribe.name() + "\n";//TODO correct?
+        output += "Card Tribe: " + tribe.name() + "\n";
         output += "Is Defensive: " + isDefender + "\n";
         output += "Is Nimble: " + isNimble + "\n";
         if (battleCry != null)

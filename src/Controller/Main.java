@@ -14,16 +14,16 @@ import static Model.Stuff.*;
  * Created by msi-pc on 4/27/2018.
  */
 public class Main {
-    static public Player human = new Player("human", 10000);
-    static public Player goblinChieftain = new Player("Goblin Chieftain", 1000);
-    static public Player ogreWarlord = new Player("Ogre Warlord", 10000);
-    static public Player vampireLord = new Player("Vampire Lord", 10000);
-    static public Player lucifer = new Player("Lucifer", 10000);
+    public static Player human = new Player("human", 10000);
+    public static Player goblinChieftain = new Player("Goblin Chieftain", 10000);
+    public static Player ogreWarlord = new Player("Ogre Warlord", 10000);
+    public static Player vampireLord = new Player("Vampire Lord", 10000);
+    public static Player lucifer = new Player("Lucifer", 10000);
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
     private static ArrayList<Player> opponents = new ArrayList<>();
-    private static int mysticHourGlass = 3;  // todo change place?
+    private static int mysticHourGlass = 3;  //change place?
 
     public static void main(String[] args) throws Exception{
         Player humanBeforeCustomize;
@@ -60,7 +60,9 @@ public class Main {
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
                 opponentNumber++;
+                ArrayList<Item> humanItemsAfterMatch = human.getItems();
                 human = humanBeforeMatch;
+                human.setItems(humanItemsAfterMatch);
             }
             else{
                 if (mysticHourGlass > 0){
@@ -88,9 +90,8 @@ public class Main {
 
     //executing with while improves performance a lot?
     private static void afterMatch() throws Exception{
-        //TODO player saveHuman = human.clone(); (for hourGlass)
         View.afterMatch();
-        action = scanner.nextLine();//todo nextLine?
+        action = scanner.nextLine();
         lastViewMethod = Class.forName("View.View").getMethod("afterMatch");
         helpHandler(lastViewMethod);
         switch (action){
@@ -190,7 +191,7 @@ public class Main {
                 sellThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
             else if(action.startsWith("Info ") || action.startsWith("info "))
                 infoProcessor(action);
-            else if(action.equals("4") || action.equalsIgnoreCase("Edit amulet"))
+            else if(action.equals("4") || action.equalsIgnoreCase("Edit Amulets"))
                 editAmulet();
             else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
                 return;
@@ -277,8 +278,11 @@ public class Main {
                     View.successfulRemoveFromDeck(cardName, slotNumber);
             }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
-            }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
-                return;
+            }else if(action.equals("4") || action.equalsIgnoreCase(nextIsBattle ? "Next" : "Exit")){
+                if(nextIsBattle && human.getDeckCards().size() < 25)
+                    View.notEnoughCardsToInitiateBattle();
+                else
+                    return;
             }else{
                 throw new Exception();
             }
@@ -300,14 +304,14 @@ public class Main {
                     View.successfulAmuletEquip(amuletName);
                 else
                     throw new Exception();
-            }else if(action.equals("2") || action.matches("[rR]emove [aA]mulet")){
+            }else if(action.equals("2") || action.equalsIgnoreCase("Remove Amulet")){
                 String amuletName = human.removeEquippedAmulet();
                 if(amuletName == null)
                     throw new Exception();
                 View.successfulRemoveEquippedAmulet(amuletName);
-            }else if(action.startsWith("Info ") || action.startsWith("info")){
+            }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
-            }else if(action.equals("4") || action.matches("[Ee]xit")){
+            }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
                 return;
             }else{
                 throw new Exception();
@@ -319,10 +323,10 @@ public class Main {
     }
 
     private static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
-        int numberToBuy = Integer.parseInt(action.split(" - ")[1]);
+        int numberToBuy = Integer.parseInt(command.split(" - ")[1]);
         if(numberToBuy <= 0)
-            throw new Exception();//TODO check if executes correctly
-        String thingName = action.split(" - ")[0].substring(4);
+            throw new Exception();
+        String thingName = command.split(" - ")[0].substring(4);
         int status = human.buyStuff(typeOfStuffToBuyAndSell, thingName, numberToBuy);
         switch (status){
             case -1:
@@ -339,7 +343,7 @@ public class Main {
     private static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
         int numberToSell = Integer.parseInt(command.split(" - ")[1]);
         if(numberToSell <= 0)
-            throw new Exception();//TODO check if executes correctly
+            throw new Exception();
         String stuffName = command.split(" - ")[0].substring(5);
         if(human.sellStuff(typeOfStuffToBuyAndSell, stuffName, numberToSell))
             View.successfulSell(stuffName, numberToSell);

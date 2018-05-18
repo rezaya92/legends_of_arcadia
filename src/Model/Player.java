@@ -1,17 +1,15 @@
 package Model;
 
 import Model.Card.*;
-import Model.Spell.GeneralizedSpell;
-//import Model.PlayerHero;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player implements Cloneable{
-    private final int deckCapacity = 30;
+    //private final int deckCapacity = 30; TODO check if using final doesn't corrupt cloning
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
     private ArrayList<Card> deckCards = new ArrayList<>();
-    //private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();//TODO whenever a card comes to deck, it's slot number must be added or updated (also when removed)
     private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
     private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
     private ArrayList<Card> graveyardCards = new ArrayList<>();
@@ -46,6 +44,9 @@ public class Player implements Cloneable{
     }
 
     public ArrayList<Item> getItems(){return items;}
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
 
     public void setIsPlaying(boolean isPlaying){this.isPlaying = isPlaying;}
     public boolean getIsPlaying(){return isPlaying;}
@@ -307,7 +308,7 @@ public class Player implements Cloneable{
     public boolean addToDeck(String cardName, int slotNumber){
         slotNumber--;
         for(Card card : inventoryCards){
-            if(card.getName().equals(cardName) && card.getCardPlace() != deckCards){
+            if(card.getName().equalsIgnoreCase(cardName) && card.getCardPlace() != deckCards){
                 removeFromDeck(slotNumber + 1);
                 card.transfer(deckCards);
                 defaultDeckCards.set(slotNumber, card);
@@ -378,17 +379,32 @@ public class Player implements Cloneable{
     public void useAuraCards(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
-                ((SpellCard) spellCard).getSpell().use(this);
+                try {
+                    ((SpellCard) spellCard).getSpell().use(this);
+                }
+                catch (Exception ignored){
+
+                }
         }
         if (equippedAmulet != null)
-            equippedAmulet.getEffect().use(this);
+            try {
+                equippedAmulet.getEffect().use(this);
+            }
+            catch (Exception ignored){
+
+            }
     }
 
 //------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
     public void startTurn(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
+                try {
                 ((SpellCard) spellCard).getSpell().use(this);
+                }
+                catch (Exception ignored){
+                
+                }
         }
         mana = ++maxMana;
         if (!deckCards.isEmpty()){    // else needed ??
