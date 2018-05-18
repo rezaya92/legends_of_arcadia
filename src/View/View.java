@@ -464,4 +464,8 @@ abstract public class View {
     public static void itemDontExist(){
         System.out.println("Item doesn't exist!");
     }
+//-------------------------------------------------------exception-----------------------------------
+    public static void indexOutOfBound(){
+        System.out.println("Selected slot is not in range!");
+    }
 }
