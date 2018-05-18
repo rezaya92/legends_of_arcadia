@@ -237,7 +237,7 @@ public class Battle {
                     View.itemHelp();
                     break;
                 case "Use":
-                    String itemName = scanner.nextLine();
+                    String itemName = scanner.nextLine().substring(1);
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){
                             item.use(human);
@@ -245,6 +245,9 @@ public class Battle {
                             if (!human.getOpponent().getPlayerHero().checkAlive())
                                 return false;
                             break;
+                        }
+                        else {
+                            View.itemDontExist();
                         }
                     }
                     break;
@@ -256,6 +259,7 @@ public class Battle {
                 default:
                     View.invalidCommand();
             }
+            action =scanner.next();
         }
         return true;
     }
