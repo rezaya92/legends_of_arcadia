@@ -14,8 +14,11 @@ import static Model.Stuff.*;
  * Created by msi-pc on 4/27/2018.
  */
 public class Main {
-    static public Player human = new Player();
-    static public Player goblinChieftain = new Player(), ogreWarlord = new Player(), vampireLord = new Player(), lucifer = new Player();
+    static public Player human = new Player("human", 10000);
+    static public Player goblinChieftain = new Player("Goblin Chieftain", 10000);
+    static public Player ogreWarlord = new Player("Ogre Warlord", 10000);
+    static public Player vampireLord = new Player("Vampire Lord", 10000);
+    static public Player lucifer = new Player("Lucifer", 10000);
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
@@ -28,6 +31,11 @@ public class Main {
         int opponentNumber = 0;
 
         preProcess();
+
+        opponents.add(goblinChieftain);
+        opponents.add(ogreWarlord);
+        opponents.add(vampireLord);
+        opponents.add(lucifer);
 
         //Stuff stuff = (Stuff)allStuff.get(0).clone();
         //((Card)allStuff.get(0)).setName("23");//.setName("23");
@@ -212,8 +220,10 @@ public class Main {
                 break;
             case "4":
                 editDeck();
+                break;
             case "5":
                 editAmulet();
+                break;
             case "6":
                 return;
                 default:
@@ -356,31 +366,25 @@ public class Main {
     }
 
     private static void helpHandler(Method lastViewMethod) throws Exception{
-        while(action.equals("Help") || action.equals("help") || action.equals("Again") || action.equals("again")){
-            switch (action) {
-                case "Help":
-                case "help":
-                    Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help").invoke(null);
-                    break;
-                case "Again":
-                case "again":
-                    lastViewMethod.invoke(null);
-            }
+        while(true){
+            if(action.equalsIgnoreCase("Help"))
+                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help").invoke(null);
+            else if(action.equalsIgnoreCase("Again"))
+                lastViewMethod.invoke(null);
+            else
+                break;
             action = scanner.nextLine();
         }
     }
 
     private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
-        while(action.equals("Help") || action.equals("help") || action.equals("Again") || action.equals("again")){
-            switch (action) {
-                case "Help":
-                case "help":
-                    Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
-                    break;
-                case "Again":
-                case "again":
-                    lastViewMethod.invoke(null);
-            }
+        while(true){
+            if(action.equalsIgnoreCase("Help"))
+                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
+            else if(action.equalsIgnoreCase("Again"))
+                lastViewMethod.invoke(null);
+            else
+                break;
             action = scanner.nextLine();
         }
     }

@@ -151,7 +151,7 @@ abstract public class View {
     }
 
     public static void notEnoughStuffs(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
-        System.out.println("Not enough " + typeOfStuffToBuyAndSell.name() + "s!");
+        System.out.println("Not enough " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s!");
     }
 
     public static void successfulSell(String soldThingName, int numberToSell){

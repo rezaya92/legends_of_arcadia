@@ -31,13 +31,14 @@ public class Player implements Cloneable{
     private boolean isPlaying = false;
 
     public Player(){
-        for (int i=0; i<30; i++)
-            defaultDeckCards.add(null);
+
     } //for now (human)
 
     public Player(String name, int playerHeroDefaultHP){
         this.name = name;
         playerHero = new PlayerHero(playerHeroDefaultHP, this);
+        for (int i=0; i<30; i++)
+            defaultDeckCards.add(null);
     }
 
     public String getName() {
@@ -297,9 +298,10 @@ public class Player implements Cloneable{
     //----------------------------------------------------add & remove card from Inventory to deck---------------------------------------------------------------
 
     public boolean addToDeck(String cardName, int slotNumber){
+        slotNumber--;
         for(Card card : inventoryCards){
-            if(card.getName().equals(cardName)){
-                removeFromDeck(slotNumber);
+            if(card.getName().equals(cardName) && card.getCardPlace() != deckCards){
+                removeFromDeck(slotNumber + 1);
                 card.transfer(deckCards);
                 defaultDeckCards.set(slotNumber, card);
                 //deckCardsSlotNumber.add(slotNumber);
@@ -310,10 +312,11 @@ public class Player implements Cloneable{
     }
 
     public String removeFromDeck(int slotNumber){
+        slotNumber--;
         if(defaultDeckCards.get(slotNumber) == null)
             return null;
         Card wantedCard = defaultDeckCards.get(slotNumber);
-        wantedCard.transfer(inventoryCards);
+        wantedCard.transfer(null);
         //deckCards.remove(wantedCard);
         defaultDeckCards.set(slotNumber, null);
         return wantedCard.getName();
@@ -477,7 +480,7 @@ public class Player implements Cloneable{
             numberOfAmulets.add(1);
         }
         for(int i=0; i<uniqueAmulet.size(); i++){
-            output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName();
+            output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName() + "\n";
         }
         return output;
     }
