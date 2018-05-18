@@ -78,8 +78,6 @@ public class Main {
         if (opponentNumber == opponents.size()){
             View.wholeWinner();
         }
-
-        afterMatch();
     }
 
     /*public void useContinuousSpellCards(){

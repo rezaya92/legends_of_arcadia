@@ -13,6 +13,8 @@ public class PlayAreaArrayList<E> extends ArrayList<E> implements Cloneable {
 
     public PlayAreaArrayList(int initialCapacity){
         super(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++)
+            super.add(null);
     }
 
     @Override

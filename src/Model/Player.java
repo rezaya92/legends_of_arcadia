@@ -14,8 +14,8 @@ public class Player implements Cloneable{
     //private ArrayList<Integer> deckCardsSlotNumber = new ArrayList<>();//TODO whenever a card comes to deck, it's slot number must be added or updated (also when removed)
     private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
     private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
-    private ArrayList<Card> graveyardCards;
-    private ArrayList<Card> handCards;
+    private ArrayList<Card> graveyardCards = new ArrayList<>();
+    private ArrayList<Card> handCards = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
     private Amulet equippedAmulet;

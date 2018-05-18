@@ -231,9 +231,9 @@ abstract public class View {
 //--------------------------------------------------------------------------------- usingMonsterCard
     public static void usingMonsterCardInfo(MonsterCard monsterCard){
         System.out.println("Using " + monsterCard.getName() + ":");
-        System.out.println("HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+        System.out.println("HP: " + monsterCard.getHp() + "  AP: " + monsterCard.getAp());
         System.out.println("Is Sleeping: " + !monsterCard.isAwake());
-        System.out.println("Can Attack: " + !monsterCard.hasAttacked());
+        System.out.println("Can Attack: " + (!monsterCard.hasAttacked() && monsterCard.isAwake()));
         if (monsterCard.hasGotSpell()){
             System.out.println("Can Cast: " + !monsterCard.hasUsedSpell());
         }
@@ -257,7 +257,7 @@ abstract public class View {
         System.out.println("Your Hand:");
         int i = 1;
         for (Card card: player.getHandCards()){
-            System.out.println(i + ". " + card.getName());
+            System.out.println(i + ". " + card.getName() + " - " + card.getManaCost());
             i++;
         }
         if (i == 1)
@@ -274,6 +274,7 @@ abstract public class View {
         if (i == 1)
             System.out.println("Graveyard empty!");
 
+        System.out.println();
         System.out.println("Enemy's Graveyard:");
         int j = 1;
         for (Card card: player.getOpponent().getGraveyardCards()){
@@ -296,6 +297,7 @@ abstract public class View {
             i++;
         }
 
+        System.out.println();
         System.out.println("Enemy's SpellField:");
         int j =1;
         for (Card card: player.getOpponent().getSpellFieldCards()){
@@ -314,10 +316,10 @@ abstract public class View {
         for (Card card: player.getMonsterFieldCards()){
             System.out.print("Slot" + i + ": ");
             if (card == null)
-                System.out.println("Empty");
+                System.out.print("Empty");
             else{
                 MonsterCard monsterCard = (MonsterCard)card;
-                System.out.print(card.getName() + " HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+                System.out.print(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
                 if (monsterCard.isDefender())
                     System.out.print(" Defensive");
                 if (monsterCard.isNimble())
@@ -326,22 +328,23 @@ abstract public class View {
                     if (monsterCard.hasUsedSpell())
                         System.out.print(" UsedSpell");
                     else
-                        System.out.println(" HasSpell");
+                        System.out.print(" HasSpell");
                 }
             }
             System.out.println();
             i++;
         }
 
+        System.out.println();
         System.out.println("Enemy's MonsterField:");
         int j = 1;
         for (Card card: player.getOpponent().getMonsterFieldCards()){
             System.out.print("Slot" + j + ": ");
             if (card == null)
-                System.out.println("Empty");
+                System.out.print("Empty");
             else{
                 MonsterCard monsterCard = (MonsterCard)card;
-                System.out.print(card.getName() + " HP: " + monsterCard.getHp() + " AP: " + monsterCard.getAp());
+                System.out.print(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
                 if (monsterCard.isDefender())
                     System.out.print(" Defensive");
                 if (monsterCard.isNimble())

@@ -20,7 +20,7 @@ public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
 
-    public static Player startGameAgainst(Player opponent) {   // todo use amulets
+    public static Player startGameAgainst(Player opponent) {
         opponent.setOpponent(human);
         human.setOpponent(opponent);
         System.out.println("Battle against " + opponent.getName() + " started!");
@@ -78,9 +78,9 @@ public class Battle {
             View.emptyDeck();
         else
             System.out.println(human.getDeckCards().get(0).getName());
-        View.showPlayerMana(human);
 
         human.startTurn();
+        View.showPlayerMana(human);
         String action = scanner.next();
         while (!action.equals("Done")) {
             int slotNumber;
@@ -96,11 +96,12 @@ public class Battle {
                     } else {
                         try {
                             slotNumber = Integer.parseInt(s);
-                            MonsterCard monsterCard = (MonsterCard) human.getMonsterFieldCards().get(slotNumber);
+                            MonsterCard monsterCard = (MonsterCard) human.getMonsterFieldCards().get(slotNumber -1);
                             if (monsterCard != null) {
                                 if (!monsterCardUseMenu(monsterCard)) {
                                     return false;
                                 }
+                                View.showPlayerMana(human);
                             } else
                                 View.slotIsEmpty(human);
                         } catch (NumberFormatException e){
@@ -109,15 +110,17 @@ public class Battle {
                     }
                     break;
                 case "Set":                // todo correct for instant spells
-                    int handIndex = scanner.nextInt();
+                    int handIndex = scanner.nextInt() - 1;
                     scanner.next();
-                    slotNumber = scanner.nextInt();
+                    slotNumber = scanner.nextInt() - 1;
                     human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
                     break;
                 case "View":
                     String place = scanner.next();
                     switch (place){
                         case "Hand":
+                            View.showPlayerMana(human);
+                            human.getHandCards();
                             View.viewHand(human);
                             break;
                         case "Graveyard":
@@ -135,6 +138,7 @@ public class Battle {
                     break;
                 case "Info":
                     String cardName = scanner.nextLine();  // must be a card name (??)
+                    cardName = cardName.substring(1);
                     Stuff card = Stuff.getStuffByName(cardName);
                     if (card != null)
                         System.out.println(card);
