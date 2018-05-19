@@ -32,8 +32,8 @@ public class Battle {
         Player winner = null;
         human.setIsPlaying(true);
         opponent.setIsPlaying(true);
-        human.setMaxMana(0);
-        opponent.setMaxMana(0);
+//        human.setMaxMana(0);
+//        opponent.setMaxMana(0);
         Collections.shuffle(human.getDeckCards());
         Collections.shuffle(opponent.getDeckCards());
         try {

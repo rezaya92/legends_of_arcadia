@@ -203,11 +203,15 @@ public class Player implements Cloneable{
         while(handCards.size() > 0){
             handCards.get(0).transfer(deckCards);
         }
+        maxMana = 1;
 //        setMonsterFieldCards(new PlayAreaArrayList<>(5));
 //        setSpellFieldCards(new PlayAreaArrayList<>(3));
 //        setGraveyardCards(new ArrayList<>());
 //        setHandCards(new ArrayList<>());
         playerHero.restore();
+        isPlaying = false;
+        maxMana = 0;
+        mana = 0;
     }
 
     //---------------------------------------------------------------------------------------------------------------
