@@ -631,7 +631,7 @@ public class PreProcess {
                         setEffectableCards(owner);
                         for (SpellCastable card: getEffectableCard()) {
                             PlayerHero current = (PlayerHero) card;
-                            current.getOwner().setMana(current.getOwner().getMana() - 2);
+                            current.getOwner().setMaxMana(current.getOwner().getMana() - 2);
                         }
                         //        effectedCard.clear();
                         getEffectableCard().clear();
@@ -659,7 +659,7 @@ public class PreProcess {
                         setEffectableCards(owner);
                         for (SpellCastable card: getEffectableCard()) {
                             PlayerHero current = (PlayerHero) card;
-                            current.getOwner().setMana(current.getOwner().getMana() - 3);
+                            current.getOwner().setMaxMana(current.getOwner().getMana() - 3);
                         }
                         //        effectedCard.clear();
                         getEffectableCard().clear();
