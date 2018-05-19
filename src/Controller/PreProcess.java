@@ -29,7 +29,7 @@ public class PreProcess {
         instantiateItems();
         instantiateAmulets();
         instantiateHumanShop();
-        instantiatePlayerInventory(human, "database/Inventories/testHumanInventory.txt");
+        instantiatePlayerInventory(human, "database/Inventories/HumanInventory.txt");
         instantiatePlayerInventory(goblinChieftain, "database/Inventories/GoblinChieftainInventory.txt");
         instantiatePlayerInventory(ogreWarlord, "database/Inventories/OgreWarlordInventory.txt");
         instantiatePlayerInventory(vampireLord, "database/Inventories/VampireLordInventory.txt");
