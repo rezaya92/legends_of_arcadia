@@ -4,6 +4,7 @@ import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Item;
 import Model.Player;
+import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
 import View.View;
 
@@ -40,7 +41,7 @@ public class Battle {
                 human.getEquippedAmulet().getEffect().use(human);
             if (opponent.getEquippedAmulet() != null)
                 opponent.getEquippedAmulet().getEffect().use(opponent);
-        } catch (Exception e){ // todo correct
+        } catch (NoEffectableCardException e){ // todo correct
             // todo view
         }
 

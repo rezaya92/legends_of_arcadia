@@ -67,7 +67,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         return (this.name.equals(((Card) arg0).name));
     }
 
-    public void transfer (ArrayList<Card> destination){  // todo consider spell of spellCards   "also can be boolean"
+    public void transfer (ArrayList<Card> destination){  // "also can be boolean"
         if (owner != null && owner.getIsPlaying())
             deuseAuraCards();
         if (cardPlace != null)
