@@ -208,6 +208,9 @@ public class Player implements Cloneable{
 //        setGraveyardCards(new ArrayList<>());
 //        setHandCards(new ArrayList<>());
         playerHero.restore();
+        isPlaying = false;
+        maxMana = 0;
+        mana = 0;
     }
 
     //---------------------------------------------------------------------------------------------------------------
