@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Spell.GeneralizedSpell;
+import Model.Spell.NoEffectableCardException;
 import View.View;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class PlayerHero implements HasHP, Cloneable {
     public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
         try {
             item.use(owner);
-        }catch (Exception ignored){
+        }catch (NoEffectableCardException ignored){
 
         }
     }

@@ -584,24 +584,87 @@ public class PreProcess {
         },
                 "Increase Player’s Max HP by 2000","Diamond Pendant");
         GeneralizedSpell ironRing = new GeneralizedSpell(new Spell[]{
-                new MPSpell(
+                new Spell(
                         EnumSet.of(SpellArea.FRIENDLY_PLAYER),
-                        new Class[]{PlayerHero.class},
-                        SpellChoiceType.ALL,1)
+                        new Class[]{PlayerHero.class}, SpellChoiceType.ALL) {
+                    @Override
+                    protected void apply(Player owner) {
+                        for (SpellCastable card: getEffectableCard()) {
+                            if (card instanceof PlayerHero) {
+                                PlayerHero current = (PlayerHero) card;
+                                current.getOwner().setMaxMana(current.getOwner().getMaxMana() + 1);
+                            } else
+                                return;
+                        }
+                    }
+
+                    @Override
+                    protected void deuse(Player owner) {
+                        setEffectableCards(owner);
+                        for (SpellCastable card: getEffectableCard()) {
+                            PlayerHero current = (PlayerHero) card;
+                            current.getOwner().setMana(current.getOwner().getMana() - 1);
+                        }
+                        //        effectedCard.clear();
+                        getEffectableCard().clear();
+                    }
+                }
         },
                 "Increase Player’s Max MP by 1","Iron Ring");
         GeneralizedSpell goldRing = new GeneralizedSpell(new Spell[]{
-                new MPSpell(
+                new Spell(
                         EnumSet.of(SpellArea.FRIENDLY_PLAYER),
-                        new Class[]{PlayerHero.class},
-                        SpellChoiceType.ALL,2)
+                        new Class[]{PlayerHero.class}, SpellChoiceType.ALL) {
+                    @Override
+                    protected void apply(Player owner) {
+                        for (SpellCastable card: getEffectableCard()) {
+                            if (card instanceof PlayerHero) {
+                                PlayerHero current = (PlayerHero) card;
+                                current.getOwner().setMaxMana(current.getOwner().getMaxMana() + 2);
+                            } else
+                                return;
+                        }
+                    }
+
+                    @Override
+                    protected void deuse(Player owner) {
+                        setEffectableCards(owner);
+                        for (SpellCastable card: getEffectableCard()) {
+                            PlayerHero current = (PlayerHero) card;
+                            current.getOwner().setMana(current.getOwner().getMana() - 2);
+                        }
+                        //        effectedCard.clear();
+                        getEffectableCard().clear();
+                    }
+                }
         },
                 "Increase Player’s Max MP by 2","Gold Ring");
         GeneralizedSpell diamondRing = new GeneralizedSpell(new Spell[]{
-                new MPSpell(
+                new Spell(
                         EnumSet.of(SpellArea.FRIENDLY_PLAYER),
-                        new Class[]{PlayerHero.class},
-                        SpellChoiceType.ALL,3)
+                        new Class[]{PlayerHero.class}, SpellChoiceType.ALL) {
+                    @Override
+                    protected void apply(Player owner) {
+                        for (SpellCastable card: getEffectableCard()) {
+                            if (card instanceof PlayerHero) {
+                                PlayerHero current = (PlayerHero) card;
+                                current.getOwner().setMaxMana(current.getOwner().getMaxMana() + 3);
+                            } else
+                                return;
+                        }
+                    }
+
+                    @Override
+                    protected void deuse(Player owner) {
+                        setEffectableCards(owner);
+                        for (SpellCastable card: getEffectableCard()) {
+                            PlayerHero current = (PlayerHero) card;
+                            current.getOwner().setMana(current.getOwner().getMana() - 3);
+                        }
+                        //        effectedCard.clear();
+                        getEffectableCard().clear();
+                    }
+                }
         },
                 "Increase Player’s Max MP by 3","Diamond Ring");
         GeneralizedSpell DemonKingsCrown = new GeneralizedSpell(new Spell[]{

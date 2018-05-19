@@ -22,7 +22,7 @@ public class MoveSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void apply(Player owner) {
+    protected void apply(Player owner) {
         switch (destination){
             case FRIENDLY_MONSTERFIELD:
                 destinationCardList = new ArrayList<>(owner.getMonsterFieldCards());
@@ -61,7 +61,7 @@ public class MoveSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void deuse(Player owner) {
+    protected void deuse(Player owner) {
         //deuse nadare (aura nemitoone move kone)
     }
 

@@ -1,6 +1,7 @@
 package Model.Card;
 
 import Model.Spell.GeneralizedSpell;
+import Model.Spell.NoEffectableCardException;
 import Model.Spell.Spell;
 import View.View;
 
@@ -38,7 +39,7 @@ public class SpellCard extends Card implements Cloneable{
                 if (spellCardType == SpellCardType.INSTANT) {
                     try {
                         spell.use(owner);   // use can be boolean and this can be in if
-                    } catch (Exception ignored){
+                    } catch (NoEffectableCardException ignored){
 
                     }
                     cardPlace.remove(this);

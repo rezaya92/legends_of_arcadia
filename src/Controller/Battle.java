@@ -122,7 +122,7 @@ public class Battle {
                         slotNumber = scanner.nextInt() - 1;
                         human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
                     } catch (IndexOutOfBoundsException e){
-                        View.slotIsEmpty(human);
+                        View.indexOutOfBound();
                     }
                     catch (InputMismatchException e){
                         View.invalidCommand();
@@ -227,7 +227,7 @@ public class Battle {
                     }
                     else {
                         try {
-                            monsterCard.attack(Integer.parseInt(beingAttackedSlot));  //must be < 5
+                            monsterCard.attack(Integer.parseInt(beingAttackedSlot) - 1);  //must be < 5
                         } catch (NumberFormatException e){
                             View.invalidCommand();
                         } catch (IndexOutOfBoundsException e){

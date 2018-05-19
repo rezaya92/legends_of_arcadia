@@ -22,7 +22,7 @@ public class MPSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void apply(Player owner) {
+    protected void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
             if (card instanceof PlayerHero) {
                 PlayerHero current = (PlayerHero) card;
@@ -33,7 +33,7 @@ public class MPSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void deuse(Player owner) {
+    protected void deuse(Player owner) {
         setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
             PlayerHero current = (PlayerHero) card;

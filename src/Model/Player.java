@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Card.*;
+import Model.Spell.NoEffectableCardException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -382,7 +383,7 @@ public class Player implements Cloneable{
                 try {
                     ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (Exception ignored){
+                catch (NoEffectableCardException ignored){
 
                 }
         }
@@ -390,7 +391,7 @@ public class Player implements Cloneable{
             try {
                 equippedAmulet.getEffect().use(this);
             }
-            catch (Exception ignored){
+            catch (NoEffectableCardException ignored){
 
             }
     }
@@ -402,7 +403,7 @@ public class Player implements Cloneable{
                 try {
                 ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (Exception ignored){
+                catch (NoEffectableCardException ignored){
                 
                 }
         }

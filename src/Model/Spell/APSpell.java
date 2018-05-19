@@ -21,7 +21,7 @@ public class APSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void apply(Player owner) {
+    protected void apply(Player owner) {
         for (SpellCastable card: effectableCard) {
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
@@ -32,7 +32,7 @@ public class APSpell extends Spell implements Cloneable{
     }
 
     @Override
-    void deuse(Player owner) {
+    protected void deuse(Player owner) {
         setEffectableCards(owner);
         for (SpellCastable card: effectableCard) {
             MonsterCard current = (MonsterCard) card;

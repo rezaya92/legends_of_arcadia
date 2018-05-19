@@ -3,6 +3,7 @@ package Model.Card;
 import Model.HasHP;
 import Model.Player;
 import Model.Spell.GeneralizedSpell;
+import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
 import View.View;
 
@@ -122,7 +123,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     public void takeDamage(int damageAmount){   // todo set if when ratio is 1 (double may cause change)
-        hp -= (int)(damageAmount*damageReceivementRatio);
+        if (damageReceivementRatio < 1.01 && damageReceivementRatio > 9.99)
+            hp -= damageAmount;
+        else
+            hp -= (int)(damageAmount*damageReceivementRatio);
     }
 
     public void heal(int healAmount){
@@ -134,7 +138,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             if (will != null) {
                 try {
                     will.use(owner);
-                } catch (Exception ignored) {
+                } catch (NoEffectableCardException ignored) {
 
                 }
             }
@@ -164,7 +168,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 if (battleCry != null) {
                     try {
                         battleCry.use(owner);
-                    } catch (Exception ignored) {
+                    } catch (NoEffectableCardException ignored) {
 
                     }
                 }
@@ -194,7 +198,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             if (!hasUsedSpell) {
                 try {
                     spellCasterSpell.use(owner);   // else ??
-                } catch (Exception ignored) {
+                } catch (NoEffectableCardException ignored) {
 
                 }
                 hasUsedSpell = true;

@@ -6,7 +6,6 @@ import Model.Player;
 import Model.SpellCastable;
 import View.View;
 
-import java.io.IOException;
 import java.util.*;
 
 import static Controller.Main.human;
@@ -91,7 +90,7 @@ public abstract class Spell implements Cloneable{
         }
     }
 
-    void setEffectableCards(Player owner){
+    protected void setEffectableCards(Player owner){
         setEffectableAreaCards(owner);
         effectableCard = new ArrayList<>();
         for (ArrayList<SpellCastable> cardArray: effectableAreaCards) {
@@ -111,9 +110,9 @@ public abstract class Spell implements Cloneable{
     }
 
 
-    private void choose(Player owner) throws Exception {
+    private void choose(Player owner) throws NoEffectableCardException {
         if (effectableCard.size() == 0 && choiceType == SpellChoiceType.SELECT)
-            throw new Exception("No Effectable Card");
+            throw new NoEffectableCardException();
         switch (choiceType){
             case ALL:
                 return;
@@ -150,7 +149,7 @@ public abstract class Spell implements Cloneable{
         }
     }
 
-    void use(Player owner) throws Exception{
+    void use(Player owner) throws NoEffectableCardException{
         setEffectableCards(owner);
         choose(owner);
         apply(owner);
@@ -168,9 +167,9 @@ public abstract class Spell implements Cloneable{
     //    effectableCard.clear();
     }*/
 
-    abstract void apply(Player owner);
+    protected abstract void apply(Player owner);
 
-    abstract void deuse(Player owner);
+    protected abstract void deuse(Player owner);
 
     public ArrayList<SpellCastable> getEffectableCard() {
         return effectableCard;
