@@ -403,7 +403,7 @@ public class Player implements Cloneable{
                 ((SpellCard) spellCard).getSpell().use(this);
                 }
                 catch (Exception ignored){
-                
+
                 }
         }
         mana = ++maxMana;
