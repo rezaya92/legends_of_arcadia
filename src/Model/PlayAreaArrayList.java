@@ -22,7 +22,7 @@ public class PlayAreaArrayList<E> extends ArrayList<E> implements Cloneable {
         int indexOfObject = this.indexOf(o);
         if (indexOfObject == -1)
             return false;
-        this.set(indexOfObject, (E)o);
+        this.set(indexOfObject, null);
         return true;
     }
 
