@@ -44,6 +44,14 @@ public class Player implements Cloneable{
         return name;
     }
 
+    public void setMonsterFieldCards(ArrayList<Card> monsterFieldCards) {
+        this.monsterFieldCards = monsterFieldCards;
+    }
+
+    public void setSpellFieldCards(ArrayList<Card> spellFieldCards) {
+        this.spellFieldCards = spellFieldCards;
+    }
+
     public ArrayList<Item> getItems(){return items;}
     public void setItems(ArrayList<Item> items) {
         this.items = items;
@@ -87,11 +95,26 @@ public class Player implements Cloneable{
         equippedAmulet = amulet;
     }
 
+    public ArrayList<Card> getDefaultDeckCards() {
+        return defaultDeckCards;
+    }
+    public void setDefaultDeckCards(ArrayList<Card> defaultDeckCards) {
+        this.defaultDeckCards = defaultDeckCards;
+    }
+
     public ArrayList<Card> getDeckCards() {
         return deckCards;
     }
     public void setDeckCards(ArrayList<Card> deckCards) {
         this.deckCards = deckCards;
+//        while(deckCards.size()>0)
+//            deckCards.get(0).transfer(this.deckCards);
+        for(Card card : deckCards)
+            card.setCardPlace(this.deckCards);
+        setMonsterFieldCards(new PlayAreaArrayList<>(5));
+        setSpellFieldCards(new PlayAreaArrayList<>(3));
+        setGraveyardCards(new ArrayList<>());
+        setHandCards(new ArrayList<>());
     }
 
     public ArrayList<Card> getMonsterFieldCards() {
@@ -160,6 +183,31 @@ public class Player implements Cloneable{
     }
     public void setEquippedAmulet(Amulet equippedAmulet) {
         this.equippedAmulet = equippedAmulet;
+    }
+
+    //--------------------------restore------------------------------------------
+    public void restore(){
+        for(int i=0; i<5; i++){
+            if(monsterFieldCards.get(i) != null){
+                monsterFieldCards.get(i).transfer(deckCards);
+            }
+        }
+        for(int i=0; i<3; i++){
+            if(spellFieldCards.get(i) != null){
+                spellFieldCards.get(i).transfer(deckCards);
+            }
+        }
+        while(graveyardCards.size() > 0){
+            graveyardCards.get(0).transfer(deckCards);
+        }
+        while(handCards.size() > 0){
+            handCards.get(0).transfer(deckCards);
+        }
+//        setMonsterFieldCards(new PlayAreaArrayList<>(5));
+//        setSpellFieldCards(new PlayAreaArrayList<>(3));
+//        setGraveyardCards(new ArrayList<>());
+//        setHandCards(new ArrayList<>());
+        playerHero.restore();
     }
 
     //---------------------------------------------------------------------------------------------------------------

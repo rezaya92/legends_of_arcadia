@@ -31,6 +31,10 @@ public class PlayerHero implements HasHP, Cloneable {
     //    this.hp = hp;
     //}
 
+    public void restore(){
+        hp = defaultHP;
+    }
+
     public Player getOwner(){return owner;}
 
     public void takeDamage(int damageAmount){

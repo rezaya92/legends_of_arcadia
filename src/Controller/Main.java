@@ -54,19 +54,39 @@ public class Main {
 
         while (opponentNumber < opponents.size()){
             Player opponent = opponents.get(opponentNumber);
-            humanBeforeCustomize = (Player)human.clone();
+            //humanBeforeCustomize = (Player)human.clone();
+            //TODO EXTREMELY CONTAINS BUG BECAUSE CARDS MUST BE TRANSFERRED BACK TO DECK AND NOT BY COPYING
+            human.restore();
+            opponent.restore();
+            ArrayList<Card> humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
+            ArrayList<Card> humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+            ArrayList<Item> humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
+            ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
+            ArrayList<Card> opponentDeckCardBeforeCustomization = new ArrayList<>(opponent.getDeckCards());
+            ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
             afterMatch();
-            humanBeforeMatch = (Player)human.clone();
+            //humanBeforeMatch = (Player)human.clone();
+            ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
+            ArrayList<Card> humanDeckCardBeforeMatch = new ArrayList<>(human.getDeckCards());
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
                 opponentNumber++;
-                ArrayList<Item> humanItemsAfterMatch = human.getItems();
-                human = humanBeforeMatch;
-                human.setItems(humanItemsAfterMatch);
+                //ArrayList<Item> humanItemsAfterMatch = human.getItems();
+                //human = humanBeforeMatch;
+                human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
+                human.setDeckCards(humanDeckCardBeforeMatch);
+                //human.setItems(humanItemsAfterMatch);
             }
             else{
                 if (mysticHourGlass > 0){
-                    human = humanBeforeCustomize;
+                    //System.out.println(humanBeforeCustomize.getDeckCards().size());
+                    //human = humanBeforeCustomize;
+                    human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
+                    human.setDeckCards(humanDeckCardBeforeCustomization);
+                    human.setItems(humanItemsBeforeCustomization);
+                    opponent.setDefaultDeckCards(opponentDefaultDeckCardBeforeCustomization);
+                    opponent.setDeckCards(opponentDeckCardBeforeCustomization);
+                    opponent.setItems(opponentItemsBeforeCustomization);
                     mysticHourGlass--;
                     View.mysticHourGlassUsed();
                 }
