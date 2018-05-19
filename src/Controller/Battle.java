@@ -31,11 +31,18 @@ public class Battle {
         Player winner = null;
         human.setIsPlaying(true);
         opponent.setIsPlaying(true);
-
         human.setMaxMana(0);
         opponent.setMaxMana(0);
         Collections.shuffle(human.getDeckCards());
         Collections.shuffle(opponent.getDeckCards());
+        try {
+            if (human.getEquippedAmulet() != null)
+                human.getEquippedAmulet().getEffect().use(human);
+            if (opponent.getEquippedAmulet() != null)
+                opponent.getEquippedAmulet().getEffect().use(opponent);
+        } catch (Exception e){ // todo correct
+            // todo view
+        }
 
         System.out.print("Player drew ");
         for (int i = 0; i < 4; i++) {
@@ -234,7 +241,7 @@ public class Battle {
                             View.indexOutOfBound();
                         }
                     }
-                    break;
+                    return true;
                 case "Cast":
                 case "cast":
                     String s = scanner.next();
@@ -244,7 +251,7 @@ public class Battle {
                         if (!spellCastingMenu(monsterCard))
                             return false;
                     }
-                    break;
+                    return true;
                 default:
                     View.invalidCommand();
             }
@@ -256,6 +263,8 @@ public class Battle {
 
     public static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
         monsterCard.castSpell();  // todo is this enough ??
+        if (!monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive())
+            return false;
         return true;
     }
 
