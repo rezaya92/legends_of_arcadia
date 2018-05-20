@@ -101,16 +101,16 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         this.tribe = tribe;
     }
 
-    public void attackOpponentHero() {   // todo return string
+    public boolean attackOpponentHero() {   // todo return string
         if (isAwake) {
             Player opponent = this.owner.getOpponent();
             if (!opponent.isDefenderPresent()) {
                 if (!hasAttacked) {
                     opponent.getPlayerHero().takeDamage(ap);
-                    opponent.getPlayerHero().checkAlive();
                     hasAttacked = true;
                     owner.addHasAttackedCard(this);
                     View.clashWith(this.name, owner.getOpponent().getName());
+                    return opponent.getPlayerHero().checkAlive();
                 }
                 else
                     View.alreadyAttacked(owner);
@@ -120,6 +120,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             else
                 View.defenderEnemyPresent(owner);
         }
+        return true;
     }
 
     public void takeDamage(int damageAmount){   // todo set if when ratio is 1 (double may cause change)
@@ -198,10 +199,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             if (!hasUsedSpell) {
                 try {
                     spellCasterSpell.use(owner);   // else ??
+                    hasUsedSpell = true;
                 } catch (NoEffectableCardException ignored) {
-
+                    View.noValidTarget(owner);
                 }
-                hasUsedSpell = true;
             }
         }
     }

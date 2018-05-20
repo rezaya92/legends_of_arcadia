@@ -101,9 +101,10 @@ public class Battle {
                 case "Use":
                 case "use":
                     String s = scanner.next();
-                    if (s.equals("Item")){
+                    if (s.equalsIgnoreCase("Item")){
                         if (!itemUseMenu())
                             return false;
+                        View.showPlayerMana(human);
                     } else {
                         try {
                             slotNumber = Integer.parseInt(s);
@@ -160,6 +161,7 @@ public class Battle {
                         case "Heroes":
                         case "heroes":
                             View.viewHeroes(human);
+                            break;
                         default:
                             View.invalidCommand();
                     }
@@ -183,7 +185,7 @@ public class Battle {
     }
 
 
-    public static boolean botPlayTurn(Player bot) {
+    private static boolean botPlayTurn(Player bot) {
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(bot.getName() + "'s turn.");
 
@@ -200,10 +202,8 @@ public class Battle {
         }
         for (Card card: bot.getMonsterFieldCards()){
             if (card != null) {
-                ((MonsterCard) card).attackOpponentHero();
-                if (!bot.getOpponent().getPlayerHero().checkAlive()){
+                if (!((MonsterCard) card).attackOpponentHero())
                     return false;
-                }
                 for (int i = 0; i < bot.getOpponent().getMonsterFieldCards().size(); i++) {
                     ((MonsterCard) card).attack(i);
                 }
@@ -215,7 +215,7 @@ public class Battle {
     }
 
 
-    public static boolean monsterCardUseMenu(MonsterCard monsterCard){  // returns false if opponent hero dies
+    private static boolean monsterCardUseMenu(MonsterCard monsterCard){  // returns false if opponent hero dies
         View.usingMonsterCardInfo(monsterCard);
         String action = scanner.next();
         while (!action.equalsIgnoreCase("Exit")){
@@ -236,8 +236,7 @@ public class Battle {
                 case "attack":
                     String beingAttackedSlot = scanner.next();
                     if (beingAttackedSlot.equals("Player")) {
-                        monsterCard.attackOpponentHero();
-                        if (!monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive())
+                        if (!monsterCard.attackOpponentHero())
                             return false;
                     }
                     else {
@@ -269,15 +268,13 @@ public class Battle {
     }
 
 
-    public static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
+    private static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
         monsterCard.castSpell();  // todo is this enough ??
-        if (!monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive())
-            return false;
-        return true;
+        return monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive();
     }
 
 
-    public static boolean itemUseMenu(){
+    private static boolean itemUseMenu(){
         View.availableItems(human);
         String action = scanner.next();
         while (!action.equalsIgnoreCase("Exit")){
@@ -298,14 +295,10 @@ public class Battle {
                             item.use(human);
                             View.spellCasted(itemName,item.getEffect());
                             human.getItems().remove(item);
-                            if (!human.getOpponent().getPlayerHero().checkAlive())
-                                return false;
-                            break;
-                        }
-                        else {
-                            View.itemDontExist();
+                            return human.getOpponent().getPlayerHero().checkAlive();
                         }
                     }
+                    View.itemDontExist();
                     break;
                 case "Info":
                     itemName = scanner.nextLine();

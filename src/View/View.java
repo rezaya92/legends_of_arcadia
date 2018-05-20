@@ -421,6 +421,12 @@ abstract public class View {
         System.out.println("No Target was chosen. Such a waste ...");
     }
 
+    public static void noValidTarget(Player player){
+        if (player == human){
+            System.out.println("There's no valid target. Spell didn't cast!");
+        }
+    }
+
     public static void spellCasted(String caster, GeneralizedSpell spell){
         System.out.println(caster + " has cast a spell:");
         System.out.println(spell.getName() + ": " + spell.getDetail());
