@@ -28,7 +28,7 @@ public class HPSpell extends Spell implements Cloneable{
                 if (changeAmount > 0)
                     ((HasHP)card).heal(changeAmount);
                 else
-                    ((HasHP)card).takeDamage(changeAmount);
+                    ((HasHP)card).takeDamage(-changeAmount);
                 ((HasHP) card).checkAlive();
         }
     }
@@ -40,7 +40,7 @@ public class HPSpell extends Spell implements Cloneable{
             if (changeAmount > 0)
                 ((HasHP)card).heal(-changeAmount);
             else
-                ((HasHP)card).takeDamage(-changeAmount);
+                ((HasHP)card).takeDamage(changeAmount);
         }
         //effectedCard.clear();
         effectableCard.clear();
