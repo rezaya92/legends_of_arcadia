@@ -403,6 +403,11 @@ abstract public class View {
         }
     }
 
+    public static void viewHeroes(Player player){
+        System.out.println("Your Hero: " + player.getPlayerHero().getHp());
+        System.out.println("Opponent Hero: " + player.getOpponent().getPlayerHero().getHp());
+    }
+
     public static void spellCastHelp(){
         System.out.println("1. Target #TargetNum To cast the spell on the specified target");
         System.out.println("2. Exit: To skip spell casting");

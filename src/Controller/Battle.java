@@ -141,18 +141,25 @@ public class Battle {
                     String place = scanner.next();
                     switch (place){
                         case "Hand":
+                        case "hand":
                             View.showPlayerMana(human);
                             View.viewHand(human);
                             break;
                         case "Graveyard":
+                        case "graveyard":
                             View.viewGraveyard(human);
                             break;
                         case "SpellField":
+                        case "spellfield":
                             View.viewSpellField(human);
                             break;
                         case "MonsterField":
+                        case "monsterfield":
                             View.viewMonsterField(human);
                             break;
+                        case "Heroes":
+                        case "heroes":
+                            View.viewHeroes(human);
                         default:
                             View.invalidCommand();
                     }
