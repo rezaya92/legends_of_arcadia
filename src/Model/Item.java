@@ -2,6 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
+import View.View;
 
 import java.io.IOException;
 
@@ -42,7 +43,8 @@ public class Item implements Stuff, Cloneable{
     public void use(Player player){  // much better to be boolean and if spell casted return true ( actually spell should be boolean)
         try {
             effect.use(player);
-        } catch (NoEffectableCardException ignored) {
+        } catch (NoEffectableCardException e) {
+            View.noEffectableCard();
         }
     }
 

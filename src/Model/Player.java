@@ -2,6 +2,7 @@ package Model;
 
 import Model.Card.*;
 import Model.Spell.NoEffectableCardException;
+import View.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -435,16 +436,16 @@ public class Player implements Cloneable{
                 try {
                     ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (NoEffectableCardException ignored){
-
+                catch (NoEffectableCardException e){
+                    View.noEffectableCard();
                 }
         }
         if (equippedAmulet != null)
             try {
                 equippedAmulet.getEffect().use(this);
             }
-            catch (NoEffectableCardException ignored){
-
+            catch (NoEffectableCardException e) {
+                View.noEffectableCard();
             }
     }
 
@@ -455,8 +456,8 @@ public class Player implements Cloneable{
                 try {
                 ((SpellCard) spellCard).getSpell().use(this);
                 }
-                catch (NoEffectableCardException ignored){
-                
+                catch (NoEffectableCardException e){
+                    View.noEffectableCard();
                 }
         }
         mana = ++maxMana;

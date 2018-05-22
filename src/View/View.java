@@ -318,6 +318,8 @@ abstract public class View {
         }
     }
 
+
+
     public static void viewMonsterField(Player player){
         System.out.println("Your MonsterField:");
         int i = 1;
@@ -369,6 +371,13 @@ abstract public class View {
         }
     }
 
+    public static void viewHeroes(Player player){
+        System.out.println("Your Hero: " + player.getPlayerHero().getHp());
+        System.out.println("Opponent Hero: " + player.getOpponent().getPlayerHero().getHp());
+    }
+
+
+    //------------------------------------------------------------------------------------------Spell
     public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
         int index =  1;
         System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
@@ -403,11 +412,6 @@ abstract public class View {
         }
     }
 
-    public static void viewHeroes(Player player){
-        System.out.println("Your Hero: " + player.getPlayerHero().getHp());
-        System.out.println("Opponent Hero: " + player.getOpponent().getPlayerHero().getHp());
-    }
-
     public static void spellCastHelp(){
         System.out.println("1. Target #TargetNum To cast the spell on the specified target");
         System.out.println("2. Exit: To skip spell casting");
@@ -431,6 +435,11 @@ abstract public class View {
         System.out.println(caster + " has cast a spell:");
         System.out.println(spell.getName() + ": " + spell.getDetail());
     }
+
+    public static void noEffectableCard(){
+        System.out.println("OOPS! There was no one to cast the spell on.");
+    }
+
 
 //------------------------------------------------------------------------------------------
     public static void battleHelp(){

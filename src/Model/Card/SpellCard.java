@@ -39,8 +39,8 @@ public class SpellCard extends Card implements Cloneable{
                 if (spellCardType == SpellCardType.INSTANT) {
                     try {
                         spell.use(owner);   // use can be boolean and this can be in if
-                    } catch (NoEffectableCardException ignored){
-
+                    } catch (NoEffectableCardException e){
+                        View.noEffectableCard();
                     }
                     cardPlace.remove(this);
                     owner.setMana(owner.getMana() - manaCost);
