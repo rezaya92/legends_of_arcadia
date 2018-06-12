@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GameView {
-    public static void ShowMainMenu(Stage primaryStage){
+    public static void ShowGame(Stage primaryStage){
         Group root = new Group();
         Group informationGroup = new Group();
         Group playFieldGroup = new Group();
