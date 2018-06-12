@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static Controller.Main.human;
 
-abstract public class View {
+abstract public class ConsoleView {
     public static void afterMatch(){
         System.out.println("1. Enter Shop: To enter shop and buy or sell cards and items");
         System.out.println("2. Edit Inventory: To edit your amulet or deck");
@@ -446,10 +446,10 @@ abstract public class View {
         System.out.println("0. Use Item: To use an item of your items");
         System.out.println("1. Use #SlotNum: To use a specific card which is on the Monster Field");
         System.out.println("2. Set #HandIndex to #SlotNum: To set a card which is on the hand, in the field");
-        System.out.println("3. View Hand: To view the cards in your hand");
-        System.out.println("4. View Graveyard: To view the cards in your graveyard");
-        System.out.println("5. View SpellField: To view the cards in both ’players spell fields");
-        System.out.println("6. View MonsterField: To view the cards in both ’players monster fields");
+        System.out.println("3. ConsoleView Hand: To view the cards in your hand");
+        System.out.println("4. ConsoleView Graveyard: To view the cards in your graveyard");
+        System.out.println("5. ConsoleView SpellField: To view the cards in both ’players spell fields");
+        System.out.println("6. ConsoleView MonsterField: To view the cards in both ’players monster fields");
         System.out.println("7. Info \"Card Name\": To view full information about a card");
         System.out.println("8. Done: To end your turn");
     }

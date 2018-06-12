@@ -2,11 +2,7 @@ package Model.Card;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import Model.Spell.Spell;
-import View.View;
-
-import java.io.IOException;
-import java.util.ArrayList;
+import View.ConsoleView;
 
 /**
  * Created by msi-pc on 5/5/2018.
@@ -40,16 +36,16 @@ public class SpellCard extends Card implements Cloneable{
                     try {
                         spell.use(owner);   // use can be boolean and this can be in if
                     } catch (NoEffectableCardException e){
-                        View.noEffectableCard();
+                        ConsoleView.noEffectableCard();
                     }
                     cardPlace.remove(this);
                     owner.setMana(owner.getMana() - manaCost);
                     owner.getGraveyardCards().add(this);    // can use transfer instead
-                    View.spellCardCasted(name);
+                    ConsoleView.spellCardCasted(name);
                     return true;
                 }
                 else{
-                    View.indexOutOfBound();
+                    ConsoleView.indexOutOfBound();
                 }
             }
             else{
@@ -60,19 +56,19 @@ public class SpellCard extends Card implements Cloneable{
                         owner.getSpellFieldCards().set(slotNumber, this);
                         cardPlace = owner.getSpellFieldCards();
                         useAuraCards();
-                        View.playedInSpellField(name);
+                        ConsoleView.playedInSpellField(name);
                         return true;
                     } else {
-                        View.slotIsFull(owner);
+                        ConsoleView.slotIsFull(owner);
                     }
                 }
                 else{
-                    View.indexOutOfBound();
+                    ConsoleView.indexOutOfBound();
                 }
             }
         }
         else {
-            View.insufficientMana(owner);
+            ConsoleView.insufficientMana(owner);
         }
         return false;
     }

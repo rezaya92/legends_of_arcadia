@@ -6,7 +6,9 @@ import Model.Item;
 import Model.Player;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
-import View.View;
+import View.ConsoleView;
+import View.GameView;
+import View.MenuView;
 
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -84,19 +86,19 @@ public class Battle {
         System.out.println("Turn " + (++turnNumber) + " started!");
         System.out.println(human.getName() + "'s turn.");
         if (human.getDeckCards().isEmpty())
-            View.emptyDeck();
+            ConsoleView.emptyDeck();
         else
             System.out.println(human.getDeckCards().get(0).getName());
 
         human.startTurn();
-        View.showPlayerMana(human);
+        ConsoleView.showPlayerMana(human);
         String action = scanner.next();
         while (!action.equalsIgnoreCase("Done")) {
             int slotNumber;
             switch (action) {
                 case "Help":
                 case "help":
-                    View.battleHelp();
+                    ConsoleView.battleHelp();
                     break;
                 case "Use":
                 case "use":
@@ -104,7 +106,7 @@ public class Battle {
                     if (s.equalsIgnoreCase("Item")){
                         if (!itemUseMenu())
                             return false;
-                        View.showPlayerMana(human);
+                        ConsoleView.showPlayerMana(human);
                     } else {
                         try {
                             slotNumber = Integer.parseInt(s);
@@ -113,13 +115,13 @@ public class Battle {
                                 if (!monsterCardUseMenu(monsterCard)) {
                                     return false;
                                 }
-                                View.showPlayerMana(human);
+                                ConsoleView.showPlayerMana(human);
                             } else
-                                View.slotIsEmpty(human);
+                                ConsoleView.slotIsEmpty(human);
                         } catch (NumberFormatException e){
-                            View.invalidCommand();
+                            ConsoleView.invalidCommand();
                         } catch (IndexOutOfBoundsException e){
-                            View.indexOutOfBound();
+                            ConsoleView.indexOutOfBound();
                         }
                     }
                     break;
@@ -131,10 +133,10 @@ public class Battle {
                         slotNumber = scanner.nextInt() - 1;
                         human.getHandCards().get(handIndex).play(slotNumber);  // handIndex should be less than hand size.
                     } catch (IndexOutOfBoundsException e){
-                        View.indexOutOfBound();
+                        ConsoleView.indexOutOfBound();
                     }
                     catch (InputMismatchException e){
-                        View.invalidCommand();
+                        ConsoleView.invalidCommand();
                     }
                     break;
                 case "View":
@@ -143,27 +145,27 @@ public class Battle {
                     switch (place){
                         case "Hand":
                         case "hand":
-                            View.showPlayerMana(human);
-                            View.viewHand(human);
+                            ConsoleView.showPlayerMana(human);
+                            ConsoleView.viewHand(human);
                             break;
                         case "Graveyard":
                         case "graveyard":
-                            View.viewGraveyard(human);
+                            ConsoleView.viewGraveyard(human);
                             break;
                         case "SpellField":
                         case "spellfield":
-                            View.viewSpellField(human);
+                            ConsoleView.viewSpellField(human);
                             break;
                         case "MonsterField":
                         case "monsterfield":
-                            View.viewMonsterField(human);
+                            ConsoleView.viewMonsterField(human);
                             break;
                         case "Heroes":
                         case "heroes":
-                            View.viewHeroes(human);
+                            ConsoleView.viewHeroes(human);
                             break;
                         default:
-                            View.invalidCommand();
+                            ConsoleView.invalidCommand();
                     }
                     break;
                 case "Info":
@@ -173,10 +175,10 @@ public class Battle {
                     if (card != null)
                         System.out.println(card);
                     else
-                        View.invalidCardName();
+                        ConsoleView.invalidCardName();
                     break;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
             }
             action = scanner.next();
         }
@@ -216,17 +218,17 @@ public class Battle {
 
 
     private static boolean monsterCardUseMenu(MonsterCard monsterCard){  // returns false if opponent hero dies
-        View.usingMonsterCardInfo(monsterCard);
+        ConsoleView.usingMonsterCardInfo(monsterCard);
         String action = scanner.next();
         while (!action.equalsIgnoreCase("Exit")){
             switch (action){
                 case "Again":
                 case "again":
-                    View.usingMonsterCardInfo(monsterCard);
+                    ConsoleView.usingMonsterCardInfo(monsterCard);
                     break;
                 case "Help":
                 case "help":
-                    View.usingMonsterCardHelp(monsterCard.hasGotSpell());
+                    ConsoleView.usingMonsterCardHelp(monsterCard.hasGotSpell());
                     break;
                 case "Info":
                 case "info":
@@ -243,9 +245,9 @@ public class Battle {
                         try {
                             monsterCard.attack(Integer.parseInt(beingAttackedSlot) - 1);  //must be < 5
                         } catch (NumberFormatException e){
-                            View.invalidCommand();
+                            ConsoleView.invalidCommand();
                         } catch (IndexOutOfBoundsException e){
-                            View.indexOutOfBound();
+                            ConsoleView.indexOutOfBound();
                         }
                     }
                     return true;
@@ -253,14 +255,14 @@ public class Battle {
                 case "cast":
                     String s = scanner.next();
                     if (!monsterCard.hasGotSpell() || !s.equals("Spell"))
-                        View.invalidCommand();
+                        ConsoleView.invalidCommand();
                     else {
                         if (!spellCastingMenu(monsterCard))
                             return false;
                     }
                     return true;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
             }
             action = scanner.next();
         }
@@ -275,17 +277,17 @@ public class Battle {
 
 
     private static boolean itemUseMenu(){
-        View.availableItems(human);
+        ConsoleView.availableItems(human);
         String action = scanner.next();
         while (!action.equalsIgnoreCase("Exit")){
             switch (action){
                 case "Again":
                 case "again":
-                    View.availableItems(human);
+                    ConsoleView.availableItems(human);
                     break;
                 case "Help":
                 case "help":
-                    View.itemHelp();
+                    ConsoleView.itemHelp();
                     break;
                 case "Use":
                 case "use":
@@ -293,20 +295,20 @@ public class Battle {
                     for (Item item: human.getItems()){          // invalid input ?
                         if (item.getName().equals(itemName)){
                             item.use(human);
-                            View.spellCasted(itemName,item.getEffect());
+                            ConsoleView.spellCasted(itemName,item.getEffect());
                             human.getItems().remove(item);
                             return human.getOpponent().getPlayerHero().checkAlive();
                         }
                     }
-                    View.itemDontExist();
+                    ConsoleView.itemDontExist();
                     break;
                 case "Info":
                     itemName = scanner.nextLine();
                     if (!Main.printInfoStuff(itemName))
-                        View.itemDontExist();
+                        ConsoleView.itemDontExist();
                     break;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
             }
             action =scanner.next();
         }

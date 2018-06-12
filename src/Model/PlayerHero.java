@@ -2,10 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import View.View;
-
-import java.io.IOException;
-import java.util.ArrayList;
+import View.ConsoleView;
 
 
 // description: this could be in Player class, brought here for code to be more clear.
@@ -49,13 +46,13 @@ public class PlayerHero implements HasHP, Cloneable {
         try {
             item.use(owner);
         }catch (NoEffectableCardException e){
-            View.noEffectableCard();
+            ConsoleView.noEffectableCard();
         }
     }
 
     public boolean checkAlive(){
         if (hp <= 0){
-            View.battleOver(owner);  // owner = loser
+            ConsoleView.battleOver(owner);  // owner = loser
             return false;
         }
         return true;

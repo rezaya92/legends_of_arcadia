@@ -2,9 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import View.View;
-
-import java.io.IOException;
+import View.ConsoleView;
 
 public class Item implements Stuff, Cloneable{
     private GeneralizedSpell effect;
@@ -44,7 +42,7 @@ public class Item implements Stuff, Cloneable{
         try {
             effect.use(player);
         } catch (NoEffectableCardException e) {
-            View.noEffectableCard();
+            ConsoleView.noEffectableCard();
         }
     }
 

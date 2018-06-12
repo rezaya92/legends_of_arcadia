@@ -2,13 +2,10 @@ package Controller;
 
 import Model.*;
 import Model.Card.*;
-import Model.Spell.*;
 import View.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import static Controller.PreProcess.*;
-import static Model.Spell.GeneralizedSpell.allSpells;
-import static Model.Stuff.*;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -87,17 +84,17 @@ public class Main {
                     opponent.setDeckCards(opponentDeckCardBeforeCustomization);
                     opponent.setItems(opponentItemsBeforeCustomization);
                     mysticHourGlass--;
-                    View.mysticHourGlassUsed();
+                    ConsoleView.mysticHourGlassUsed();
                 }
                 else{
-                    View.gameOver(human);
+                    ConsoleView.gameOver(human);
                     break;
                 }
             }
         }
 
         if (opponentNumber == opponents.size()){
-            View.wholeWinner();
+            ConsoleView.wholeWinner();
         }
     }
 
@@ -109,9 +106,9 @@ public class Main {
 
     //executing with while improves performance a lot?
     private static void afterMatch() throws Exception{
-        View.afterMatch();
+        ConsoleView.afterMatch();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("afterMatch");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("afterMatch");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -124,15 +121,15 @@ public class Main {
                 editDeck(true);
                 return;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
         }
         afterMatch();
     }
 
     private static void enterShop() throws Exception{
-        View.enterShop();
+        ConsoleView.enterShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("enterShop");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("enterShop");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -147,15 +144,15 @@ public class Main {
             case "4":
                 return;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
         }
         enterShop();
     }
 
     private static void cardShop() throws Exception{
-        View.cardShop();
+        ConsoleView.cardShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("cardShop");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("cardShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -171,15 +168,15 @@ public class Main {
             else
                 throw new Exception();
         } catch (Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         cardShop();
     }
 
     private static void itemShop() throws Exception{
-        View.itemShop();
+        ConsoleView.itemShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("itemShop");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("itemShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -193,15 +190,15 @@ public class Main {
             else
                 throw new Exception();
         } catch (Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         itemShop();
     }
 
     private static void amuletShop() throws Exception{
-        View.amuletShop();
+        ConsoleView.amuletShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("amuletShop");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("amuletShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -217,15 +214,15 @@ public class Main {
             else
                 throw new Exception();
         } catch (Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         amuletShop();
     }
 
     private static void editInventory() throws Exception{
-        View.editInventory();
+        ConsoleView.editInventory();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("editInventory");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editInventory");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -246,15 +243,15 @@ public class Main {
             case "6":
                 return;
                 default:
-                    View.invalidCommand();
+                    ConsoleView.invalidCommand();
         }
         editInventory();
     }
 
     private static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
-        View.stuffInventory(typeOfStuffToBuyAndSell);
+        ConsoleView.stuffInventory(typeOfStuffToBuyAndSell);
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
         helpHandler(lastViewMethod, typeOfStuffToBuyAndSell);
         if(action.equals("2") || action.equalsIgnoreCase("Exit"))
             return;
@@ -263,15 +260,15 @@ public class Main {
                 throw new Exception();
             infoProcessor(action);
         } catch (Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         stuffInventory(typeOfStuffToBuyAndSell);
     }
 
     private static void editDeck(boolean nextIsBattle) throws Exception{
-        View.editDeck();
+        ConsoleView.editDeck();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("editDeck");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editDeck");
         helpHandler(lastViewMethod, nextIsBattle);
         try {
             if (action.startsWith("Add ") || action.startsWith("add ")) {
@@ -285,7 +282,7 @@ public class Main {
                 String cardName = action.substring(4, splitIndex);
                 int slotNumber = Integer.parseInt(action.substring(splitIndex + 1));
                 if (human.addToDeck(cardName, slotNumber))
-                    View.successfulAddToDeck(cardName, slotNumber);
+                    ConsoleView.successfulAddToDeck(cardName, slotNumber);
                 else
                     throw new Exception();
             }else if(action.startsWith("Remove ") || action.startsWith("remove ")){
@@ -294,40 +291,40 @@ public class Main {
                 if(cardName == null)
                     throw new Exception();
                 else
-                    View.successfulRemoveFromDeck(cardName, slotNumber);
+                    ConsoleView.successfulRemoveFromDeck(cardName, slotNumber);
             }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
             }else if(action.equals("4") || action.equalsIgnoreCase(nextIsBattle ? "Next" : "Exit")){
                 if(nextIsBattle && human.getDeckCards().size() < 25)
-                    View.notEnoughCardsToInitiateBattle();
+                    ConsoleView.notEnoughCardsToInitiateBattle();
                 else
                     return;
             }else{
                 throw new Exception();
             }
         }catch (Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         editDeck(nextIsBattle);
     }
 
     private static void editAmulet() throws Exception{
-        View.editAmulet();
+        ConsoleView.editAmulet();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.View").getMethod("editAmulet");
+        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editAmulet");
         helpHandler(lastViewMethod);
         try{
             if(action.startsWith("Equip ") || action.startsWith("equip ")){
                 String amuletName = action.substring(6);
                 if(human.equipAmulet(amuletName))
-                    View.successfulAmuletEquip(amuletName);
+                    ConsoleView.successfulAmuletEquip(amuletName);
                 else
                     throw new Exception();
             }else if(action.equals("2") || action.equalsIgnoreCase("Remove Amulet")){
                 String amuletName = human.removeEquippedAmulet();
                 if(amuletName == null)
                     throw new Exception();
-                View.successfulRemoveEquippedAmulet(amuletName);
+                ConsoleView.successfulRemoveEquippedAmulet(amuletName);
             }else if(action.startsWith("Info ") || action.startsWith("info ")){
                 infoProcessor(action);
             }else if(action.equals("4") || action.equalsIgnoreCase("Exit")){
@@ -336,7 +333,7 @@ public class Main {
                 throw new Exception();
             }
         }catch(Exception e){
-            View.invalidCommand();
+            ConsoleView.invalidCommand();
         }
         editAmulet();
     }
@@ -349,13 +346,13 @@ public class Main {
         int status = human.buyStuff(typeOfStuffToBuyAndSell, thingName, numberToBuy);
         switch (status){
             case -1:
-                View.insufficientGil();
+                ConsoleView.insufficientGil();
                 break;
             case 0:
-                View.notAvailableInShop();
+                ConsoleView.notAvailableInShop();
                 break;
             case 1:
-                View.successfulBuy(thingName, numberToBuy);
+                ConsoleView.successfulBuy(thingName, numberToBuy);
         }
     }
 
@@ -365,9 +362,9 @@ public class Main {
             throw new Exception();
         String stuffName = command.split(" - ")[0].substring(5);
         if(human.sellStuff(typeOfStuffToBuyAndSell, stuffName, numberToSell))
-            View.successfulSell(stuffName, numberToSell);
+            ConsoleView.successfulSell(stuffName, numberToSell);
         else
-            View.notEnoughStuffs(typeOfStuffToBuyAndSell);
+            ConsoleView.notEnoughStuffs(typeOfStuffToBuyAndSell);
     }
 
     private static void infoProcessor(String command) throws Exception{
@@ -380,7 +377,7 @@ public class Main {
     static boolean printInfoStuff(String stuffName){
         for(Stuff stuff : Stuff.allStuff){
             if(stuff.getName().equalsIgnoreCase(stuffName)){
-                View.printStuffInfo(stuff);
+                ConsoleView.printStuffInfo(stuff);
                 return true;
             }
         }
@@ -390,7 +387,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help").invoke(null);
+                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help").invoke(null);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else
@@ -403,7 +400,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
+                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else
@@ -416,7 +413,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod, boolean nextIsBattle) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.View").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
+                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else

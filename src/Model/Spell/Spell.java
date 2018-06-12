@@ -4,7 +4,7 @@ import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
 import Model.SpellCastable;
-import View.View;
+import View.ConsoleView;
 
 import java.util.*;
 
@@ -118,7 +118,7 @@ public abstract class Spell implements Cloneable{
                 return;
             case SELECT:
                 if (owner == human) {
-                    View.viewSpellEffectableCards(effectableCard);
+                    ConsoleView.viewSpellEffectableCards(effectableCard);
                     Scanner scanner = new Scanner(System.in);
                     String action = scanner.next();
                     while (!action.equals("Exit")) {
@@ -128,16 +128,16 @@ public abstract class Spell implements Cloneable{
                                 SpellCastable choice = effectableCard.get(index);
                                 effectableCard.clear();
                                 effectableCard.add(choice);
-                                View.spellTargeted(choice);
+                                ConsoleView.spellTargeted(choice);
                                 return;
                             case "Help":
-                                View.spellCastHelp();
+                                ConsoleView.spellCastHelp();
                                 default:
-                                    View.invalidCommand();
+                                    ConsoleView.invalidCommand();
                         }
                         action = scanner.next();
                     }
-                    View.noTargetChosen();
+                    ConsoleView.noTargetChosen();
                     return;
                 }
             case RANDOM:

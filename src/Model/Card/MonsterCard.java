@@ -5,9 +5,8 @@ import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
-import View.View;
+import View.ConsoleView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -71,7 +70,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             this.attack(monsterCard);
         }
         else {
-            View.slotIsEmpty(owner);
+            ConsoleView.slotIsEmpty(owner);
         }
     }
     public void attack(MonsterCard monsterCard) {   // todo return string
@@ -83,15 +82,15 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 monsterCard.checkAlive();
                 hasAttacked = true;
                 owner.addHasAttackedCard(this);
-                View.clashWith(this.name, monsterCard.getName());
+                ConsoleView.clashWith(this.name, monsterCard.getName());
             }
             else
-                View.alreadyAttacked(owner);
+                ConsoleView.alreadyAttacked(owner);
         } else if (!isAwake){
-            View.cardIsSleep(owner);
+            ConsoleView.cardIsSleep(owner);
         }
         else
-            View.defenderEnemyPresent(owner);
+            ConsoleView.defenderEnemyPresent(owner);
     }
 
     public Tribe getTribe() {
@@ -109,16 +108,16 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     opponent.getPlayerHero().takeDamage(ap);
                     hasAttacked = true;
                     owner.addHasAttackedCard(this);
-                    View.clashWith(this.name, owner.getOpponent().getName());
+                    ConsoleView.clashWith(this.name, owner.getOpponent().getName());
                     return opponent.getPlayerHero().checkAlive();
                 }
                 else
-                    View.alreadyAttacked(owner);
+                    ConsoleView.alreadyAttacked(owner);
             } else if (!isAwake){
-                View.cardIsSleep(owner);
+                ConsoleView.cardIsSleep(owner);
             }
             else
-                View.defenderEnemyPresent(owner);
+                ConsoleView.defenderEnemyPresent(owner);
         }
         return true;
     }
@@ -140,7 +139,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 try {
                     will.use(owner);
                 } catch (NoEffectableCardException e) {
-                    View.noEffectableCard();
+                    ConsoleView.noEffectableCard();
                 }
             }
             this.transfer(owner.getGraveyardCards());
@@ -170,18 +169,18 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     try {
                         battleCry.use(owner);
                     } catch (NoEffectableCardException e) {
-                        View.noEffectableCard();
+                        ConsoleView.noEffectableCard();
                     }
                 }
-                View.playedInMonsterField(name);
+                ConsoleView.playedInMonsterField(name);
                 return true;                       // case battleCry didn't cast ?
             }
             else {
-                View.slotIsFull(owner);
+                ConsoleView.slotIsFull(owner);
             }
         }
         else {
-            View.insufficientMana(owner);
+            ConsoleView.insufficientMana(owner);
         }
         return false;
     }
@@ -201,7 +200,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     spellCasterSpell.use(owner);   // else ??
                     hasUsedSpell = true;
                 } catch (NoEffectableCardException e) {
-                    View.noEffectableCard();
+                    ConsoleView.noEffectableCard();
                 }
             }
         }

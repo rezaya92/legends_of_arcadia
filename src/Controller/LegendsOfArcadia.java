@@ -15,9 +15,8 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setWidth(800);
         primaryStage.setHeight(600);
         primaryStage.setFullScreen(true);
-
+        primaryStage.show();
         MenuView.ShowMainMenu(primaryStage);
-
         //Main.startOfOperations();
     }
 }
