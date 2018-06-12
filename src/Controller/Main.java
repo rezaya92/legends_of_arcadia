@@ -25,9 +25,9 @@ public class Main {
     private static ArrayList<Player> opponents = new ArrayList<>();
     private static int mysticHourGlass = 3;  //change place?
 
-    public static void main(String[] args) throws Exception{
-        Player humanBeforeCustomize;
-        Player humanBeforeMatch;
+    public static void startOfOperations() throws Exception{
+//        Player humanBeforeCustomize;
+//        Player humanBeforeMatch;
         int opponentNumber = 0;
 
         preProcess();
@@ -55,7 +55,6 @@ public class Main {
         while (opponentNumber < opponents.size()){
             Player opponent = opponents.get(opponentNumber);
             //humanBeforeCustomize = (Player)human.clone();
-            //TODO EXTREMELY CONTAINS BUG BECAUSE CARDS MUST BE TRANSFERRED BACK TO DECK AND NOT BY COPYING
             human.restore();
             opponent.restore();
             ArrayList<Card> humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
