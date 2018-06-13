@@ -1,8 +1,15 @@
 package View;
 
+import Model.Card.Card;
 import Model.Player;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -25,19 +32,18 @@ public class GameView {
         informationGroup = new Group();
         playFieldGroup = new Group();
         menusGroup = new Group();
-        root.setLayoutX(0);
-        root.setLayoutY(0);
+        root.relocate(0,0);
         prepareInformationGroup();
         preparePlayFieldGroup();
         prepareMenusGroup();
         root.getChildren().addAll(informationGroup,playFieldGroup,menusGroup);
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
         primaryStage.setScene(scene);
     }
 
     private static void prepareInformationGroup(){
-        informationGroup.setLayoutX(0);
-        informationGroup.setLayoutY(0);
+        informationGroup.relocate(0,0);
         console = new TextArea();
         details = new TextArea();
         console.setEditable(false);
@@ -50,12 +56,24 @@ public class GameView {
     }
 
     private static void preparePlayFieldGroup(){
-        playFieldGroup.setLayoutX(primaryStage.getWidth()/3);
-        playFieldGroup.setLayoutY(0);
+        playFieldGroup.relocate(primaryStage.getWidth()/3,0);
     }
 
     private static void prepareMenusGroup(){
-        menusGroup.setLayoutX(primaryStage.getWidth()/3 * 2);
-        menusGroup.setLayoutY(0);
+        menusGroup.relocate(primaryStage.getWidth()/3 * 2,0);
+        ListView<String> prettyListView = new ListView<>(FXCollections.observableArrayList("Reza","Soroosh","Sina")); //TODO change to hand
+        prettyListView.setPrefSize(primaryStage.getWidth() / 3 - 200, primaryStage.getHeight() / 3 * 2 - 35);
+        prettyListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null)
+                    setText("Empty Slot");
+                else
+                    setText(item.toString());
+            }
+        });
+        prettyListView.relocate(120,20);
+        menusGroup.getChildren().add(prettyListView);
     }
 }
