@@ -5,6 +5,7 @@ import Model.Card.*;
 import View.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -25,7 +26,7 @@ public class Main {
     private static ArrayList<Player> opponents = new ArrayList<>();
     private static int mysticHourGlass = 3;  //change place?
 
-    public static void startOfOperations() throws Exception{
+    public static void startOfOperations(Stage primaryStage) throws Exception{
 //        Player humanBeforeCustomize;
 //        Player humanBeforeMatch;
         int opponentNumber = 0;
@@ -63,7 +64,7 @@ public class Main {
             ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
             ObservableList<Card> opponentDeckCardBeforeCustomization = FXCollections.observableArrayList(opponent.getDeckCards());
             ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
-            afterMatch();
+            afterMatch(primaryStage);
             //humanBeforeMatch = (Player)human.clone();
             ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
             ObservableList<Card> humanDeckCardBeforeMatch = FXCollections.observableArrayList(human.getDeckCards());
@@ -108,8 +109,8 @@ public class Main {
     */
 
     //executing with while improves performance a lot?
-    private static void afterMatch() throws Exception{
-        ConsoleView.afterMatch();
+    static void afterMatch(Stage primaryStage) throws Exception{
+        /*ConsoleView.afterMatch();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.ConsoleView").getMethod("afterMatch");
         helpHandler(lastViewMethod);
@@ -126,7 +127,8 @@ public class Main {
                 default:
                     ConsoleView.invalidCommand();
         }
-        afterMatch();
+        afterMatch();*/
+        MenuView.showShop(primaryStage);
     }
 
     private static void enterShop() throws Exception{

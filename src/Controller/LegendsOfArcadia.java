@@ -16,11 +16,31 @@ public class LegendsOfArcadia extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
-        primaryStage.setTitle("Legends of Arcardia");
+        primaryStage.setTitle("Legends of Arcadia");
+
+        preProcessEventHandling(primaryStage);
         //primaryStage.setFullScreen(true);
-        primaryStage.show();
-        GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
+        MenuView.showMainMenu(primaryStage);
+        //primaryStage.setFullScreen(true);
+        //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
         //MenuView.ShowMainMenu(primaryStage);
+
+        primaryStage.show();
         //Main.startOfOperations();
+    }
+
+    private void preProcessEventHandling(Stage primaryStage){
+        MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
+            try {
+                Main.afterMatch(primaryStage);
+                //TODO change to Map.enterMap(1);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
+        MenuView.getExitButton().setOnMouseClicked(event -> {
+            primaryStage.close();//correct? (can change to system.exit(0))
+        });
     }
 }
