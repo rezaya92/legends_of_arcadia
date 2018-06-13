@@ -13,8 +13,7 @@ public class Player implements Cloneable{
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
     private ObservableList<Card> deckCards = FXCollections.observableArrayList();
-    private ObservableList<Card> monsterFieldCards = FXCollections.observableArrayList(null,null,null,null,null
-    );
+    private ObservableList<Card> monsterFieldCards = FXCollections.observableArrayList(null,null,null,null,null);
     private ObservableList<Card> spellFieldCards = FXCollections.observableArrayList(null,null,null);
     private ObservableList<Card> graveyardCards = FXCollections.observableArrayList();
     private ObservableList<Card> handCards = FXCollections.observableArrayList();
