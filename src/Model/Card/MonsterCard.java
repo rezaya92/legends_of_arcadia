@@ -6,6 +6,7 @@ import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
 import View.ConsoleView;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -255,7 +256,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     @Override
-    public void transfer(ArrayList<Card> destination){  // how about will ??
+    public void transfer(ObservableList<Card> destination){  // how about will ??
         super.transfer(destination);
         if (destination == owner.getMonsterFieldCards()) {  // how about enemy monsterFieldCards ?
             if (isNimble)

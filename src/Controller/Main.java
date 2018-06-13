@@ -3,6 +3,9 @@ package Controller;
 import Model.*;
 import Model.Card.*;
 import View.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.lang.reflect.Method;
 import java.util.*;
 import static Controller.PreProcess.*;
@@ -55,15 +58,15 @@ public class Main {
             human.restore();
             opponent.restore();
             ArrayList<Card> humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
-            ArrayList<Card> humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+            ObservableList<Card> humanDeckCardBeforeCustomization = FXCollections.observableArrayList(human.getDeckCards());
             ArrayList<Item> humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
             ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
-            ArrayList<Card> opponentDeckCardBeforeCustomization = new ArrayList<>(opponent.getDeckCards());
+            ObservableList<Card> opponentDeckCardBeforeCustomization = FXCollections.observableArrayList(opponent.getDeckCards());
             ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
             afterMatch();
             //humanBeforeMatch = (Player)human.clone();
             ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
-            ArrayList<Card> humanDeckCardBeforeMatch = new ArrayList<>(human.getDeckCards());
+            ObservableList<Card> humanDeckCardBeforeMatch = FXCollections.observableArrayList(human.getDeckCards());
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
                 opponentNumber++;

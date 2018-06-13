@@ -3,6 +3,7 @@ package Model.Card;
 import Model.Player;
 import Model.SpellCastable;
 import Model.Stuff;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
     int price;
     String name;
     Player owner;    // "add default owner in case of opponent could take control of a card of player"
-    ArrayList<Card> cardPlace;
+    ObservableList<Card> cardPlace;
 
     public int getDefaultManaCost() {
         return defaultManaCost;
@@ -29,10 +30,10 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         return manaCost;
     }
 
-    public void setCardPlace(ArrayList<Card> cardPlace) {
+    public void setCardPlace(ObservableList<Card> cardPlace) {
         this.cardPlace = cardPlace;
     }
-    public ArrayList<Card> getCardPlace(){
+    public ObservableList<Card> getCardPlace(){
         return cardPlace;
     }
 
@@ -67,7 +68,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         return (this.name.equals(((Card) arg0).name));
     }
 
-    public void transfer (ArrayList<Card> destination){  // "also can be boolean"
+    public void transfer (ObservableList<Card> destination){  // "also can be boolean"
         if (owner != null && owner.getIsPlaying())
             deuseAuraCards();
         if (cardPlace != null)

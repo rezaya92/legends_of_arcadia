@@ -4,6 +4,8 @@ import Model.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Spell.GeneralizedSpell;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -383,7 +385,7 @@ abstract public class ConsoleView {
         System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
         boolean friendlinessChanged = false;
         ArrayList<String> cardPlaceNames = new ArrayList<>();
-        ArrayList<Card> currentPlace = new ArrayList<>();
+        ObservableList<Card> currentPlace = FXCollections.observableArrayList();
         for (SpellCastable spellCastable: effectableCards){
             if (spellCastable instanceof Card && currentPlace != ((Card)spellCastable).getCardPlace()){
                 currentPlace = ((Card)spellCastable).getCardPlace();
@@ -397,7 +399,7 @@ abstract public class ConsoleView {
                     System.out.println(((Card)spellCastable).getCardPlacebyName() + ":");
             }
             else if (spellCastable instanceof PlayerHero){
-                currentPlace = new ArrayList<>();
+                currentPlace = FXCollections.observableArrayList();
                 if (cardPlaceNames.contains("Player"))
                     friendlinessChanged = true;
                 else

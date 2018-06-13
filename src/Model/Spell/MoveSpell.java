@@ -3,13 +3,15 @@ package Model.Spell;
 import Model.Card.*;
 import Model.Player;
 import Model.SpellCastable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 public class MoveSpell extends Spell implements Cloneable{
     private SpellArea destination;
-    private ArrayList<Card> destinationCardList;
+    private ObservableList<Card> destinationCardList;
 
     public MoveSpell(Set<SpellArea> effectedArea, Class[] effectableCardType, Set<Tribe> effectedTribe, SpellChoiceType choiceType, SpellArea destination) {
         super(effectedArea, effectableCardType, effectedTribe, choiceType);
@@ -25,34 +27,34 @@ public class MoveSpell extends Spell implements Cloneable{
     protected void apply(Player owner) {
         switch (destination){
             case FRIENDLY_MONSTERFIELD:
-                destinationCardList = new ArrayList<>(owner.getMonsterFieldCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getMonsterFieldCards());
                 break;
             case FRIENDLY_SPELLFIELD:
-                destinationCardList = new ArrayList<>(owner.getSpellFieldCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getSpellFieldCards());
                 break;
             case FRIENDLY_HAND:
-                destinationCardList = new ArrayList<>(owner.getHandCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getHandCards());
                 break;
             case FRIENDLY_DECK:
-                destinationCardList = new ArrayList<>(owner.getDeckCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getDeckCards());
                 break;
             case FRIENDLY_GRAVEYARD:
-                destinationCardList = new ArrayList<>(owner.getGraveyardCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getGraveyardCards());
                 break;
             case ENEMY_MONSTERFIELD:
-                destinationCardList = new ArrayList<>(owner.getOpponent().getMonsterFieldCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getOpponent().getMonsterFieldCards());
                 break;
             case ENEMY_SPELLFIELD:
-                destinationCardList = new ArrayList<>(owner.getOpponent().getSpellFieldCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getOpponent().getSpellFieldCards());
                 break;
             case ENEMY_HAND:
-                destinationCardList = new ArrayList<>(owner.getOpponent().getHandCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getOpponent().getHandCards());
                 break;
             case ENEMY_DECK:
-                destinationCardList = new ArrayList<>(owner.getOpponent().getDeckCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getOpponent().getDeckCards());
                 break;
             case ENEMY_GRAVEYARD:
-                destinationCardList = new ArrayList<>(owner.getOpponent().getGraveyardCards());
+                destinationCardList = FXCollections.observableArrayList(owner.getOpponent().getGraveyardCards());
                 break;
         }
         for (SpellCastable card: effectableCard) {
