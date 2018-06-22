@@ -10,14 +10,23 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class GameView {
@@ -55,6 +64,7 @@ public class GameView {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
         primaryStage.setScene(scene);
+        root.requestFocus();
     }
 
     private static void prepareInformationGroup(){
@@ -72,7 +82,101 @@ public class GameView {
 
     private static void preparePlayFieldGroup(){
         playFieldGroup.relocate(primaryStage.getWidth()/3,0);
-
+        HBox playerMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
+        playerMonsterField.getChildren().get(0).setId("card");
+        playerMonsterField.getChildren().get(1).setId("card");
+        playerMonsterField.getChildren().get(2).setId("card");
+        playerMonsterField.getChildren().get(3).setId("card");
+        playerMonsterField.getChildren().get(4).setId("card");
+        playerMonsterField.setPrefWidth(primaryStage.getWidth()/3);
+        playerMonsterField.relocate(0, primaryStage.getHeight() / 2);
+        playerMonsterField.setAlignment(Pos.TOP_CENTER);
+        ((Button)playerMonsterField.getChildren().get(0)).wrapTextProperty().setValue(true);
+        ((Button)playerMonsterField.getChildren().get(0)).setText("Empty Slot");
+        ((Button)playerMonsterField.getChildren().get(1)).wrapTextProperty().setValue(true);
+        ((Button)playerMonsterField.getChildren().get(1)).setText("Empty Slot");
+        ((Button)playerMonsterField.getChildren().get(2)).wrapTextProperty().setValue(true);
+        ((Button)playerMonsterField.getChildren().get(2)).setText("Empty Slot");
+        ((Button)playerMonsterField.getChildren().get(3)).wrapTextProperty().setValue(true);
+        ((Button)playerMonsterField.getChildren().get(3)).setText("Empty Slot");
+        ((Button)playerMonsterField.getChildren().get(4)).wrapTextProperty().setValue(true);
+        ((Button)playerMonsterField.getChildren().get(4)).setText("Empty Slot");
+        HBox playerSpellField = new HBox(30,new Button(),new Button(),new Button());
+        playerSpellField.getChildren().get(0).setId("card");
+        playerSpellField.getChildren().get(1).setId("card");
+        playerSpellField.getChildren().get(2).setId("card");
+        playerSpellField.relocate(0, primaryStage.getHeight() / 2 + 100);
+        playerSpellField.setPrefWidth(primaryStage.getWidth()/3);
+        playerSpellField.setAlignment(Pos.TOP_CENTER);
+        ((Button)playerSpellField.getChildren().get(0)).wrapTextProperty().setValue(true);
+        ((Button)playerSpellField.getChildren().get(0)).setText("Empty Slot");
+        ((Button)playerSpellField.getChildren().get(1)).wrapTextProperty().setValue(true);
+        ((Button)playerSpellField.getChildren().get(1)).setText("Empty Slot");
+        ((Button)playerSpellField.getChildren().get(2)).wrapTextProperty().setValue(true);
+        ((Button)playerSpellField.getChildren().get(2)).setText("Empty Slot");
+        HBox opponentMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
+        opponentMonsterField.getChildren().get(0).setId("card");
+        opponentMonsterField.getChildren().get(1).setId("card");
+        opponentMonsterField.getChildren().get(2).setId("card");
+        opponentMonsterField.getChildren().get(3).setId("card");
+        opponentMonsterField.getChildren().get(4).setId("card");
+        ((Button)opponentMonsterField.getChildren().get(0)).wrapTextProperty().setValue(true);
+        ((Button)opponentMonsterField.getChildren().get(0)).setText("Empty Slot");
+        ((Button)opponentMonsterField.getChildren().get(1)).wrapTextProperty().setValue(true);
+        ((Button)opponentMonsterField.getChildren().get(1)).setText("Empty Slot");
+        ((Button)opponentMonsterField.getChildren().get(2)).wrapTextProperty().setValue(true);
+        ((Button)opponentMonsterField.getChildren().get(2)).setText("Empty Slot");
+        ((Button)opponentMonsterField.getChildren().get(3)).wrapTextProperty().setValue(true);
+        ((Button)opponentMonsterField.getChildren().get(3)).setText("Empty Slot");
+        ((Button)opponentMonsterField.getChildren().get(4)).wrapTextProperty().setValue(true);
+        ((Button)opponentMonsterField.getChildren().get(4)).setText("Empty Slot");
+        opponentMonsterField.setPrefWidth(primaryStage.getWidth()/3);
+        opponentMonsterField.relocate(0, 250);
+        opponentMonsterField.setAlignment(Pos.TOP_CENTER);
+        HBox opponentSpellField = new HBox( 30,new Button(),new Button(),new Button());
+        ((Button)opponentSpellField.getChildren().get(0)).wrapTextProperty().setValue(true);
+        ((Button)opponentSpellField.getChildren().get(0)).setText("Empty Slot");
+        ((Button)opponentSpellField.getChildren().get(1)).wrapTextProperty().setValue(true);
+        ((Button)opponentSpellField.getChildren().get(1)).setText("Empty Slot");
+        ((Button)opponentSpellField.getChildren().get(2)).wrapTextProperty().setValue(true);
+        ((Button)opponentSpellField.getChildren().get(2)).setText("Empty Slot");
+        opponentSpellField.getChildren().get(0).setId("card");
+        opponentSpellField.getChildren().get(1).setId("card");
+        opponentSpellField.getChildren().get(2).setId("card");
+        opponentSpellField.relocate(0, 150);
+        opponentSpellField.setPrefWidth(primaryStage.getWidth()/3);
+        opponentSpellField.setAlignment(Pos.TOP_CENTER);
+        Button playerButton = new Button();
+        playerButton.setId("card");
+        playerButton.setStyle("-fx-background-color: white");
+        playerButton.relocate(220,primaryStage.getHeight() - 150);
+        Text playerText = new Text("HP:\nMP:");
+        playerText.setId("text");
+        playerText.relocate(220,primaryStage.getHeight() - 93);
+        playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
+        playerButton.setAlignment(Pos.TOP_CENTER);
+        Button opponentButton = new Button();
+        opponentButton.setId("card");
+        opponentButton.setStyle("-fx-background-color: white");
+        opponentButton.relocate(220,10);
+        Text opponentText = new Text("HP:\nMP:");
+        opponentText.setId("text");
+        opponentText.relocate(220,67);
+        opponentButton.setGraphic(new ImageView(new Image(GameView.class.getResource("DemonPortrait.jpg").toExternalForm(),60,60,true,true)));
+        opponentButton.setAlignment(Pos.TOP_CENTER);
+        Button playerGraveYard = new Button();
+        playerGraveYard.setId("card");
+        playerGraveYard.relocate(0,primaryStage.getHeight() - 150);
+        playerGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
+        Button enemyGraveYard = new Button();
+        enemyGraveYard.setId("card");
+        enemyGraveYard.relocate(10,10);
+        enemyGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
+        ImageView playerDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
+        playerDeck.relocate(400,primaryStage.getHeight() - 160);
+        ImageView enemyDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
+        enemyDeck.relocate(400,0);
+        playFieldGroup.getChildren().addAll(enemyDeck,playerDeck,playerGraveYard,enemyGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText);
     }
 
     private static void prepareMenusGroup(){

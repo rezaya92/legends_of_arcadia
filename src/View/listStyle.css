@@ -1,4 +1,4 @@
-/*.button {
+#card {
     -fx-background-color:
             #090a0c,
             linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
@@ -6,12 +6,22 @@
             radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
     -fx-background-radius: 5,4,3,5;
     -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-font-family: "Arial";
+    -fx-font: 12 "Forte";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 12px;
-    -fx-padding: 10 20 10 20;
-}*/
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+}
+
+#card:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#text {
+    -fx-font: 12 "Forte";
+}
 
 .button{
     -fx-effect: dropshadow(two-pass-box , darkgray, 10, 0.0 , 4, 5);
