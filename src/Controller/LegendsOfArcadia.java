@@ -19,11 +19,8 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setTitle("Legends of Arcadia");
 
         preProcessEventHandling(primaryStage);
-        //primaryStage.setFullScreen(true);
-        MenuView.showMainMenu(primaryStage);
-        //primaryStage.setFullScreen(true);
-        //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
-        //MenuView.ShowMainMenu(primaryStage);
+        //MenuView.showMainMenu(primaryStage);
+        GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
         primaryStage.show();
         //Main.startOfOperations();
