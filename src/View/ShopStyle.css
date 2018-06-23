@@ -1,0 +1,17 @@
+.button{
+    -fx-effect: dropshadow(two-pass-box , #a99020, 5, 0.0 , 4, 5);
+    -fx-background-color: rgba(205, 199, 40, 0.7);
+    -fx-background-radius: 5 5 5 5;
+    -fx-background-insets: 2 2 2 2 ;
+    -fx-font: 10 "Times";
+    -fx-pref-width: 300;/*change to variable*/
+    -fx-pref-height: 20;
+}
+
+.button:hover{
+    -fx-background-color: rgba(223, 235, 82, 0.7);
+}
+
+.button:pressed{
+    -fx-background-color: rgba(180, 145, 23, 0.7);
+}

@@ -6,6 +6,7 @@ import View.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -25,8 +26,9 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static ArrayList<Player> opponents = new ArrayList<>();
     private static int mysticHourGlass = 3;  //change place?
+    private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();//TODO correct?
 
-    public static void startOfOperations(Stage primaryStage) throws Exception{
+    public static void startOfOperations() throws Exception{
 //        Player humanBeforeCustomize;
 //        Player humanBeforeMatch;
         int opponentNumber = 0;
@@ -64,7 +66,7 @@ public class Main {
             ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
             ObservableList<Card> opponentDeckCardBeforeCustomization = FXCollections.observableArrayList(opponent.getDeckCards());
             ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
-            afterMatch(primaryStage);
+            afterMatch();
             //humanBeforeMatch = (Player)human.clone();
             ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
             ObservableList<Card> humanDeckCardBeforeMatch = FXCollections.observableArrayList(human.getDeckCards());
@@ -109,7 +111,7 @@ public class Main {
     */
 
     //executing with while improves performance a lot?
-    static void afterMatch(Stage primaryStage) throws Exception{
+    static void afterMatch() throws Exception{
         /*ConsoleView.afterMatch();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.ConsoleView").getMethod("afterMatch");
@@ -128,11 +130,11 @@ public class Main {
                     ConsoleView.invalidCommand();
         }
         afterMatch();*/
-        MenuView.showShop(primaryStage);
+        enterShop();//TODO CHANGE
     }
 
     private static void enterShop() throws Exception{
-        ConsoleView.enterShop();
+        /*ConsoleView.enterShop();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.ConsoleView").getMethod("enterShop");
         helpHandler(lastViewMethod);
@@ -151,11 +153,19 @@ public class Main {
                 default:
                     ConsoleView.invalidCommand();
         }
-        enterShop();
+        enterShop();*/
+        MenuView.showShop();
+        MenuView.getCardShopButton().setOnMouseClicked(event -> {
+            try {
+                cardShop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
     }
 
     private static void cardShop() throws Exception{
-        ConsoleView.cardShop();
+        /*ConsoleView.cardShop();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.ConsoleView").getMethod("cardShop");
         helpHandler(lastViewMethod);
@@ -175,7 +185,10 @@ public class Main {
         } catch (Exception e){
             ConsoleView.invalidCommand();
         }
-        cardShop();
+        cardShop();*/
+        ArrayList<Pair<Card, Integer>> uniqueCardsWithNumber = getUniqueWithNumber(human.getShop().getCards());
+        //uniqueCardsWithNumber.get(0).getKey();
+        MenuView.showCardShop(human.getShop().getCards(), human.getDeckCards());
     }
 
     private static void itemShop() throws Exception{
@@ -425,5 +438,24 @@ public class Main {
                 break;
             action = scanner.nextLine();
         }
+    }
+
+    public static <T extends Stuff> ArrayList<Pair<T, Integer>> getUniqueWithNumber(ArrayList<T> stuffs){
+        Boolean[] repetitious = new Boolean[stuffs.size()];
+        ArrayList<Pair<T, Integer>> output = new ArrayList<>();
+        for(int i=0; i<stuffs.size(); i++){
+            if(repetitious[i] != null)//TODO check correct
+                continue;
+            repetitious[i] = true;//new Boolean(true);
+            int numberOfStuff = 1;
+            for(int j=i+1; j<stuffs.size(); j++){
+                if(stuffs.get(i).getName().equals(stuffs.get(j).getName())){
+                    repetitious[j] = true;
+                    numberOfStuff++;
+                }
+            }
+            output.add(new Pair<T, Integer>(stuffs.get(i), numberOfStuff));
+        }
+        return output;
     }
 }

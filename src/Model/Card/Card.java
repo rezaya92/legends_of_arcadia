@@ -51,6 +51,10 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         this.price = price;
     }
 
+    public int getPriceToSell() {
+        return price/2;
+    }
+
     public Player getOwner() {
         return owner;
     }
