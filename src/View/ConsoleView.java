@@ -385,7 +385,7 @@ abstract public class ConsoleView {
         System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
         boolean friendlinessChanged = false;
         ArrayList<String> cardPlaceNames = new ArrayList<>();
-        ObservableList<Card> currentPlace = FXCollections.observableArrayList();
+        ArrayList<Card> currentPlace = new ArrayList<>();
         for (SpellCastable spellCastable: effectableCards){
             if (spellCastable instanceof Card && currentPlace != ((Card)spellCastable).getCardPlace()){
                 currentPlace = ((Card)spellCastable).getCardPlace();
@@ -399,7 +399,7 @@ abstract public class ConsoleView {
                     System.out.println(((Card)spellCastable).getCardPlacebyName() + ":");
             }
             else if (spellCastable instanceof PlayerHero){
-                currentPlace = FXCollections.observableArrayList();
+                currentPlace = new ArrayList<>();
                 if (cardPlaceNames.contains("Player"))
                     friendlinessChanged = true;
                 else

@@ -6,7 +6,7 @@ import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
 import View.ConsoleView;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
 
@@ -19,10 +19,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     final boolean isDefender;
     private double damageReceivementRatio = 1;
     boolean isAwake = false;
-    final int defaultHP;
+    final SimpleIntegerProperty defaultHP = new SimpleIntegerProperty();
     final int defaultAP;
     int ap;
-    int hp;
+    SimpleIntegerProperty hp = new SimpleIntegerProperty();
     Tribe tribe;
     boolean hasGotSpell = false;
     boolean hasUsedSpell = false;
@@ -53,7 +53,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         this.tribe = tribe;
         this.name = name;
         this.manaCost = this.defaultManaCost = defaultManaCost;
-        this.hp = this.defaultHP = defaultHP;
+        this.hp.set(defaultHP);
+        this.defaultHP.set(defaultHP);
         this.ap = this.defaultAP = defaultAP;
         this.battleCry = battleCry;
         this.spellCasterSpell = spellCasterSpell;
@@ -125,17 +126,17 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
 
     public void takeDamage(int damageAmount){   // todo set if when ratio is 1 (double may cause change)
         if (damageReceivementRatio < 1.01 && damageReceivementRatio > 9.99)
-            hp -= damageAmount;
+            hp.set(hp.get() - damageAmount);
         else
-            hp -= (int)(damageAmount*damageReceivementRatio);
+            hp.set(hp.get() - (int)(damageAmount*damageReceivementRatio));
     }
 
     public void heal(int healAmount){
-        hp += healAmount;
+        hp.set(hp.get() + healAmount);
     }
 
     public boolean checkAlive() {
-        if (hp <= 0) {
+        if (hp.get() <= 0) {
             if (will != null) {
                 try {
                     will.use(owner);
@@ -216,8 +217,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     public int getHp() {
-        return hp;
+        return hp.get();
     }
+
+    public SimpleIntegerProperty hpProperty() {return hp; }
 
 
     @Override
@@ -247,7 +250,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         isAwake = true;
     }
 
-    public int getDefaultHP() {
+    public SimpleIntegerProperty getDefaultHP() {
         return defaultHP;
     }
 
@@ -256,7 +259,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     @Override
-    public void transfer(ObservableList<Card> destination){  // how about will ??
+    public void transfer(ArrayList<Card> destination){  // how about will ??
         super.transfer(destination);
         if (destination == owner.getMonsterFieldCards()) {  // how about enemy monsterFieldCards ?
             if (isNimble)

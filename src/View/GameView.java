@@ -150,7 +150,7 @@ public class GameView {
         playerButton.setId("card");
         playerButton.setStyle("-fx-background-color: white");
         playerButton.relocate(220,primaryStage.getHeight() - 150);
-        Text playerText = new Text("HP:\nMP:");
+        Text playerText = new Text("HP:\nMP:    /");
         playerText.setId("text");
         playerText.relocate(220,primaryStage.getHeight() - 93);
         playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
@@ -159,7 +159,7 @@ public class GameView {
         opponentButton.setId("card");
         opponentButton.setStyle("-fx-background-color: white");
         opponentButton.relocate(220,10);
-        Text opponentText = new Text("HP:\nMP:");
+        Text opponentText = new Text("HP:\nMP:    /");
         opponentText.setId("text");
         opponentText.relocate(220,67);
         opponentButton.setGraphic(new ImageView(new Image(GameView.class.getResource("DemonPortrait.jpg").toExternalForm(),60,60,true,true)));
@@ -176,7 +176,24 @@ public class GameView {
         playerDeck.relocate(400,primaryStage.getHeight() - 160);
         ImageView enemyDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
         enemyDeck.relocate(400,0);
-        playFieldGroup.getChildren().addAll(enemyDeck,playerDeck,playerGraveYard,enemyGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText);
+        Text playerMana = new Text();
+        playerMana.textProperty().bind(player.manaProperty().asString());
+        playerMana.setId("text");
+        playerMana.relocate(245,primaryStage.getHeight() - 77);
+        Text playerMaxMana = new Text();
+        playerMaxMana.textProperty().bind(player.maxManaProperty().asString());
+        playerMaxMana.setId("text");
+        playerMaxMana.relocate(260,primaryStage.getHeight() - 77);
+        Text opponentMaxMana = new Text();
+        opponentMaxMana.textProperty().bind(opponent.maxManaProperty().asString());
+        opponentMaxMana.setId("text");
+        opponentMaxMana.relocate(260,83);
+        Text opponentMana = new Text();
+        opponentMana.textProperty().bind(player.manaProperty().asString());
+        opponentMana.setId("text");
+        opponentMana.relocate(245,83);
+
+        playFieldGroup.getChildren().addAll(enemyDeck,playerDeck,playerGraveYard,enemyGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText,playerMana,playerMaxMana,opponentMana,opponentMaxMana);
     }
 
     private static void prepareMenusGroup(){

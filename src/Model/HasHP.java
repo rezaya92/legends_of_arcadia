@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 public interface HasHP extends SpellCastable, Cloneable{
     int getHp();
     void heal(int healAmount);

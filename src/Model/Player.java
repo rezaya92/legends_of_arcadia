@@ -3,6 +3,7 @@ package Model;
 import Model.Card.*;
 import Model.Spell.NoEffectableCardException;
 import View.ConsoleView;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,18 +13,18 @@ public class Player implements Cloneable{
     //private final int deckCapacity = 30; TODO check if using final doesn't corrupt cloning
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
-    private ObservableList<Card> deckCards = FXCollections.observableArrayList();
-    private ObservableList<Card> monsterFieldCards = FXCollections.observableArrayList(null,null,null,null,null);
-    private ObservableList<Card> spellFieldCards = FXCollections.observableArrayList(null,null,null);
-    private ObservableList<Card> graveyardCards = FXCollections.observableArrayList();
-    private ObservableList<Card> handCards = FXCollections.observableArrayList();
+    private ArrayList<Card> deckCards = new ArrayList<>();
+    private ArrayList<Card> monsterFieldCards = new PlayAreaArrayList<>(5);
+    private ArrayList<Card> spellFieldCards = new PlayAreaArrayList<>(3);
+    private ArrayList<Card> graveyardCards = new ArrayList<>();
+    private ArrayList<Card> handCards = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
     private Amulet equippedAmulet;
     private Shop shop = new Shop();
     private int gil = 10000;
-    private int mana;
-    private int maxMana;
+    private SimpleIntegerProperty mana = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty maxMana = new SimpleIntegerProperty(0);
     private String name;
     private PlayerHero playerHero;
     private Player opponent;
@@ -46,11 +47,11 @@ public class Player implements Cloneable{
         return name;
     }
 
-    public void setMonsterFieldCards(ObservableList<Card> monsterFieldCards) {
+    public void setMonsterFieldCards(ArrayList<Card> monsterFieldCards) {
         this.monsterFieldCards = monsterFieldCards;
     }
 
-    public void setSpellFieldCards(ObservableList<Card> spellFieldCards) {
+    public void setSpellFieldCards(ArrayList<Card> spellFieldCards) {
         this.spellFieldCards = spellFieldCards;
     }
 
@@ -104,40 +105,41 @@ public class Player implements Cloneable{
         this.defaultDeckCards = defaultDeckCards;
     }
 
-    public ObservableList<Card> getDeckCards() {
+    public ArrayList<Card> getDeckCards() {
         return deckCards;
     }
-    public void setDeckCards(ObservableList<Card> deckCards) {
+    public void setDeckCards(ArrayList<Card> deckCards) {
         this.deckCards = deckCards;
 //        while(deckCards.size()>0)
 //            deckCards.get(0).transfer(this.deckCards);
         for(Card card : deckCards)
             card.setCardPlace(this.deckCards);
-        setMonsterFieldCards(FXCollections.observableArrayList(null,null,null,null,null));
-        setSpellFieldCards(FXCollections.observableArrayList(null,null,null));
-        setGraveyardCards(FXCollections.observableArrayList());
-        setHandCards(FXCollections.observableArrayList());
+        setMonsterFieldCards(new PlayAreaArrayList<>(5));
+        setSpellFieldCards(new PlayAreaArrayList<>(3));
+        setGraveyardCards(new ArrayList<>());
+        setHandCards(new ArrayList<>());
+
     }
 
-    public ObservableList<Card> getMonsterFieldCards() {
+    public ArrayList<Card> getMonsterFieldCards() {
         return monsterFieldCards;
     }
 
-    public ObservableList<Card> getSpellFieldCards() {
+    public ArrayList<Card> getSpellFieldCards() {
         return spellFieldCards;
     }
 
-    public ObservableList<Card> getGraveyardCards() {
+    public ArrayList<Card> getGraveyardCards() {
         return graveyardCards;
     }
-    public void setGraveyardCards(ObservableList<Card> graveyardCards) {
+    public void setGraveyardCards(ArrayList<Card> graveyardCards) {
         this.graveyardCards = graveyardCards;
     }
 
-    public ObservableList<Card> getHandCards() {
+    public ArrayList<Card> getHandCards() {
         return handCards;
     }
-    public void setHandCards(ObservableList<Card> handCards) {
+    public void setHandCards(ArrayList<Card> handCards) {
         this.handCards = handCards;
     }
 
@@ -156,17 +158,27 @@ public class Player implements Cloneable{
     }
 
     public int getMana() {
+        return mana.get();
+    }
+
+    public SimpleIntegerProperty manaProperty() {
         return mana;
     }
+
     public void setMana(int mana) {
-        this.mana = mana;
+        this.mana.set(mana);
     }
 
     public int getMaxMana() {
+        return maxMana.get();
+    }
+
+    public SimpleIntegerProperty maxManaProperty(){
         return maxMana;
     }
+
     public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
+        this.maxMana.set(maxMana);
     }
 
     public PlayerHero getPlayerHero() {
@@ -205,15 +217,15 @@ public class Player implements Cloneable{
         while(handCards.size() > 0){
             handCards.get(0).transfer(deckCards);
         }
-        maxMana = 1;
+//        maxMana = 1;
 //        setMonsterFieldCards(new PlayAreaArrayList<>(5));
 //        setSpellFieldCards(new PlayAreaArrayList<>(3));
 //        setGraveyardCards(new ArrayList<>());
 //        setHandCards(new ArrayList<>());
         playerHero.restore();
         isPlaying = false;
-        maxMana = 0;
-        mana = 0;
+        maxMana.set(0);
+        mana.set(0);
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -461,7 +473,8 @@ public class Player implements Cloneable{
                     ConsoleView.noEffectableCard();
                 }
         }
-        mana = ++maxMana;
+        maxMana.set(maxMana.get() + 1);
+        mana.set(maxMana.get());
         if (!deckCards.isEmpty()){    // else needed ??
             deckCards.get(0).transfer(handCards);
         }

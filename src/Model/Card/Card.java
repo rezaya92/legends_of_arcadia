@@ -17,7 +17,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
     int price;
     String name;
     Player owner;    // "add default owner in case of opponent could take control of a card of player"
-    ObservableList<Card> cardPlace;
+    ArrayList<Card> cardPlace;
 
     public int getDefaultManaCost() {
         return defaultManaCost;
@@ -30,10 +30,10 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         return manaCost;
     }
 
-    public void setCardPlace(ObservableList<Card> cardPlace) {
+    public void setCardPlace(ArrayList<Card> cardPlace) {
         this.cardPlace = cardPlace;
     }
-    public ObservableList<Card> getCardPlace(){
+    public ArrayList<Card> getCardPlace(){
         return cardPlace;
     }
 
@@ -72,7 +72,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         return (this.name.equals(((Card) arg0).name));
     }
 
-    public void transfer (ObservableList<Card> destination){  // "also can be boolean"
+    public void transfer (ArrayList<Card> destination){  // "also can be boolean"
         if (owner != null && owner.getIsPlaying())
             deuseAuraCards();
         if (cardPlace != null)

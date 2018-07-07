@@ -1,6 +1,7 @@
 package Model.Card;
 
 import Model.Spell.GeneralizedSpell;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
 

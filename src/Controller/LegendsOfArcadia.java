@@ -22,11 +22,11 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setTitle("Legends of Arcadia");
 
         preProcessEventHandling(primaryStage);
-        MenuView.showMainMenu();
+        //MenuView.showMainMenu();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
-        primaryStage.show();
-        //Main.startOfOperations(primaryStage);
+        //primaryStage.show();
+        Main.startOfOperations();
     }
 
     private void preProcessEventHandling(Stage primaryStage){

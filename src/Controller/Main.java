@@ -61,15 +61,15 @@ public class Main {
             human.restore();
             opponent.restore();
             ArrayList<Card> humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
-            ObservableList<Card> humanDeckCardBeforeCustomization = FXCollections.observableArrayList(human.getDeckCards());
+            ArrayList<Card> humanDeckCardBeforeCustomization = human.getDeckCards();
             ArrayList<Item> humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
             ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
-            ObservableList<Card> opponentDeckCardBeforeCustomization = FXCollections.observableArrayList(opponent.getDeckCards());
+            ArrayList<Card> opponentDeckCardBeforeCustomization = opponent.getDeckCards();
             ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
             afterMatch();
             //humanBeforeMatch = (Player)human.clone();
             ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
-            ObservableList<Card> humanDeckCardBeforeMatch = FXCollections.observableArrayList(human.getDeckCards());
+            ArrayList<Card> humanDeckCardBeforeMatch = human.getDeckCards();
             Player winner = Battle.startGameAgainst(opponent);
             if (winner == human){
                 opponentNumber++;

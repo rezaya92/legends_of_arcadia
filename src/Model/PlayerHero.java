@@ -1,8 +1,14 @@
 package Model;
 
+import Model.Card.Card;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import View.ConsoleView;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
 
 
 // description: this could be in Player class, brought here for code to be more clear.
@@ -10,18 +16,23 @@ import View.ConsoleView;
  * Created by msi-pc on 5/7/2018.
  */
 public class PlayerHero implements HasHP, Cloneable {
-    private int defaultHP;
-    private int hp;
+    private SimpleIntegerProperty defaultHP = new SimpleIntegerProperty();
+    private SimpleIntegerProperty hp = new SimpleIntegerProperty();
     private double damageReceivementRatio = 1;
     private String name = "Player";
     private Player owner;
 
     public PlayerHero(int defaultHP, Player owner){
-        this.hp = this.defaultHP = defaultHP;
+        this.defaultHP.set(defaultHP);
+        this.hp.set(defaultHP);
         this.owner = owner;
     }
 
-    public int getHp() {
+    private ObservableList<Card> a = FXCollections.observableArrayList(new ArrayList<>());
+    public int getHp(){
+        return hp.get();
+    }
+    public SimpleIntegerProperty hpProperty() {
         return hp;
     }
     //public void setHp(int hp) {
@@ -35,11 +46,11 @@ public class PlayerHero implements HasHP, Cloneable {
     public Player getOwner(){return owner;}
 
     public void takeDamage(int damageAmount){
-        hp -= (int)(damageAmount*damageReceivementRatio);
+        hp.set(hp.get() -(int)(damageAmount*damageReceivementRatio));
     }
 
     public void heal(int healAmount){
-        hp += healAmount;
+        hp.set(hp.get() + healAmount);
     }
 
     public void useItem(GeneralizedSpell item){ // must be in items (is check needed?)
@@ -51,7 +62,7 @@ public class PlayerHero implements HasHP, Cloneable {
     }
 
     public boolean checkAlive(){
-        if (hp <= 0){
+        if (hp.get() < 0){
             ConsoleView.battleOver(owner);  // owner = loser
             return false;
         }
