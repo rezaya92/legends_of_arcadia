@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -56,14 +57,16 @@ public class MenuView {
     }
 
     public static void showCardShop(List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff){
+        Group cardShopGroup = new Group();
         ArrayList<Button> shopButtons = new ArrayList<>();
         ScrollBar scrollBar = new ScrollBar();
         scrollBar.setMin(0);
         scrollBar.setOrientation(Orientation.VERTICAL);
-        scrollBar.setPrefHeight(500);
-        scrollBar.setMax(500);
+        scrollBar.setPrefHeight(600);
+        scrollBar.setLayoutX(100);
+        scrollBar.setLayoutY(100);
+        scrollBar.setMax(playerStuff.size() * 30);
         //ListView<Button> listView = new ListView<>((ObservableList)shopStuff);
-        Group cardShopGroup = new Group();
         Scene scene = new Scene(cardShopGroup);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
@@ -72,15 +75,18 @@ public class MenuView {
 
         }
         VBox vBox = makeVBox(100.0, 100.0, buttonPrefWidth, 10.0, shopButtons.toArray(new Node[shopButtons.size()]));
+        vBox.setStyle("-fx-border-width: 2;\n-fx-border-color: black;");
+        cardShopGroup.getChildren().addAll(vBox, scrollBar);
 
         scrollBar.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                vBox.setLayoutY(-new_val.doubleValue());
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+                //vBox.setLayoutY(100-new_val.doubleValue());
+                for(Button button : shopButtons){
+                    button.setLayoutY(100 - new_val.doubleValue());
+                }
             }
         });
 
-        cardShopGroup.getChildren().addAll(vBox, scrollBar);
 
     }
 
@@ -94,6 +100,7 @@ public class MenuView {
         VBox vBox = new VBox(spacing, nodes);
         vBox.setPrefWidth(prefWidth);//TODO css VBox?
         vBox.setPrefHeight(primaryStage.getHeight()/2);
+        //vBox.setMaxHeight(400);
         vBox.setLayoutX(x);
         vBox.setLayoutY(y);
 
