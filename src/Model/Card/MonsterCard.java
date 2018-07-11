@@ -5,7 +5,7 @@ import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
-import View.ConsoleView;
+import View.GameView.ConsoleView;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     final boolean isDefender;
     private double damageReceivementRatio = 1;
     boolean isAwake = false;
-    final SimpleIntegerProperty defaultHP = new SimpleIntegerProperty();
+    final int defaultHP;
     final int defaultAP;
-    int ap;
+    SimpleIntegerProperty ap = new SimpleIntegerProperty();
     SimpleIntegerProperty hp = new SimpleIntegerProperty();
     Tribe tribe;
     boolean hasGotSpell = false;
@@ -54,8 +54,9 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         this.name = name;
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.hp.set(defaultHP);
-        this.defaultHP.set(defaultHP);
-        this.ap = this.defaultAP = defaultAP;
+        this.defaultHP = defaultHP;
+        this.defaultAP = defaultAP;
+        this.ap.set(this.defaultAP);
         this.battleCry = battleCry;
         this.spellCasterSpell = spellCasterSpell;
         this.will = will;
@@ -78,8 +79,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public void attack(MonsterCard monsterCard) {   // todo return string
         if (isAwake && (monsterCard.isDefender || !monsterCard.owner.isDefenderPresent())) {
             if (!hasAttacked) {
-                monsterCard.takeDamage(ap);
-                this.takeDamage(monsterCard.ap);
+                monsterCard.takeDamage(ap.get());
+                this.takeDamage(monsterCard.ap.get());
                 this.checkAlive();
                 monsterCard.checkAlive();
                 hasAttacked = true;
@@ -107,7 +108,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             Player opponent = this.owner.getOpponent();
             if (!opponent.isDefenderPresent()) {
                 if (!hasAttacked) {
-                    opponent.getPlayerHero().takeDamage(ap);
+                    opponent.getPlayerHero().takeDamage(ap.get());
                     hasAttacked = true;
                     owner.addHasAttackedCard(this);
                     ConsoleView.clashWith(this.name, owner.getOpponent().getName());
@@ -209,11 +210,14 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     }
 
     public int getAp() {
-        return ap;
+        return ap.get();
     }
 
+    public SimpleIntegerProperty apProperty() {
+        return  ap;
+    }
     public void setAp(int ap) {
-        this.ap = ap;
+        this.ap.set(ap);
     }
 
     public int getHp() {
@@ -250,7 +254,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         isAwake = true;
     }
 
-    public SimpleIntegerProperty getDefaultHP() {
+    public int getDefaultHP() {
         return defaultHP;
     }
 
@@ -273,8 +277,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
 
     @Override
     public void restoreValues(){
-        hp = defaultHP;
-        ap = defaultAP;
+        hp.set(defaultHP);
+        ap.set(defaultAP);
         manaCost = defaultManaCost;
         isAwake = false;
         damageReceivementRatio = 1;

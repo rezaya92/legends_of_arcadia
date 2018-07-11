@@ -6,9 +6,7 @@ import Model.Item;
 import Model.Player;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
-import View.ConsoleView;
-import View.GameView;
-import View.MenuView;
+import View.GameView.ConsoleView;
 
 import java.util.Collections;
 import java.util.InputMismatchException;

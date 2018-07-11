@@ -2,7 +2,7 @@ package Model;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import View.ConsoleView;
+import View.GameView.ConsoleView;
 
 public class Item implements Stuff, Cloneable{
     private GeneralizedSpell effect;

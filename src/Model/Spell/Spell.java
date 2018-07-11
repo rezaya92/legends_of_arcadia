@@ -4,7 +4,7 @@ import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
 import Model.SpellCastable;
-import View.ConsoleView;
+import View.GameView.ConsoleView;
 
 import java.util.*;
 

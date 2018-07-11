@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Player;
-import View.GameView;
+import View.GameView.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import View.MenuView;
@@ -23,10 +23,10 @@ public class LegendsOfArcadia extends Application {
 
         preProcessEventHandling(primaryStage);
         //MenuView.showMainMenu();
-        //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
+        GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
-        //primaryStage.show();
-        Main.startOfOperations();
+        primaryStage.show();
+        //Main.startOfOperations();
     }
 
     private void preProcessEventHandling(Stage primaryStage){

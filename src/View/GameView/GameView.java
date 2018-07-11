@@ -1,16 +1,10 @@
-package View;
+package View.GameView;
 
-import Model.Card.Card;
 import Model.Card.NormalCard;
 import Model.Card.Tribe;
-import Model.Item;
 import Model.Player;
 import Model.Stuff;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,13 +15,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.lang.reflect.Field;
-import java.util.Objects;
 
 public class GameView {
 
@@ -47,6 +37,16 @@ public class GameView {
     private static Button useItemButton = new Button("Use Item");
     private static Button useSpellButton = new Button("Use Spell");
     private static Button attackButton = new Button("Attack");
+    private static HBox playerMonsterField;
+    private static HBox playerSpellField;
+    private static HBox opponentMonsterField;
+    private static HBox opponentSpellField;
+    private static Button playerButton;
+    private static Button opponentButton;
+    private static Button playerGraveYard;
+    private static Button opponentGraveYard;
+    private static Text playerDeckCardCount;
+    private static Text opponentDeckCardCount;
 
     public static void ShowGame(Stage primaryStage, Player player, Player opponent){
         GameView.primaryStage = primaryStage;
@@ -82,7 +82,7 @@ public class GameView {
 
     private static void preparePlayFieldGroup(){
         playFieldGroup.relocate(primaryStage.getWidth()/3,0);
-        HBox playerMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
+        playerMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
         playerMonsterField.getChildren().get(0).setId("card");
         playerMonsterField.getChildren().get(1).setId("card");
         playerMonsterField.getChildren().get(2).setId("card");
@@ -101,7 +101,7 @@ public class GameView {
         ((Button)playerMonsterField.getChildren().get(3)).setText("Empty Slot");
         ((Button)playerMonsterField.getChildren().get(4)).wrapTextProperty().setValue(true);
         ((Button)playerMonsterField.getChildren().get(4)).setText("Empty Slot");
-        HBox playerSpellField = new HBox(30,new Button(),new Button(),new Button());
+        playerSpellField = new HBox(30,new Button(),new Button(),new Button());
         playerSpellField.getChildren().get(0).setId("card");
         playerSpellField.getChildren().get(1).setId("card");
         playerSpellField.getChildren().get(2).setId("card");
@@ -114,7 +114,7 @@ public class GameView {
         ((Button)playerSpellField.getChildren().get(1)).setText("Empty Slot");
         ((Button)playerSpellField.getChildren().get(2)).wrapTextProperty().setValue(true);
         ((Button)playerSpellField.getChildren().get(2)).setText("Empty Slot");
-        HBox opponentMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
+        opponentMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
         opponentMonsterField.getChildren().get(0).setId("card");
         opponentMonsterField.getChildren().get(1).setId("card");
         opponentMonsterField.getChildren().get(2).setId("card");
@@ -133,7 +133,7 @@ public class GameView {
         opponentMonsterField.setPrefWidth(primaryStage.getWidth()/3);
         opponentMonsterField.relocate(0, 250);
         opponentMonsterField.setAlignment(Pos.TOP_CENTER);
-        HBox opponentSpellField = new HBox( 30,new Button(),new Button(),new Button());
+        opponentSpellField = new HBox( 30,new Button(),new Button(),new Button());
         ((Button)opponentSpellField.getChildren().get(0)).wrapTextProperty().setValue(true);
         ((Button)opponentSpellField.getChildren().get(0)).setText("Empty Slot");
         ((Button)opponentSpellField.getChildren().get(1)).wrapTextProperty().setValue(true);
@@ -146,16 +146,16 @@ public class GameView {
         opponentSpellField.relocate(0, 150);
         opponentSpellField.setPrefWidth(primaryStage.getWidth()/3);
         opponentSpellField.setAlignment(Pos.TOP_CENTER);
-        Button playerButton = new Button();
+        playerButton = new Button();
         playerButton.setId("card");
         playerButton.setStyle("-fx-background-color: white");
         playerButton.relocate(220,primaryStage.getHeight() - 150);
+        playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
+        playerButton.setAlignment(Pos.TOP_CENTER);
         Text playerText = new Text("HP:\nMP:    /");
         playerText.setId("text");
         playerText.relocate(220,primaryStage.getHeight() - 93);
-        playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
-        playerButton.setAlignment(Pos.TOP_CENTER);
-        Button opponentButton = new Button();
+        opponentButton = new Button();
         opponentButton.setId("card");
         opponentButton.setStyle("-fx-background-color: white");
         opponentButton.relocate(220,10);
@@ -164,18 +164,18 @@ public class GameView {
         opponentText.relocate(220,67);
         opponentButton.setGraphic(new ImageView(new Image(GameView.class.getResource("DemonPortrait.jpg").toExternalForm(),60,60,true,true)));
         opponentButton.setAlignment(Pos.TOP_CENTER);
-        Button playerGraveYard = new Button();
+        playerGraveYard = new Button();
         playerGraveYard.setId("card");
         playerGraveYard.relocate(0,primaryStage.getHeight() - 150);
         playerGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
-        Button enemyGraveYard = new Button();
-        enemyGraveYard.setId("card");
-        enemyGraveYard.relocate(10,10);
-        enemyGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
+        opponentGraveYard = new Button();
+        opponentGraveYard.setId("card");
+        opponentGraveYard.relocate(10,10);
+        opponentGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
         ImageView playerDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
         playerDeck.relocate(400,primaryStage.getHeight() - 160);
-        ImageView enemyDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
-        enemyDeck.relocate(400,0);
+        ImageView opponentDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
+        opponentDeck.relocate(400,0);
         Text playerMana = new Text();
         playerMana.textProperty().bind(player.manaProperty().asString());
         playerMana.setId("text");
@@ -183,17 +183,30 @@ public class GameView {
         Text playerMaxMana = new Text();
         playerMaxMana.textProperty().bind(player.maxManaProperty().asString());
         playerMaxMana.setId("text");
-        playerMaxMana.relocate(260,primaryStage.getHeight() - 77);
+        playerMaxMana.relocate(262,primaryStage.getHeight() - 77);
         Text opponentMaxMana = new Text();
         opponentMaxMana.textProperty().bind(opponent.maxManaProperty().asString());
         opponentMaxMana.setId("text");
-        opponentMaxMana.relocate(260,83);
+        opponentMaxMana.relocate(262,83);
         Text opponentMana = new Text();
-        opponentMana.textProperty().bind(player.manaProperty().asString());
+        opponentMana.textProperty().bind(opponent.manaProperty().asString());
         opponentMana.setId("text");
         opponentMana.relocate(245,83);
-
-        playFieldGroup.getChildren().addAll(enemyDeck,playerDeck,playerGraveYard,enemyGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText,playerMana,playerMaxMana,opponentMana,opponentMaxMana);
+        Text playerHP = new Text();
+        playerHP.textProperty().bind(player.getPlayerHero().hpProperty().asString());
+        playerHP.setId("text");
+        playerHP.relocate(245,primaryStage.getHeight() - 92);
+        Text opponentHP = new Text();
+        opponentHP.textProperty().bind(opponent.getPlayerHero().hpProperty().asString());
+        opponentHP.setId("text");
+        opponentHP.relocate(245,68);
+        opponentDeckCardCount = new Text("30");
+        opponentDeckCardCount.relocate(455  , 45);
+        opponentDeckCardCount.setFont(new Font("Forte",20));
+        playerDeckCardCount = new Text("30");
+        playerDeckCardCount.relocate(455  ,primaryStage.getHeight() - 117);
+        playerDeckCardCount.setFont(new Font("Forte",20));
+        playFieldGroup.getChildren().addAll(playerDeckCardCount,opponentDeckCardCount,opponentDeck,playerDeck,playerGraveYard,opponentGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText,playerMana,playerMaxMana,opponentMana,opponentMaxMana,playerHP,opponentHP);
     }
 
     private static void prepareMenusGroup(){

@@ -2,10 +2,8 @@ package Model;
 
 import Model.Card.*;
 import Model.Spell.NoEffectableCardException;
-import View.ConsoleView;
+import View.GameView.ConsoleView;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 

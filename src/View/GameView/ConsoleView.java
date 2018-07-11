@@ -1,4 +1,4 @@
-package View;
+package View.GameView;
 
 import Model.*;
 import Model.Card.Card;

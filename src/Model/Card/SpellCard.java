@@ -2,7 +2,7 @@ package Model.Card;
 
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import View.ConsoleView;
+import View.GameView.ConsoleView;
 
 /**
  * Created by msi-pc on 5/5/2018.

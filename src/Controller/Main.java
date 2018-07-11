@@ -3,8 +3,7 @@ package Controller;
 import Model.*;
 import Model.Card.*;
 import View.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import View.GameView.ConsoleView;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -114,7 +113,7 @@ public class Main {
     static void afterMatch() throws Exception{
         /*ConsoleView.afterMatch();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("afterMatch");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("afterMatch");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -136,7 +135,7 @@ public class Main {
     private static void enterShop() throws Exception{
         /*ConsoleView.enterShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("enterShop");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("enterShop");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -167,7 +166,7 @@ public class Main {
     private static void cardShop() throws Exception{
         /*ConsoleView.cardShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("cardShop");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("cardShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -194,7 +193,7 @@ public class Main {
     private static void itemShop() throws Exception{
         ConsoleView.itemShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("itemShop");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("itemShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -216,7 +215,7 @@ public class Main {
     private static void amuletShop() throws Exception{
         ConsoleView.amuletShop();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("amuletShop");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("amuletShop");
         helpHandler(lastViewMethod);
         try {
             if (action.startsWith("Buy ") || action.startsWith("buy "))
@@ -240,7 +239,7 @@ public class Main {
     private static void editInventory() throws Exception{
         ConsoleView.editInventory();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editInventory");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editInventory");
         helpHandler(lastViewMethod);
         switch (action){
             case "1":
@@ -269,7 +268,7 @@ public class Main {
     private static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
         ConsoleView.stuffInventory(typeOfStuffToBuyAndSell);
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
         helpHandler(lastViewMethod, typeOfStuffToBuyAndSell);
         if(action.equals("2") || action.equalsIgnoreCase("Exit"))
             return;
@@ -286,7 +285,7 @@ public class Main {
     private static void editDeck(boolean nextIsBattle) throws Exception{
         ConsoleView.editDeck();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editDeck");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editDeck");
         helpHandler(lastViewMethod, nextIsBattle);
         try {
             if (action.startsWith("Add ") || action.startsWith("add ")) {
@@ -329,7 +328,7 @@ public class Main {
     private static void editAmulet() throws Exception{
         ConsoleView.editAmulet();
         action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.ConsoleView").getMethod("editAmulet");
+        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editAmulet");
         helpHandler(lastViewMethod);
         try{
             if(action.startsWith("Equip ") || action.startsWith("equip ")){
@@ -405,7 +404,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help").invoke(null);
+                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help").invoke(null);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else
@@ -418,7 +417,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
+                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else
@@ -431,7 +430,7 @@ public class Main {
     private static void helpHandler(Method lastViewMethod, boolean nextIsBattle) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.ConsoleView").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
+                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
             else if(action.equalsIgnoreCase("Again"))
                 lastViewMethod.invoke(null);
             else
