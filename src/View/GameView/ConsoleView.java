@@ -6,16 +6,24 @@ import Model.Card.MonsterCard;
 import Model.Spell.GeneralizedSpell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TextArea;
 
 import java.util.ArrayList;
 
 import static Controller.Main.human;
 
 abstract public class ConsoleView {
+
+    static private TextArea console;
+
+    public static void setConsole(TextArea console) {
+        ConsoleView.console = console;
+    }
+
     public static void afterMatch(){
-        System.out.println("1. Enter Shop: To enter shop and buy or sell cards and items");
-        System.out.println("2. Edit Inventory: To edit your amulet or deck");
-        System.out.println("3. Next: To go to deck and amulet customization");
+        console.appendText("1. Enter Shop: To enter shop and buy or sell cards and items" + "\n");
+        console.appendText("2. Edit Inventory: To edit your amulet or deck" + "\n");
+        console.appendText("3. Next: To go to deck and amulet customization" + "\n");
     }
 
     public static void afterMatchHelp(){
@@ -23,11 +31,11 @@ abstract public class ConsoleView {
     }
 
     public static void enterShop(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println("1. Card Shop");
-        System.out.println("2. Item Shop");
-        System.out.println("3. Amulet Shop");
-        System.out.println("4. Exit");
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText("1. Card Shop" + "\n");
+        console.appendText("2. Item Shop" + "\n");
+        console.appendText("3. Amulet Shop" + "\n");
+        console.appendText("4. Exit" + "\n");
     }
 
     public static void enterShopHelp(){
@@ -35,57 +43,57 @@ abstract public class ConsoleView {
     }
 
     public static void cardShop(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println(" Shop List:");
-        System.out.println(human.getShop().cardToString() + " Card Inventory:\n" + human.inventoryToString());
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText(" Shop List:" + "\n");
+        console.appendText(human.getShop().cardToString() + " Card Inventory:\n" + human.inventoryToString() + "\n");
     }
 
     public static void cardShopHelp(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println("1. Buy \"Card Name\" - #NumberToBuy: To buy a certain number of a card from shop");
-        System.out.println("2. Sell \"Card Name\" - #NumberToSell: To sell a certain number of a card from inventory");
-        System.out.println("3. Info \"Card Name\": To get more information about a card");
-        System.out.println("4. Edit Deck: To edit deck and remove and add cards to it");
-        System.out.println("5. Exit: To return to shop menu");
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText("1. Buy \"Card Name\" - #NumberToBuy: To buy a certain number of a card from shop" + "\n");
+        console.appendText("2. Sell \"Card Name\" - #NumberToSell: To sell a certain number of a card from inventory" + "\n");
+        console.appendText("3. Info \"Card Name\": To get more information about a card" + "\n");
+        console.appendText("4. Edit Deck: To edit deck and remove and add cards to it" + "\n");
+        console.appendText("5. Exit: To return to shop menu" + "\n");
     }
 
     public static void itemShop(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println(" Shop List:");
-        System.out.println(human.getShop().itemToString() + " Item Inventory:\n" + human.itemToString());
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText(" Shop List:" + "\n");
+        console.appendText(human.getShop().itemToString() + " Item Inventory:\n" + human.itemToString() + "\n");
     }
 
     public static void itemShopHelp(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println("1. Buy \"Item Name\" - #NumberToBuy: To buy an item from the shop");
-        System.out.println("2. Sell \"Item Name\" - #NumberToSell: To sell an item from your item inventory");
-        System.out.println("3. Info \"Item Name\": To view the full information of the item");
-        System.out.println("4. Exit: To return to shop menu");
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText("1. Buy \"Item Name\" - #NumberToBuy: To buy an item from the shop" + "\n");
+        console.appendText("2. Sell \"Item Name\" - #NumberToSell: To sell an item from your item inventory" + "\n");
+        console.appendText("3. Info \"Item Name\": To view the full information of the item" + "\n");
+        console.appendText("4. Exit: To return to shop menu" + "\n");
     }
 
     public static void amuletShop(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println(" Shop List:");
-        System.out.println(human.getShop().amuletToString() + "Equipped Amulet: " + (human.getEquippedAmulet() == null ? "-" : human.getEquippedAmulet().getName()));
-        System.out.println("Amulet Inventory:\n" + human.amuletToString());
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText(" Shop List:" + "\n");
+        console.appendText(human.getShop().amuletToString() + "Equipped Amulet: " + (human.getEquippedAmulet() == null ? "-" : human.getEquippedAmulet().getName()) + "\n");
+        console.appendText("Amulet Inventory:\n" + human.amuletToString() + "\n");
     }
 
     public static void amuletShopHelp(){
-        System.out.println("Remaining Gil: " + human.getGil() + " Gil");
-        System.out.println("1. Buy \"Amulet Name\" - #NumberToBuy: To buy a number of an amulet from the shop");
-        System.out.println("2. Sell \"Amulet Name\" - #NumberToSell: To sell a number of an amulet from amulet inventory");
-        System.out.println("3. Info \"Amulet Name\": To get full info on an amulet");
-        System.out.println("4. Edit Amulets: To equip or remove your hero's amulet");
-        System.out.println("5. Exit: To return to shop menu");
+        console.appendText("Remaining Gil: " + human.getGil() + " Gil" + "\n");
+        console.appendText("1. Buy \"Amulet Name\" - #NumberToBuy: To buy a number of an amulet from the shop" + "\n");
+        console.appendText("2. Sell \"Amulet Name\" - #NumberToSell: To sell a number of an amulet from amulet inventory" + "\n");
+        console.appendText("3. Info \"Amulet Name\": To get full info on an amulet" + "\n");
+        console.appendText("4. Edit Amulets: To equip or remove your hero's amulet" + "\n");
+        console.appendText("5. Exit: To return to shop menu" + "\n");
     }
 
     public static void editInventory(){
-        System.out.println("1. Card Inventory: To view your cards");
-        System.out.println("2. Item Inventory: To view your items");
-        System.out.println("3. Amulet Inventory: To view your amulets");
-        System.out.println("4. Edit Deck: To edit your card deck");
-        System.out.println("5. Edit Amulets: To equip or remove your amulets");
-        System.out.println("6. Exit: to return to previous menu");
+        console.appendText("1. Card Inventory: To view your cards" + "\n");
+        console.appendText("2. Item Inventory: To view your items" + "\n");
+        console.appendText("3. Amulet Inventory: To view your amulets" + "\n");
+        console.appendText("4. Edit Deck: To edit your card deck" + "\n");
+        console.appendText("5. Edit Amulets: To equip or remove your amulets" + "\n");
+        console.appendText("6. Exit: to return to previous menu" + "\n");
     }
 
     public static void editInventoryHelp(){
@@ -95,227 +103,227 @@ abstract public class ConsoleView {
     public static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
         switch (typeOfStuffToBuyAndSell){
             case CARD:
-                System.out.println("Card Inventory:");
-                System.out.println(human.inventoryToString());
+                console.appendText("Card Inventory:" + "\n");
+                console.appendText(human.inventoryToString() + "\n");
                 break;
             case ITEM:
-                System.out.println("Item Inventory:");
-                System.out.println(human.itemToString());
+                console.appendText("Item Inventory:" + "\n");
+                console.appendText(human.itemToString() + "\n");
                 break;
                 default:
-                    System.out.println("Amulet Inventory:");
-                    System.out.println(human.amuletToString());
+                    console.appendText("Amulet Inventory:" + "\n");
+                    console.appendText(human.amuletToString() + "\n");
         }
     }
 
     public static void stuffInventoryHelp(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
-        System.out.println("1. Info \"" + typeOfStuffToBuyAndSell.name() + " name\": to get more information about a specific " + typeOfStuffToBuyAndSell.name());
-        System.out.println("2. Exit: to return to previous section");
+        console.appendText("1. Info \"" + typeOfStuffToBuyAndSell.name() + " name\": to get more information about a specific " + typeOfStuffToBuyAndSell.name() + "\n");
+        console.appendText("2. Exit: to return to previous section" + "\n");
     }
 
     public static void editDeck(){
-        System.out.println("Deck:");
-        System.out.println(human.deckToString());
-        System.out.println("Other Cards:");
-        System.out.println(human.inventoryToString());
+        console.appendText("Deck:" + "\n");
+        console.appendText(human.deckToString() + "\n");
+        console.appendText("Other Cards:" + "\n");
+        console.appendText(human.inventoryToString() + "\n");
     }
 
     public static void editDeckHelp(boolean nextIsBattle){
-        System.out.println("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck");
-        System.out.println("2. Remove #CardSlotNum: To remove cards from your deck");
-        System.out.println("3. Info \"Card Name\": To get more information about a specific card");
+        console.appendText("1. Add \"Card Name\" #CardSlotNum: To add cards to your deck" + "\n");
+        console.appendText("2. Remove #CardSlotNum: To remove cards from your deck" + "\n");
+        console.appendText("3. Info \"Card Name\": To get more information about a specific card" + "\n");
         if(nextIsBattle)
-            System.out.println("4. Next: To go to battlefield");
+            console.appendText("4. Next: To go to battlefield" + "\n");
         else
-            System.out.println("4. Exit: To return to the previous section");
+            console.appendText("4. Exit: To return to the previous section" + "\n");
     }
 
     public static void editAmulet(){
-        System.out.println("Amulets:");
-        System.out.println(human.amuletToString());
+        console.appendText("Amulets:" + "\n");
+        console.appendText(human.amuletToString() + "\n");
         if(human.getEquippedAmulet() != null)
-            System.out.println("Player is equipped with " + human.getEquippedAmulet().getName());
+            console.appendText("Player is equipped with " + human.getEquippedAmulet().getName() + "\n");
     }
 
     public static void editAmuletHelp(){
-        System.out.println("1. Equip \"Amulet name\": To equip the player with an amulet");
-        System.out.println("2. Remove Amulet: To remove the equipped amulet of the player (if the player is equipped with one)");
-        System.out.println("3. Info \"Amulet Name\": To get more information about a specific amulet");
-        System.out.println("4. Exit: to return to the previous section");
+        console.appendText("1. Equip \"Amulet name\": To equip the player with an amulet" + "\n");
+        console.appendText("2. Remove Amulet: To remove the equipped amulet of the player (if the player is equipped with one)" + "\n");
+        console.appendText("3. Info \"Amulet Name\": To get more information about a specific amulet" + "\n");
+        console.appendText("4. Exit: to return to the previous section" + "\n");
     }
 
     public static void insufficientGil(){
-        System.out.println("Not enough Gil!");
+        console.appendText("Not enough Gil!" + "\n");
     }
 
     public static void notAvailableInShop(){
-        System.out.println("Wanted stuff not available in shop.");
+        console.appendText("Wanted stuff not available in shop." + "\n");
     }
 
     public static void successfulBuy(String boughtThingName, int numberToBuy){
-        System.out.println("Successfully bought " + numberToBuy + " of " + boughtThingName + "!");
+        console.appendText("Successfully bought " + numberToBuy + " of " + boughtThingName + "!" + "\n");
     }
 
     public static void notEnoughStuffs(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
-        System.out.println("Not enough " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s!");
+        console.appendText("Not enough " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s!" + "\n");
     }
 
     public static void notEnoughCardsToInitiateBattle(){
-        System.out.println("Not enough cards to initiate a battle. please add more cards to your deck.");
+        console.appendText("Not enough cards to initiate a battle. please add more cards to your deck." + "\n");
     }
 
     public static void successfulSell(String soldThingName, int numberToSell){
-        System.out.println("Successfully sold " + numberToSell + " of " + soldThingName + "!");
+        console.appendText("Successfully sold " + numberToSell + " of " + soldThingName + "!" + "\n");
     }
 
     public static void printStuffInfo(Stuff stuff){
-        System.out.println(stuff);
+        console.appendText(stuff + "\n");
     }
 
     public static void invalidCommand(){
-        System.out.println("Invalid command. Type Help for more information.");
+        console.appendText("Invalid command. Type Help for more information." + "\n");
     }
 
     public static void showPlayerMana(Player player){   // mana and maxMana
-        System.out.println(player.getMana() + " - " + player.getMaxMana());
+        console.appendText(player.getMana() + " - " + player.getMaxMana() + "\n");
     }
 
     public static void emptyDeck(){
-        System.out.println("Deck is empty!");
+        console.appendText("Deck is empty!" + "\n");
     }
 
     public static void successfulAddToDeck(String cardName, int slotNumber){
-        System.out.println(cardName + " was add to slot " + slotNumber);
+        console.appendText(cardName + " was add to slot " + slotNumber + "\n");
     }
 
     public static void successfulRemoveFromDeck(String cardName, int slotNumber){
-        System.out.println(cardName + " was removed from slot " + slotNumber);
+        console.appendText(cardName + " was removed from slot " + slotNumber + "\n");
     }
 
     public static void successfulAmuletEquip(String amuletName){
-        System.out.println(amuletName + " was equipped on the player.");
+        console.appendText(amuletName + " was equipped on the player." + "\n");
     }
 
     public static void successfulRemoveEquippedAmulet(String amuletName){
-        System.out.println(amuletName + " was removed!");
+        console.appendText(amuletName + " was removed!" + "\n");
     }
 
     public static void slotIsFull(Player player){
         if (player == human)
-            System.out.println("\nSlot is full!\n");
+            console.appendText("\nSlot is full!\n" + "\n");
     }
 
     public static void insufficientMana(Player player){
         if (player == human)
-            System.out.println("\nNot enough MP!\n");
+            console.appendText("\nNot enough MP!\n" + "\n");
     }
 
     public static void invalidCardName(){
-        System.out.println("Card does not exist!");
+        console.appendText("Card does not exist!" + "\n");
     }
 
     public static void slotIsEmpty(Player player){
         if (player == human)
-            System.out.println("Slot is empty!");
+            console.appendText("Slot is empty!" + "\n");
     }
 
     public static void clashWith(String attackerCard, String attackedCard){
-        System.out.println(attackerCard + " clashed with " + attackedCard);
+        console.appendText(attackerCard + " clashed with " + attackedCard + "\n");
     }
 
     public static void alreadyAttacked(Player player){
         if (player == human)
-            System.out.println("The card has already attacked!");
+            console.appendText("The card has already attacked!" + "\n");
     }
 
     public static void cardIsSleep(Player player){
         if (player == human)
-            System.out.println("The selected card is sleep!");
+            console.appendText("The selected card is sleep!" + "\n");
     }
 
     public static void defenderEnemyPresent(Player player){
         if (player == human)
-            System.out.println("There's a defender enemy present!");
+            console.appendText("There's a defender enemy present!" + "\n");
     }
 
 //--------------------------------------------------------------------------------- usingMonsterCard
     public static void usingMonsterCardInfo(MonsterCard monsterCard){
-        System.out.println("Using " + monsterCard.getName() + ":");
-        System.out.println("HP: " + monsterCard.getHp() + "  AP: " + monsterCard.getAp());
-        System.out.println("Is Sleeping: " + !monsterCard.isAwake());
-        System.out.println("Can Attack: " + (!monsterCard.hasAttacked() && monsterCard.isAwake()));
+        console.appendText("Using " + monsterCard.getName() + ":" + "\n");
+        console.appendText("HP: " + monsterCard.getHp() + "  AP: " + monsterCard.getAp() + "\n");
+        console.appendText("Is Sleeping: " + !monsterCard.isAwake() + "\n");
+        console.appendText("Can Attack: " + (!monsterCard.hasAttacked() && monsterCard.isAwake()) + "\n");
         if (monsterCard.hasGotSpell()){
-            System.out.println("Can Cast: " + !monsterCard.hasUsedSpell());
+            console.appendText("Can Cast: " + !monsterCard.hasUsedSpell() + "\n");
         }
     }
 
     public static void usingMonsterCardHelp(boolean hasSpell){
-        System.out.println("1. Attack #EnemyMonsterSlot / Player: To attack the card on that slot of enemy MonsterField or the enemy player");
+        console.appendText("1. Attack #EnemyMonsterSlot / Player: To attack the card on that slot of enemy MonsterField or the enemy player" + "\n");
         if (!hasSpell){
-            System.out.println("2. Info: To get full information on card");
-            System.out.println("3. Exit: To go back to Play Menu");
+            console.appendText("2. Info: To get full information on card" + "\n");
+            console.appendText("3. Exit: To go back to Play Menu" + "\n");
         }
         else{
-            System.out.println("2. Cast Spell: To cast the card's spell ");
-            System.out.println("3. Info: To get full information on card");
-            System.out.println("4. Exit: To go back to Play Menu");
+            console.appendText("2. Cast Spell: To cast the card's spell " + "\n");
+            console.appendText("3. Info: To get full information on card" + "\n");
+            console.appendText("4. Exit: To go back to Play Menu" + "\n");
         }
     }
 
 //--------------------------------------------------------------------------------- view hand,graveyard,spellField,monsterField
     public static void viewHand(Player player){
-        System.out.println("Your Hand:");
+        console.appendText("Your Hand:" + "\n");
         int i = 1;
         for (Card card: player.getHandCards()){
-            System.out.println(i + ". " + card.getName() + " - " + card.getManaCost());
+            console.appendText(i + ". " + card.getName() + " - " + card.getManaCost() + "\n");
             i++;
         }
         if (i == 1)
-            System.out.println("Hand empty!");
+            console.appendText("Hand empty!" + "\n");
     }
 
     public static void viewGraveyard(Player player){
-        System.out.println("Your Graveyard:");
+        console.appendText("Your Graveyard:" + "\n");
         int i = 1;
         for (Card card: player.getGraveyardCards()){
-            System.out.println(i + ". " + card.getName());
+            console.appendText(i + ". " + card.getName() + "\n");
             i++;
         }
         if (i == 1)
-            System.out.println("Graveyard empty!");
+            console.appendText("Graveyard empty!" + "\n");
 
-        System.out.println();
-        System.out.println("Enemy's Graveyard:");
+        console.appendText("\n");
+        console.appendText("Enemy's Graveyard:" + "\n");
         int j = 1;
         for (Card card: player.getOpponent().getGraveyardCards()){
-            System.out.println(j + ". " + card.getName());
+            console.appendText(j + ". " + card.getName() + "\n");
             j++;
         }
         if (j == 1)
-            System.out.println("Graveyard empty!");
+            console.appendText("Graveyard empty!" + "\n");
     }
 
     public static void viewSpellField(Player player){
-        System.out.println("Your SpellField:");
+        console.appendText("Your SpellField:" + "\n");
         int i =1;
         for (Card card: player.getSpellFieldCards()){
-            System.out.print("Slot" + i + ": ");
+            console.appendText("Slot" + i + ": ");
             if (card == null)
-                System.out.println("Empty");
+                console.appendText("Empty" + "\n");
             else
-                System.out.println(card.getName());
+                console.appendText(card.getName() + "\n");
             i++;
         }
 
-        System.out.println();
-        System.out.println("Enemy's SpellField:");
+        console.appendText("\n");
+        console.appendText("Enemy's SpellField:" + "\n");
         int j =1;
         for (Card card: player.getOpponent().getSpellFieldCards()){
-            System.out.print("Slot" + j + ": ");
+            console.appendText("Slot" + j + ": ");
             if (card == null)
-                System.out.println("Empty");
+                console.appendText("Empty" + "\n");
             else
-                System.out.println(card.getName());
+                console.appendText(card.getName() + "\n");
             i++;
         }
     }
@@ -323,66 +331,66 @@ abstract public class ConsoleView {
 
 
     public static void viewMonsterField(Player player){
-        System.out.println("Your MonsterField:");
+        console.appendText("Your MonsterField:" + "\n");
         int i = 1;
         for (Card card: player.getMonsterFieldCards()){
-            System.out.print("Slot" + i + ": ");
+            console.appendText("Slot" + i + ": ");
             if (card == null)
-                System.out.print("Empty");
+                console.appendText("Empty");
             else{
                 MonsterCard monsterCard = (MonsterCard)card;
-                System.out.print(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
+                console.appendText(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
                 if (monsterCard.isDefender())
-                    System.out.print(" Defensive");
+                    console.appendText(" Defensive");
                 if (monsterCard.isNimble())
-                    System.out.print(" Nimble");
+                    console.appendText(" Nimble");
                 if (monsterCard.hasGotSpell()){
                     if (monsterCard.hasUsedSpell())
-                        System.out.print(" UsedSpell");
+                        console.appendText(" UsedSpell");
                     else
-                        System.out.print(" HasSpell");
+                        console.appendText(" HasSpell");
                 }
             }
-            System.out.println();
+            console.appendText("\n");
             i++;
         }
 
-        System.out.println();
-        System.out.println("Enemy's MonsterField:");
+        console.appendText("\n");
+        console.appendText("Enemy's MonsterField:" + "\n");
         int j = 1;
         for (Card card: player.getOpponent().getMonsterFieldCards()){
-            System.out.print("Slot" + j + ": ");
+            console.appendText("Slot" + j + ": ");
             if (card == null)
-                System.out.print("Empty");
+                console.appendText("Empty");
             else{
                 MonsterCard monsterCard = (MonsterCard)card;
-                System.out.print(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
+                console.appendText(card.getName() + "  HP:" + monsterCard.getHp() + " AP:" + monsterCard.getAp());
                 if (monsterCard.isDefender())
-                    System.out.print(" Defensive");
+                    console.appendText(" Defensive");
                 if (monsterCard.isNimble())
-                    System.out.print(" Nimble");
+                    console.appendText(" Nimble");
                 if (monsterCard.hasGotSpell()){
                     if (monsterCard.hasUsedSpell())
-                        System.out.print(" UsedSpell");
+                        console.appendText(" UsedSpell");
                     else
-                        System.out.println(" HasSpell");
+                        console.appendText(" HasSpell" + "\n");
                 }
             }
-            System.out.println();
+            console.appendText("\n");
             j++;
         }
     }
 
     public static void viewHeroes(Player player){
-        System.out.println("Your Hero: " + player.getPlayerHero().getHp());
-        System.out.println("Opponent Hero: " + player.getOpponent().getPlayerHero().getHp());
+        console.appendText("Your Hero: " + player.getPlayerHero().getHp() + "\n");
+        console.appendText("Opponent Hero: " + player.getOpponent().getPlayerHero().getHp() + "\n");
     }
 
 
     //------------------------------------------------------------------------------------------Spell
     public static void viewSpellEffectableCards(ArrayList<SpellCastable> effectableCards){
         int index =  1;
-        System.out.println("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:");
+        console.appendText("List‬‬ ‫‪of‬‬ ‫‪Targets‬‬ ‫‪:" + "\n");
         boolean friendlinessChanged = false;
         ArrayList<String> cardPlaceNames = new ArrayList<>();
         ArrayList<Card> currentPlace = new ArrayList<>();
@@ -394,9 +402,9 @@ abstract public class ConsoleView {
                 else
                     cardPlaceNames.add(((Card)spellCastable).getCardPlacebyName());
                 if (friendlinessChanged)
-                    System.out.println("Enemy " + ((Card)spellCastable).getCardPlacebyName() + ":");
+                    console.appendText("Enemy " + ((Card)spellCastable).getCardPlacebyName() + ":" + "\n");
                 else
-                    System.out.println(((Card)spellCastable).getCardPlacebyName() + ":");
+                    console.appendText(((Card)spellCastable).getCardPlacebyName() + ":" + "\n");
             }
             else if (spellCastable instanceof PlayerHero){
                 currentPlace = new ArrayList<>();
@@ -405,134 +413,134 @@ abstract public class ConsoleView {
                 else
                     cardPlaceNames.add("Player");
                 if (friendlinessChanged)
-                    System.out.println("Enemy Player:");
+                    console.appendText("Enemy Player:" + "\n");
                 else
-                    System.out.println("Player:");
+                    console.appendText("Player:" + "\n");
             }
-            System.out.println(index + "." + spellCastable.getName());
+            console.appendText(index + "." + spellCastable.getName() + "\n");
             index++;
         }
     }
 
     public static void spellCastHelp(){
-        System.out.println("1. Target #TargetNum To cast the spell on the specified target");
-        System.out.println("2. Exit: To skip spell casting");
+        console.appendText("1. Target #TargetNum To cast the spell on the specified target" + "\n");
+        console.appendText("2. Exit: To skip spell casting" + "\n");
     }
 
     public static void spellTargeted(SpellCastable target){
-        System.out.println(target.getName() + " has been targeted.");
+        console.appendText(target.getName() + " has been targeted." + "\n");
     }
 
     public static void noTargetChosen(){
-        System.out.println("No Target was chosen. Such a waste ...");
+        console.appendText("No Target was chosen. Such a waste ..." + "\n");
     }
 
     public static void noValidTarget(Player player){
         if (player == human){
-            System.out.println("There's no valid target. Spell didn't cast!");
+            console.appendText("There's no valid target. Spell didn't cast!" + "\n");
         }
     }
 
     public static void spellCasted(String caster, GeneralizedSpell spell){
-        System.out.println(caster + " has cast a spell:");
-        System.out.println(spell.getName() + ": " + spell.getDetail());
+        console.appendText(caster + " has cast a spell:" + "\n");
+        console.appendText(spell.getName() + ": " + spell.getDetail() + "\n");
     }
 
     public static void noEffectableCard(){
-        System.out.println("OOPS! There was no one to cast the spell on.");
+        console.appendText("OOPS! There was no one to cast the spell on." + "\n");
     }
 
 
 //------------------------------------------------------------------------------------------
     public static void battleStarted(Player opponent){
-        System.out.println("Battle against " + opponent.getName() + " started!");
+        console.appendText("Battle against " + opponent.getName() + " started!" + "\n");
     }
 
     public static void announceBattleStarter(String name){
-        System.out.println(name + " starts the battle");
+        console.appendText(name + " starts the battle" + "\n");
     }
 
     public  static void turnAnnouncer(int turnNumber, String starter){
-        System.out.println("turn " + turnNumber + " started");
-        System.out.println(starter + "'s turn");
+        console.appendText("turn " + turnNumber + " started" + "\n");
+        console.appendText(starter + "'s turn" + "\n");
     }
     public static void battleHelp(){
-        System.out.println("0. Use Item: To use an item of your items");
-        System.out.println("1. Use #SlotNum: To use a specific card which is on the Monster Field");
-        System.out.println("2. Set #HandIndex to #SlotNum: To set a card which is on the hand, in the field");
-        System.out.println("3. ConsoleView Hand: To view the cards in your hand");
-        System.out.println("4. ConsoleView Graveyard: To view the cards in your graveyard");
-        System.out.println("5. ConsoleView SpellField: To view the cards in both ’players spell fields");
-        System.out.println("6. ConsoleView MonsterField: To view the cards in both ’players monster fields");
-        System.out.println("7. Info \"Card Name\": To view full information about a card");
-        System.out.println("8. Done: To end your turn");
+        console.appendText("0. Use Item: To use an item of your items" + "\n");
+        console.appendText("1. Use #SlotNum: To use a specific card which is on the Monster Field" + "\n");
+        console.appendText("2. Set #HandIndex to #SlotNum: To set a card which is on the hand, in the field" + "\n");
+        console.appendText("3. ConsoleView Hand: To view the cards in your hand" + "\n");
+        console.appendText("4. ConsoleView Graveyard: To view the cards in your graveyard" + "\n");
+        console.appendText("5. ConsoleView SpellField: To view the cards in both ’players spell fields" + "\n");
+        console.appendText("6. ConsoleView MonsterField: To view the cards in both ’players monster fields" + "\n");
+        console.appendText("7. Info \"Card Name\": To view full information about a card" + "\n");
+        console.appendText("8. Done: To end your turn" + "\n");
     }
 
     public static void battleOver(Player loser){
-        System.out.println("Battle Ended!");
+        console.appendText("Battle Ended!" + "\n");
         if (loser == human){
-            System.out.println("You Lost!");
+            console.appendText("You Lost!" + "\n");
         }
         else
-            System.out.println("You Won!");
+            console.appendText("You Won!" + "\n");
     }
 
     public static void mysticHourGlassUsed(){
-        System.out.println("Mystic Hourglass Used!");
+        console.appendText("Mystic Hourglass Used!" + "\n");
     }
 
     public static void gameOver(Player player){
         if (player == human) {
-            System.out.println("You are out of Mystic Hourglass");
-            System.out.println("Game Over!");
+            console.appendText("You are out of Mystic Hourglass" + "\n");
+            console.appendText("Game Over!" + "\n");
         }
     }
 
     public static void wholeWinner(){
-        System.out.println("You won all the games!");
-        System.out.println("Game over!");
+        console.appendText("You won all the games!" + "\n");
+        console.appendText("Game over!" + "\n");
     }
 
 //--------------------------------------Items menu-------------------------------------------------------
     public static void availableItems(Player player){
-        System.out.println("Available Items:");
+        console.appendText("Available Items:" + "\n");
         int i = 0;
         for (Item item: player.getItems()){
-            System.out.println((++i) + ". " + item.getName());
+            console.appendText((++i) + ". " + item.getName() + "\n");
         }
         if (i == 0)
-            System.out.println("There's no available item!");
+            console.appendText("There's no available item!" + "\n");
     }
 
     public static void itemHelp(){
-        System.out.println("1. Use \"Item Name\": To cast the spell of the item");
-        System.out.println("2. Info \"Item Name\": To view full information about the item");
-        System.out.println("2. Exit");
+        console.appendText("1. Use \"Item Name\": To cast the spell of the item" + "\n");
+        console.appendText("2. Info \"Item Name\": To view full information about the item" + "\n");
+        console.appendText("2. Exit" + "\n");
     }
 
     public static void itemDontExist(){
-        System.out.println("Item doesn't exist!");
+        console.appendText("No item selected!" + "\n");
     }
 
 //-------------------------------------------------------exception-----------------------------------
     public static void indexOutOfBound(){
-        System.out.println("Selected slot is not in range!");
+        console.appendText("Selected slot is not in range!" + "\n");
     }
 
 //------------------------------------------------------Played cards-------------------------------------
     public static void cardDrawn(String name) {
-        System.out.println("You drew " + name);
+        console.appendText("You drew " + name + "\n");
     }
 
     public static void playedInMonsterField(String name){
-        System.out.println(name + "  played in MonsterField");
+        console.appendText(name + "  played in MonsterField" + "\n");
     }
 
     public static void playedInSpellField(String name){
-        System.out.println(name + "  played in SpellField");
+        console.appendText(name + "  played in SpellField" + "\n");
     }
 
     public static void spellCardCasted(String name){
-        System.out.println(name + "  casted and went to Graveyard");
+        console.appendText(name + "  casted and went to Graveyard" + "\n");
     }
 }

@@ -4,6 +4,8 @@ import Model.Card.NormalCard;
 import Model.Card.Tribe;
 import Model.Player;
 import Model.Stuff;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -19,13 +21,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import static Controller.Main.human;
+
 public class GameView {
 
     private static Stage primaryStage;
     private static Player player;
     private static Player opponent;
     private static TextArea details;
-    private static TextArea console;
     private static Group informationGroup;
     private static Group playFieldGroup;
     private static Group menusGroup;
@@ -48,7 +51,7 @@ public class GameView {
     private static Text playerDeckCardCount;
     private static Text opponentDeckCardCount;
 
-    public static void ShowGame(Stage primaryStage, Player player, Player opponent){
+    public static void prepare(Stage primaryStage, Player player, Player opponent){
         GameView.primaryStage = primaryStage;
         GameView.opponent = opponent;
         GameView.player = player;
@@ -57,9 +60,9 @@ public class GameView {
         playFieldGroup = new Group();
         menusGroup = new Group();
         root.relocate(0,0);
-        prepareInformationGroup();
         preparePlayFieldGroup();
         prepareMenusGroup();
+        prepareInformationGroup();
         root.getChildren().addAll(informationGroup,playFieldGroup,menusGroup);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
@@ -68,7 +71,8 @@ public class GameView {
 
     private static void prepareInformationGroup(){
         informationGroup.relocate(0,0);
-        console = new TextArea();
+        TextArea console = new TextArea();
+        ConsoleView.setConsole(console);
         details = new TextArea();
         console.setEditable(false);
         details.setEditable(false);
@@ -76,6 +80,10 @@ public class GameView {
         details.setPrefSize(primaryStage.getWidth() / 3 - 100, primaryStage.getHeight() / 3 * 2 - 35);
         console.relocate(15,primaryStage.getHeight() / 3 * 2 - 10);
         console.setPrefSize(primaryStage.getWidth() / 3 - 100, primaryStage.getHeight() / 3 - 45);
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                details.setText(newValue.toString());
+        });
         informationGroup.getChildren().addAll(console,details);
     }
 
@@ -240,7 +248,7 @@ public class GameView {
         menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton, useItemButton,attackButton,playCardButton,useSpellButton,listView);
     }
 
-    private static void showIdleScene(){
+    public static void showIdleScene(){
         //information group
         details.clear();
         //playfield group
@@ -252,7 +260,7 @@ public class GameView {
         menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton);
     }
 
-    private static void showOpponentTurnScene(){
+    public static void showOpponentTurnScene(){
         //information group
         details.clear();
         //playfield group
@@ -261,5 +269,85 @@ public class GameView {
         opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
         //menus group
         menusGroup.getChildren().clear();
+    }
+
+    public static Button getShowItemsButton() {
+        return showItemsButton;
+    }
+
+    public static Button getShowHandButton() {
+        return showHandButton;
+    }
+
+    public static Button getEndTurnButton() {
+        return endTurnButton;
+    }
+
+    public static Button getPlayCardButton() {
+        return playCardButton;
+    }
+
+    public static Button getUseItemButton() {
+        return useItemButton;
+    }
+
+    public static Button getUseSpellButton() {
+        return useSpellButton;
+    }
+
+    public static Button getAttackButton() {
+        return attackButton;
+    }
+
+    public static void showHand(){
+        menusGroup.getChildren().clear();
+        ConsoleView.showPlayerMana(player);
+        ConsoleView.viewHand(player);
+        listView.setItems(FXCollections.observableArrayList(player.getHandCards()));
+        menusGroup.getChildren().addAll(playCardButton,listView,endTurnButton,showHandButton,showItemsButton);
+    }
+
+    public static void showItems(){
+        menusGroup.getChildren().clear();
+        ConsoleView.availableItems(player);
+        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
+        listView.setItems(FXCollections.observableArrayList(player.getItems()));
+        menusGroup.getChildren().addAll(showHandButton,listView,endTurnButton,showItemsButton,useItemButton);
+    }
+
+    public static HBox getPlayerMonsterField() {
+        return playerMonsterField;
+    }
+
+    public static HBox getPlayerSpellField() {
+        return playerSpellField;
+    }
+
+    public static HBox getOpponentMonsterField() {
+        return opponentMonsterField;
+    }
+
+    public static HBox getOpponentSpellField() {
+        return opponentSpellField;
+    }
+
+    public static Button getPlayerButton() {
+        return playerButton;
+    }
+
+    public static Button getOpponentButton() {
+        return opponentButton;
+    }
+
+    public static Button getPlayerGraveYard() {
+        return playerGraveYard;
+    }
+
+    public static Button getOpponentGraveYard() {
+        return opponentGraveYard;
+    }
+
+    public static ListView<Stuff> getListView() {
+        return listView;
     }
 }

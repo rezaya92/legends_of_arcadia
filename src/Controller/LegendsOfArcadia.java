@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import View.MenuView;
 
 public class LegendsOfArcadia extends Application {
-    private static Stage pStage;
+    static Stage pStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,7 +25,7 @@ public class LegendsOfArcadia extends Application {
         //MenuView.showMainMenu();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
-        //primaryStage.show();
+        primaryStage.show();
         Main.startOfOperations();
     }
 

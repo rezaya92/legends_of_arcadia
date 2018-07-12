@@ -5,15 +5,18 @@ import Model.Card.MonsterCard;
 import Model.Item;
 import Model.Player;
 import Model.Spell.NoEffectableCardException;
-import Model.Stuff;
 import View.GameView.ConsoleView;
+import View.GameView.GameView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
-import java.util.Collections;
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
+import static Controller.Main.opponents;
+import static Controller.LegendsOfArcadia.pStage;
 import static Controller.Main.human;
+import static Controller.Main.mysticHourGlass;
+import static Controller.Main.opponentNumber;
 
 /**
  * Created by msi-pc on 5/14/2018.
@@ -22,9 +25,10 @@ public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
 
-    public static Player startGameAgainst(Player opponent) {
+    public static void startGameAgainst(Player opponent, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
         opponent.setOpponent(human);
         human.setOpponent(opponent);
+        GameView.prepare(pStage,human,opponent);
         ConsoleView.battleStarted(opponent);
         Random random = new Random();
         int coin = random.nextInt(2);
@@ -57,34 +61,18 @@ public class Battle {
             ConsoleView.announceBattleStarter(opponent.getName());
             botPlayTurn(opponent);
         }
-
-        while (!(human.getDeckCards().isEmpty() && human.getHandCards().isEmpty() && human.getMonsterFieldCards().isEmpty() && opponent.getDeckCards().isEmpty() && opponent.getHandCards().isEmpty() && opponent.getMonsterFieldCards().isEmpty())) {
-            if (!humanPlayTurn()){
-                winner = human;
-                break;
-            }
-            if (!botPlayTurn(opponent)){
-                winner = opponent;
-                break;
-            }
-        }
-
-        human.setIsPlaying(false);
-        opponent.setIsPlaying(false);
-        if (winner == null)
-            winner = (human.getPlayerHero().getHp() > opponent.getPlayerHero().getHp()) ? human : opponent;
-        return winner;
+        prepareButtons(humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
+        humanPlayTurn();
     }
 
-
-    private static boolean humanPlayTurn() {
+    private static void humanPlayTurn() {
+        GameView.showIdleScene();
         ConsoleView.turnAnnouncer(++turnNumber, human.getName());
         if (human.getDeckCards().isEmpty())
             ConsoleView.emptyDeck();
-
         human.startTurn();
         ConsoleView.showPlayerMana(human);
-        String action = scanner.next();
+        /*String action = scanner.next();
         while (!action.equalsIgnoreCase("Done")) {
             int slotNumber;
             switch (action) {
@@ -173,13 +161,13 @@ public class Battle {
                     ConsoleView.invalidCommand();
             }
             action = scanner.next();
-        }
+        }*/
         human.endTurn();
-        return true;
     }
 
 
-    private static boolean botPlayTurn(Player bot) {
+    private static void botPlayTurn(Player bot) {
+        GameView.showOpponentTurnScene();
         ConsoleView.turnAnnouncer(++turnNumber,bot.getName());
 
         bot.startTurn();
@@ -195,16 +183,14 @@ public class Battle {
         }
         for (Card card: bot.getMonsterFieldCards()){
             if (card != null) {
-                if (!((MonsterCard) card).attackOpponentHero())
-                    return false;
+                ((MonsterCard) card).attackOpponentHero();
                 for (int i = 0; i < bot.getOpponent().getMonsterFieldCards().size(); i++) {
                     ((MonsterCard) card).attack(i);
                 }
             }
         }
-
         bot.endTurn();
-        return true;
+        humanPlayTurn();
     }
 
 
@@ -265,6 +251,84 @@ public class Battle {
         monsterCard.castSpell();  // todo is this enough ??
         return monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive();
     }
+
+    private static void prepareButtons(ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch){
+        GameView.getShowHandButton().setOnMouseClicked(event -> {
+            GameView.showHand();
+        });
+        GameView.getShowItemsButton().setOnMouseClicked(event -> {
+            GameView.showItems();
+        });
+        GameView.getEndTurnButton().setOnMouseClicked(event -> {
+            human.endTurn();
+            if (human.getDeckCards().isEmpty() && human.getHandCards().isEmpty() && human.getMonsterFieldCards().isEmpty() && human.getOpponent().getDeckCards().isEmpty() && human.getOpponent().getHandCards().isEmpty() && human.getOpponent().getMonsterFieldCards().isEmpty())
+                gameEnded((human.getPlayerHero().getHp() > human.getOpponent().getPlayerHero().getHp()) ? human : human.getOpponent(), humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
+            botPlayTurn(human.getOpponent());
+        });
+        human.getPlayerHero().hpProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() < 0){
+                gameEnded(human.getOpponent(), humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
+            }
+        });
+        human.getOpponent().getPlayerHero().hpProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() <= 0){
+                gameEnded(human, humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
+            }
+        });
+        GameView.getUseItemButton().setOnMouseClicked(event -> {
+            Item item = (Item) GameView.getListView().getSelectionModel().getSelectedItem();
+            if (item != null) {
+                item.use(human);
+                ConsoleView.spellCasted(item.getName(), item.getEffect());
+                human.getItems().remove(item);
+                GameView.showItems();
+            }
+            else
+                ConsoleView.itemDontExist();
+        });
+        GameView.getPlayCardButton().setOnMouseClicked(event -> {
+
+        });
+
+    }
+
+    private static void gameEnded(Player winner, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
+        //ToDo change to map
+        //pStage.close();
+        human.setIsPlaying(false);
+        human.getOpponent().setIsPlaying(false);
+        if (winner == human) {
+            //ArrayList<Item> humanItemsAfterMatch = human.getItems();
+            //human = humanBeforeMatch;
+            human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
+            human.setDeckCards(humanDeckCardBeforeMatch);
+            //human.setItems(humanItemsAfterMatch);
+        } else {
+            if (mysticHourGlass > 0) {
+                //System.out.println(humanBeforeCustomize.getDeckCards().size());
+                //human = humanBeforeCustomize;
+                human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
+                human.setDeckCards(humanDeckCardBeforeCustomization);
+                human.setItems(humanItemsBeforeCustomization);
+                human.getOpponent().setDefaultDeckCards(opponentDefaultDeckCardBeforeCustomization);
+                human.getOpponent().setDeckCards(opponentDeckCardBeforeCustomization);
+                human.getOpponent().setItems(opponentItemsBeforeCustomization);
+                mysticHourGlass--;
+                ConsoleView.mysticHourGlassUsed();
+            } else {
+                ConsoleView.gameOver(human);
+                //TODO end game
+            }
+        }
+
+        //TODO go to map
+
+        if (opponentNumber == opponents.size()) {
+            ConsoleView.wholeWinner();
+        }
+    }
+
+
 
 
     private static boolean itemUseMenu(){

@@ -468,7 +468,7 @@ public class Player implements Cloneable{
                 ((SpellCard) spellCard).getSpell().use(this);
                 }
                 catch (NoEffectableCardException e){
-                    ConsoleView.noEffectableCard();
+                    //ConsoleView.noEffectableCard();
                 }
         }
         maxMana.set(maxMana.get() + 1);
