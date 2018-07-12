@@ -444,6 +444,18 @@ abstract public class ConsoleView {
 
 
 //------------------------------------------------------------------------------------------
+    public static void battleStarted(Player opponent){
+        System.out.println("Battle against " + opponent.getName() + " started!");
+    }
+
+    public static void announceBattleStarter(String name){
+        System.out.println(name + " starts the battle");
+    }
+
+    public  static void turnAnnouncer(int turnNumber, String starter){
+        System.out.println("turn " + turnNumber + " started");
+        System.out.println(starter + "'s turn");
+    }
     public static void battleHelp(){
         System.out.println("0. Use Item: To use an item of your items");
         System.out.println("1. Use #SlotNum: To use a specific card which is on the Monster Field");
@@ -508,6 +520,10 @@ abstract public class ConsoleView {
     }
 
 //------------------------------------------------------Played cards-------------------------------------
+    public static void cardDrawn(String name) {
+        System.out.println("You drew " + name);
+    }
+
     public static void playedInMonsterField(String name){
         System.out.println(name + "  played in MonsterField");
     }

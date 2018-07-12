@@ -3,9 +3,12 @@ package Model.Card;
 import Model.Player;
 import Model.SpellCastable;
 import Model.Stuff;
+import View.GameView.ConsoleView;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+
+import static Controller.Main.human;
 
 /**
  * Created by msi-pc on 4/27/2018.
@@ -75,6 +78,8 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
     public void transfer (ArrayList<Card> destination){  // "also can be boolean"
         if (owner != null && owner.getIsPlaying())
             deuseAuraCards();
+        if (owner != null && cardPlace == owner.getDeckCards() && destination == owner.getHandCards() && owner == human)
+            ConsoleView.cardDrawn(this.getName());
         if (cardPlace != null)
             cardPlace.remove(this);
         if(destination != null)

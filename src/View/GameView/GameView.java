@@ -64,7 +64,6 @@ public class GameView {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
         primaryStage.setScene(scene);
-        root.requestFocus();
     }
 
     private static void prepareInformationGroup(){
@@ -239,5 +238,28 @@ public class GameView {
         useSpellButton.setPrefSize(100,30);
         useSpellButton.relocate(120,primaryStage.getHeight() - 200);
         menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton, useItemButton,attackButton,playCardButton,useSpellButton,listView);
+    }
+
+    private static void showIdleScene(){
+        //information group
+        details.clear();
+        //playfield group
+        playFieldGroup.requestFocus();
+        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
+        opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
+        //menus group
+        menusGroup.getChildren().clear();
+        menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton);
+    }
+
+    private static void showOpponentTurnScene(){
+        //information group
+        details.clear();
+        //playfield group
+        playFieldGroup.requestFocus();
+        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
+        opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
+        //menus group
+        menusGroup.getChildren().clear();
     }
 }

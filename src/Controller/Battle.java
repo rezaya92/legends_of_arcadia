@@ -25,7 +25,7 @@ public class Battle {
     public static Player startGameAgainst(Player opponent) {
         opponent.setOpponent(human);
         human.setOpponent(opponent);
-        System.out.println("Battle against " + opponent.getName() + " started!");
+        ConsoleView.battleStarted(opponent);
         Random random = new Random();
         int coin = random.nextInt(2);
         turnNumber = 0;
@@ -45,19 +45,16 @@ public class Battle {
             // todo view
         }
 
-        System.out.print("Player drew ");
         for (int i = 0; i < 4; i++) {
             Card drawingCard = human.getDeckCards().get(0);
             drawingCard.transfer(human.getHandCards());
-            System.out.print(drawingCard.getName() + ", ");
             opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
-        System.out.println();     // could be a string from "Player drew"
 
         if (coin == 0)
-            System.out.println(human.getName() + " starts the battle.");
+            ConsoleView.announceBattleStarter(human.getName());
         else {
-            System.out.println(opponent.getName() + " starts the battle.");
+            ConsoleView.announceBattleStarter(opponent.getName());
             botPlayTurn(opponent);
         }
 
@@ -81,12 +78,9 @@ public class Battle {
 
 
     private static boolean humanPlayTurn() {
-        System.out.println("Turn " + (++turnNumber) + " started!");
-        System.out.println(human.getName() + "'s turn.");
+        ConsoleView.turnAnnouncer(++turnNumber, human.getName());
         if (human.getDeckCards().isEmpty())
             ConsoleView.emptyDeck();
-        else
-            System.out.println(human.getDeckCards().get(0).getName());
 
         human.startTurn();
         ConsoleView.showPlayerMana(human);
@@ -171,7 +165,7 @@ public class Battle {
                     String cardName = scanner.nextLine().substring(1);  // must be a card name (??)
                     Stuff card = Stuff.getStuffByName(cardName);
                     if (card != null)
-                        System.out.println(card);
+                        ConsoleView.printStuffInfo(card);
                     else
                         ConsoleView.invalidCardName();
                     break;
@@ -186,8 +180,7 @@ public class Battle {
 
 
     private static boolean botPlayTurn(Player bot) {
-        System.out.println("Turn " + (++turnNumber) + " started!");
-        System.out.println(bot.getName() + "'s turn.");
+        ConsoleView.turnAnnouncer(++turnNumber,bot.getName());
 
         bot.startTurn();
 
@@ -230,7 +223,7 @@ public class Battle {
                     break;
                 case "Info":
                 case "info":
-                    System.out.println(monsterCard);
+                    ConsoleView.printStuffInfo(monsterCard);
                     break;
                 case "Attack":
                 case "attack":
