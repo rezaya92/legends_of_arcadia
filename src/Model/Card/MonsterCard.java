@@ -6,6 +6,7 @@ import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import Model.Stuff;
 import View.GameView.ConsoleView;
+import View.GameView.GameView;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
@@ -162,6 +163,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 cardPlace = owner.getMonsterFieldCards();
                 owner.setMana(owner.getMana() - manaCost);
                 useAuraCards();
+                GameView.updateFields();
                 if (isNimble)
                     getAwake();
                 else {

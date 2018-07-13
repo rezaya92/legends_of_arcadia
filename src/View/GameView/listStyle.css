@@ -1,4 +1,4 @@
-#card {
+#empty {
     -fx-background-color:
             #090a0c,
             linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
@@ -15,7 +15,92 @@
     -fx-padding: 0 0 0 0;
 }
 
-#card:focused {
+#empty:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#ELVEN {
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(189, 196, 0, 0.75);
+}
+
+#ELVEN:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#DRAGONBREED {
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(196, 2, 0, 0.75);
+}
+
+#DRAGONBREED:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#ATLANTIAN {
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(0, 40, 196, 0.75);
+}
+
+#ATLANTIAN:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#DEMONIC {
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(196, 0, 105, 0.75);
+}
+
+#DEMONIC:focused {
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
+}
+
+#spell{
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(28, 203, 0, 0.75);
+}
+
+#spell:focused {
     -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
 }
 

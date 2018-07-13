@@ -3,6 +3,7 @@ package Model.Card;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import View.GameView.ConsoleView;
+import View.GameView.GameView;
 
 /**
  * Created by msi-pc on 5/5/2018.
@@ -57,6 +58,7 @@ public class SpellCard extends Card implements Cloneable{
                         cardPlace = owner.getSpellFieldCards();
                         useAuraCards();
                         ConsoleView.playedInSpellField(name);
+                        GameView.updateFields();
                         return true;
                     } else {
                         ConsoleView.slotIsFull(owner);

@@ -4,6 +4,7 @@ import Model.Player;
 import Model.SpellCastable;
 import Model.Stuff;
 import View.GameView.ConsoleView;
+import View.GameView.GameView;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public abstract class Card implements SpellCastable, Stuff, Cloneable {
         this.restoreValues();   // is correct ??  "if there exist a spell that change hand card values no"
         if (owner != null && owner.getIsPlaying())
             useAuraCards();
+        GameView.updateFields();
     }
 
     public void deuseAuraCards(){

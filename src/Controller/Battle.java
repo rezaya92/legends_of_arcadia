@@ -162,7 +162,6 @@ public class Battle {
             }
             action = scanner.next();
         }*/
-        human.endTurn();
     }
 
 
@@ -287,7 +286,8 @@ public class Battle {
                 ConsoleView.itemDontExist();
         });
         GameView.getPlayCardButton().setOnMouseClicked(event -> {
-
+            ((Card)GameView.getListView().getSelectionModel().getSelectedItem()).play();
+            GameView.showHand();
         });
 
     }
@@ -326,6 +326,14 @@ public class Battle {
         if (opponentNumber == opponents.size()) {
             ConsoleView.wholeWinner();
         }
+        else {
+            try {
+                Main.startOfOperations();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        ;
     }
 
 

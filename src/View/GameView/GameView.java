@@ -1,9 +1,12 @@
 package View.GameView;
 
+import Model.Card.MonsterCard;
 import Model.Card.NormalCard;
 import Model.Card.Tribe;
 import Model.Player;
 import Model.Stuff;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +23,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import javax.naming.Binding;
 
 import static Controller.Main.human;
 
@@ -90,11 +95,11 @@ public class GameView {
     private static void preparePlayFieldGroup(){
         playFieldGroup.relocate(primaryStage.getWidth()/3,0);
         playerMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
-        playerMonsterField.getChildren().get(0).setId("card");
-        playerMonsterField.getChildren().get(1).setId("card");
-        playerMonsterField.getChildren().get(2).setId("card");
-        playerMonsterField.getChildren().get(3).setId("card");
-        playerMonsterField.getChildren().get(4).setId("card");
+        playerMonsterField.getChildren().get(0).setId("empty");
+        playerMonsterField.getChildren().get(1).setId("empty");
+        playerMonsterField.getChildren().get(2).setId("empty");
+        playerMonsterField.getChildren().get(3).setId("empty");
+        playerMonsterField.getChildren().get(4).setId("empty");
         playerMonsterField.setPrefWidth(primaryStage.getWidth()/3);
         playerMonsterField.relocate(0, primaryStage.getHeight() / 2);
         playerMonsterField.setAlignment(Pos.TOP_CENTER);
@@ -109,9 +114,9 @@ public class GameView {
         ((Button)playerMonsterField.getChildren().get(4)).wrapTextProperty().setValue(true);
         ((Button)playerMonsterField.getChildren().get(4)).setText("Empty Slot");
         playerSpellField = new HBox(30,new Button(),new Button(),new Button());
-        playerSpellField.getChildren().get(0).setId("card");
-        playerSpellField.getChildren().get(1).setId("card");
-        playerSpellField.getChildren().get(2).setId("card");
+        playerSpellField.getChildren().get(0).setId("empty");
+        playerSpellField.getChildren().get(1).setId("empty");
+        playerSpellField.getChildren().get(2).setId("empty");
         playerSpellField.relocate(0, primaryStage.getHeight() / 2 + 100);
         playerSpellField.setPrefWidth(primaryStage.getWidth()/3);
         playerSpellField.setAlignment(Pos.TOP_CENTER);
@@ -122,11 +127,11 @@ public class GameView {
         ((Button)playerSpellField.getChildren().get(2)).wrapTextProperty().setValue(true);
         ((Button)playerSpellField.getChildren().get(2)).setText("Empty Slot");
         opponentMonsterField = new HBox(30,new Button(),new Button(),new Button(),new Button(),new Button());
-        opponentMonsterField.getChildren().get(0).setId("card");
-        opponentMonsterField.getChildren().get(1).setId("card");
-        opponentMonsterField.getChildren().get(2).setId("card");
-        opponentMonsterField.getChildren().get(3).setId("card");
-        opponentMonsterField.getChildren().get(4).setId("card");
+        opponentMonsterField.getChildren().get(0).setId("empty");
+        opponentMonsterField.getChildren().get(1).setId("empty");
+        opponentMonsterField.getChildren().get(2).setId("empty");
+        opponentMonsterField.getChildren().get(3).setId("empty");
+        opponentMonsterField.getChildren().get(4).setId("empty");
         ((Button)opponentMonsterField.getChildren().get(0)).wrapTextProperty().setValue(true);
         ((Button)opponentMonsterField.getChildren().get(0)).setText("Empty Slot");
         ((Button)opponentMonsterField.getChildren().get(1)).wrapTextProperty().setValue(true);
@@ -147,14 +152,14 @@ public class GameView {
         ((Button)opponentSpellField.getChildren().get(1)).setText("Empty Slot");
         ((Button)opponentSpellField.getChildren().get(2)).wrapTextProperty().setValue(true);
         ((Button)opponentSpellField.getChildren().get(2)).setText("Empty Slot");
-        opponentSpellField.getChildren().get(0).setId("card");
-        opponentSpellField.getChildren().get(1).setId("card");
-        opponentSpellField.getChildren().get(2).setId("card");
+        opponentSpellField.getChildren().get(0).setId("empty");
+        opponentSpellField.getChildren().get(1).setId("empty");
+        opponentSpellField.getChildren().get(2).setId("empty");
         opponentSpellField.relocate(0, 150);
         opponentSpellField.setPrefWidth(primaryStage.getWidth()/3);
         opponentSpellField.setAlignment(Pos.TOP_CENTER);
         playerButton = new Button();
-        playerButton.setId("card");
+        playerButton.setId("empty");
         playerButton.setStyle("-fx-background-color: white");
         playerButton.relocate(220,primaryStage.getHeight() - 150);
         playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
@@ -163,7 +168,7 @@ public class GameView {
         playerText.setId("text");
         playerText.relocate(220,primaryStage.getHeight() - 93);
         opponentButton = new Button();
-        opponentButton.setId("card");
+        opponentButton.setId("empty");
         opponentButton.setStyle("-fx-background-color: white");
         opponentButton.relocate(220,10);
         Text opponentText = new Text("HP:\nMP:    /");
@@ -172,11 +177,11 @@ public class GameView {
         opponentButton.setGraphic(new ImageView(new Image(GameView.class.getResource("DemonPortrait.jpg").toExternalForm(),60,60,true,true)));
         opponentButton.setAlignment(Pos.TOP_CENTER);
         playerGraveYard = new Button();
-        playerGraveYard.setId("card");
+        playerGraveYard.setId("empty");
         playerGraveYard.relocate(0,primaryStage.getHeight() - 150);
         playerGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
         opponentGraveYard = new Button();
-        opponentGraveYard.setId("card");
+        opponentGraveYard.setId("empty");
         opponentGraveYard.relocate(10,10);
         opponentGraveYard.setGraphic(new ImageView(new Image(GameView.class.getResource("GraveYard.png").toExternalForm(),60,90,false,true)));
         ImageView playerDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
@@ -313,6 +318,78 @@ public class GameView {
         playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         listView.setItems(FXCollections.observableArrayList(player.getItems()));
         menusGroup.getChildren().addAll(showHandButton,listView,endTurnButton,showItemsButton,useItemButton);
+    }
+
+    public static void updateFields(){
+        int i;
+        if (human.getIsPlaying()) {
+            for (i = 0; i < 5; ++i) {
+                if (player.getMonsterFieldCards().get(i) != null) {
+                    ((Button) playerMonsterField.getChildren().get(i)).textProperty().bind(Bindings.concat(player.getMonsterFieldCards().get(i).getName()).concat("\nHP:").concat(((MonsterCard) player.getMonsterFieldCards().get(i)).hpProperty()).concat("\nAP:").concat(((MonsterCard) player.getMonsterFieldCards().get(i)).apProperty()));
+                    switch (((MonsterCard) player.getMonsterFieldCards().get(i)).getTribe()){
+                        case ELVEN:
+                            playerMonsterField.getChildren().get(i).setId("ELVEN");
+                            break;
+                        case ATLANTIAN:
+                            playerMonsterField.getChildren().get(i).setId("ATLANTIAN");
+                            break;
+                        case DRAGONBREED:
+                            playerMonsterField.getChildren().get(i).setId("DRAGONBREED");
+                            break;
+                        case DEMONIC:
+                            playerMonsterField.getChildren().get(i).setId("DEMONIC");
+                            break;
+                    }
+                }
+                else {
+                    ((Button) playerMonsterField.getChildren().get(i)).setText("EmptySlot");
+                    playerMonsterField.getChildren().get(i).setId("empty");
+                }
+            }
+            for (i = 0; i < 5; ++i) {
+                if (opponent.getMonsterFieldCards().get(i) != null) {
+                    ((Button) opponentMonsterField.getChildren().get(i)).textProperty().bind(Bindings.concat(opponent.getMonsterFieldCards().get(i).getName()).concat("\nHP:").concat(((MonsterCard) opponent.getMonsterFieldCards().get(i)).hpProperty()).concat("\nAP:").concat(((MonsterCard) opponent.getMonsterFieldCards().get(i)).apProperty()));
+                    switch (((MonsterCard) opponent.getMonsterFieldCards().get(i)).getTribe()) {
+                        case ELVEN:
+                            opponentMonsterField.getChildren().get(i).setId("ELVEN");
+                            break;
+                        case ATLANTIAN:
+                            opponentMonsterField.getChildren().get(i).setId("ATLANTIAN");
+                            break;
+                        case DRAGONBREED:
+                            opponentMonsterField.getChildren().get(i).setId("DRAGONBREED");
+                            break;
+                        case DEMONIC:
+                            opponentMonsterField.getChildren().get(i).setId("DEMONIC");
+                            break;
+                    }
+                }
+                else {
+                    ((Button) opponentMonsterField.getChildren().get(i)).setText("EmptySlot");
+                    opponentMonsterField.getChildren().get(i).setId("empty");
+                }
+            }
+            for (i = 0; i < 3; ++i) {
+                if (player.getSpellFieldCards().get(i) != null) {
+                    ((Button) playerSpellField.getChildren().get(i)).setText(player.getSpellFieldCards().get(i).getName());
+                    playerSpellField.getChildren().get(i).setId("spell");
+                }
+                else {
+                    ((Button) playerSpellField.getChildren().get(i)).setText("EmptySlot");
+                    playerSpellField.getChildren().get(i).setId("empty");
+                }
+            }
+            for (i = 0; i < 3; ++i) {
+                if (opponent.getSpellFieldCards().get(i) != null) {
+                    ((Button) opponentSpellField.getChildren().get(i)).setText(opponent.getSpellFieldCards().get(i).getName());
+                    opponentSpellField.getChildren().get(i).setId("spell");
+                }
+                else {
+                    ((Button) opponentSpellField.getChildren().get(i)).setText("EmptySlot");
+                    opponentSpellField.getChildren().get(i).setId("empty");
+                }
+            }
+        }
     }
 
     public static HBox getPlayerMonsterField() {
