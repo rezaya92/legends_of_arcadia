@@ -342,6 +342,7 @@ public class GameView {
                     }
                 }
                 else {
+                    ((Button) playerMonsterField.getChildren().get(i)).textProperty().unbind();
                     ((Button) playerMonsterField.getChildren().get(i)).setText("EmptySlot");
                     playerMonsterField.getChildren().get(i).setId("empty");
                 }
@@ -365,6 +366,7 @@ public class GameView {
                     }
                 }
                 else {
+                    ((Button) opponentMonsterField.getChildren().get(i)).textProperty().unbind();
                     ((Button) opponentMonsterField.getChildren().get(i)).setText("EmptySlot");
                     opponentMonsterField.getChildren().get(i).setId("empty");
                 }

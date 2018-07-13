@@ -43,6 +43,7 @@ public class SpellCard extends Card implements Cloneable{
                     owner.setMana(owner.getMana() - manaCost);
                     owner.getGraveyardCards().add(this);    // can use transfer instead
                     ConsoleView.spellCardCasted(name);
+                    owner.setMana(owner.getMana() - manaCost);
                     return true;
                 }
                 else{
@@ -59,6 +60,7 @@ public class SpellCard extends Card implements Cloneable{
                         useAuraCards();
                         ConsoleView.playedInSpellField(name);
                         GameView.updateFields();
+                        owner.setMana(owner.getMana() - manaCost);
                         return true;
                     } else {
                         ConsoleView.slotIsFull(owner);

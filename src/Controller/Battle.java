@@ -55,14 +55,15 @@ public class Battle {
             opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
 
-        if (coin == 0)
+        if (coin == 0) {
             ConsoleView.announceBattleStarter(human.getName());
+            humanPlayTurn();
+        }
         else {
             ConsoleView.announceBattleStarter(opponent.getName());
             botPlayTurn(opponent);
         }
         prepareButtons(humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
-        humanPlayTurn();
     }
 
     private static void humanPlayTurn() {
@@ -168,9 +169,8 @@ public class Battle {
     private static void botPlayTurn(Player bot) {
         GameView.showOpponentTurnScene();
         ConsoleView.turnAnnouncer(++turnNumber,bot.getName());
-
+        int currentTurn = turnNumber;
         bot.startTurn();
-
         for (int i = 0; i < bot.getHandCards().size(); i++){
             if (bot.getHandCards().get(i) != null && bot.getHandCards().get(i).play()) {
                 i--;
@@ -179,10 +179,14 @@ public class Battle {
         for (Card card: bot.getMonsterFieldCards()){
             if (card != null)
                 ((MonsterCard)card).castSpell();
+            if (currentTurn != turnNumber)
+                return;
         }
         for (Card card: bot.getMonsterFieldCards()){
             if (card != null) {
                 ((MonsterCard) card).attackOpponentHero();
+                if (currentTurn != turnNumber)
+                    return;
                 for (int i = 0; i < bot.getOpponent().getMonsterFieldCards().size(); i++) {
                     ((MonsterCard) card).attack(i);
                 }
@@ -265,7 +269,7 @@ public class Battle {
             botPlayTurn(human.getOpponent());
         });
         human.getPlayerHero().hpProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() < 0){
+            if (newValue.intValue() <= 0){
                 gameEnded(human.getOpponent(), humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
             }
         });
