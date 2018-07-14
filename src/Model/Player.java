@@ -202,6 +202,10 @@ public class Player implements Cloneable{
         this.equippedAmulet = equippedAmulet;
     }
 
+    public ArrayList<Amulet> getAmulets() {
+        return amulets;
+    }
+
     //--------------------------restore------------------------------------------
     public void restore(){
         for(int i=0; i<5; i++){
