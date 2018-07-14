@@ -227,7 +227,7 @@ public class Battle {
                         } catch (NumberFormatException e){
                             ConsoleView.invalidCommand();
                         } catch (IndexOutOfBoundsException e){
-                            ConsoleView.indexOutOfBound();
+                            ConsoleView.noSlotSelected();
                         }
                     }
                     return true;
@@ -290,10 +290,31 @@ public class Battle {
                 ConsoleView.itemDontExist();
         });
         GameView.getPlayCardButton().setOnMouseClicked(event -> {
-            ((Card)GameView.getListView().getSelectionModel().getSelectedItem()).play();
-            GameView.showHand();
+            if (GameView.getListView().getSelectionModel().getSelectedItem() == null)
+                ConsoleView.noSlotSelected();
+            else {
+                ((Card) GameView.getListView().getSelectionModel().getSelectedItem()).play();
+                GameView.showHand();
+            }
         });
-
+        GameView.getListView().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                GameView.getDetails().setText(newValue.toString());
+        });
+        GameView.getPlayerButton().setOnMouseClicked(event -> GameView.playerClicked(human));
+        GameView.getOpponentButton().setOnMouseClicked(event -> GameView.playerClicked(human.getOpponent()));
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            GameView.getPlayerMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getMonsterFieldCards(),finalI));
+            GameView.getOpponentMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getOpponent().getMonsterFieldCards(),finalI));
+        }
+        for (int i = 0; i < 3; i++) {
+            int finalI = i;
+            GameView.getPlayerSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getSpellFieldCards(),finalI));
+            GameView.getOpponentSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getOpponent().getSpellFieldCards(),finalI));
+        }
+        GameView.getPlayerGraveYard().setOnMouseClicked(event -> GameView.graveYardSelected(human));
+        GameView.getOpponentGraveYard().setOnMouseClicked(event -> GameView.graveYardSelected(human.getOpponent()));
     }
 
     private static void gameEnded(Player winner, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
@@ -337,7 +358,6 @@ public class Battle {
                 e.printStackTrace();
             }
         }
-        ;
     }
 
 

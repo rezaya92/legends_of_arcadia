@@ -208,6 +208,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     ConsoleView.noEffectableCard();
                 }
             }
+            else
+                ConsoleView.spellHasBeenCasted();
         }
     }
 

@@ -30,6 +30,8 @@ public class Player implements Cloneable{
     private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
     private boolean isPlaying = false;
 
+    private boolean isHisTurn = false;
+
     public Player(){
 
     } //for now (human)
@@ -43,6 +45,9 @@ public class Player implements Cloneable{
 
     public String getName() {
         return name;
+    }
+    public boolean isHisTurn() {
+        return isHisTurn;
     }
 
     public void setMonsterFieldCards(ArrayList<Card> monsterFieldCards) {
@@ -462,6 +467,7 @@ public class Player implements Cloneable{
 
 //------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
     public void startTurn(){
+        isHisTurn = true;
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
                 try {
@@ -479,6 +485,7 @@ public class Player implements Cloneable{
     }
 
     public void endTurn(){
+        isHisTurn = false;
         awakeSleepingPlayedCards();
         resetHasAttackedCards();
     }
@@ -572,6 +579,14 @@ public class Player implements Cloneable{
             output += i + 1 + ". " + numberOfAmulets.get(i) + " " + uniqueAmulet.get(i).getName() + "\n";
         }
         return output;
+    }
+
+    @Override
+    public String toString() {
+        if (equippedAmulet == null)
+            return name + "\n" + "HP:" + playerHero.getHp() + "\n" + "MP:" + getMana() + "\n" + "No amulets equipped";
+        else
+            return name + "\n" + "HP:" + playerHero.getHp() + "\n" + "MP:" + getMana() + "\n" + "equipped amulet:\n" + equippedAmulet;
     }
 
     //Object object = new Object().clone();

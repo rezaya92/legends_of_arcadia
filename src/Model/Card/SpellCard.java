@@ -40,14 +40,13 @@ public class SpellCard extends Card implements Cloneable{
                         ConsoleView.noEffectableCard();
                     }
                     cardPlace.remove(this);
-                    owner.setMana(owner.getMana() - manaCost);
                     owner.getGraveyardCards().add(this);    // can use transfer instead
                     ConsoleView.spellCardCasted(name);
                     owner.setMana(owner.getMana() - manaCost);
                     return true;
                 }
                 else{
-                    ConsoleView.indexOutOfBound();
+                    ConsoleView.noSlotSelected();
                 }
             }
             else{
@@ -67,7 +66,7 @@ public class SpellCard extends Card implements Cloneable{
                     }
                 }
                 else{
-                    ConsoleView.indexOutOfBound();
+                    ConsoleView.noSlotSelected();
                 }
             }
         }

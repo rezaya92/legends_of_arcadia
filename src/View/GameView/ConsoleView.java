@@ -523,8 +523,8 @@ abstract public class ConsoleView {
     }
 
 //-------------------------------------------------------exception-----------------------------------
-    public static void indexOutOfBound(){
-        console.appendText("Selected slot is not in range!" + "\n");
+    public static void noSlotSelected(){
+        console.appendText("No slot selected!" + "\n");
     }
 
 //------------------------------------------------------Played cards-------------------------------------
@@ -542,5 +542,9 @@ abstract public class ConsoleView {
 
     public static void spellCardCasted(String name){
         console.appendText(name + "  casted and went to Graveyard" + "\n");
+    }
+
+    public static void spellHasBeenCasted(){
+        console.appendText("Spell has Already been casted");
     }
 }
