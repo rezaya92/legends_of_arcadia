@@ -1,24 +1,33 @@
 package View;
 
 import Controller.LegendsOfArcadia;
+import Controller.Main;
 import Model.Stuff;
+import Model.TypeOfStuffToBuyAndSell;
+import View.GameView.ConsoleView;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static Controller.Main.human;
 
 public class MenuView {
     private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();
@@ -56,38 +65,143 @@ public class MenuView {
         shopGroup.getChildren().add(vBox);
     }
 
-    public static void showCardShop(List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff){
+    public static void showStuffShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff){
+        showStuffShop(typeOfStuffToBuyAndSell, shopStuff, playerStuff, null);
+    }
+
+    public static void showStuffShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff, String transactionMessage){
         Group cardShopGroup = new Group();
-        ArrayList<Button> shopButtons = new ArrayList<>();
-        ScrollBar scrollBar = new ScrollBar();
-        scrollBar.setMin(0);
-        scrollBar.setOrientation(Orientation.VERTICAL);
-        scrollBar.setPrefHeight(600);
-        scrollBar.setLayoutX(100);
-        scrollBar.setLayoutY(100);
-        scrollBar.setMax(playerStuff.size() * 30);
-        //ListView<Button> listView = new ListView<>((ObservableList)shopStuff);
         Scene scene = new Scene(cardShopGroup);
+        ArrayList<Button> shopButtons = new ArrayList<>();
+        ArrayList<Button> playerButtons = new ArrayList<>();
+        TextArea textArea = new TextArea("welcome to the shop!\nhere you can buy the stuff you want and sell the stuff that you no longer need.");
+        Text gilText = new Text("Remaining Gil: " + human.getGil());
+        TextArea transactionResult = new TextArea(transactionMessage);
+        //TODO add return button
+
+        ConsoleView.setConsole(transactionResult);
+
+        gilText.relocate(100, 20);
+
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
-        for(Stuff stuff : shopStuff){
-            shopButtons.add(new Button(stuff.getName()));
 
-        }
-        VBox vBox = makeVBox(100.0, 100.0, buttonPrefWidth, 10.0, shopButtons.toArray(new Node[shopButtons.size()]));
-        vBox.setStyle("-fx-border-width: 2;\n-fx-border-color: black;");
-        cardShopGroup.getChildren().addAll(vBox, scrollBar);
-
-        scrollBar.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                //vBox.setLayoutY(100-new_val.doubleValue());
-                for(Button button : shopButtons){
-                    button.setLayoutY(100 - new_val.doubleValue());
-                }
+        //------------sort shopStuff and playerStuff by name-----------------
+        shopStuff.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
             }
         });
 
+        playerStuff.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        //-------------------------------------------------------------------
 
+        for(Stuff stuff : shopStuff){
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setMinHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+                textArea.appendText("\nPrice: " + stuff.getPrice() + " gil");
+            });
+            itemButton.setOnMouseClicked(event -> {
+                try {
+                    transactionResult.clear();
+                    Main.buyThingsProcessor(typeOfStuffToBuyAndSell, "buy " + stuff.getName() + " - 1");
+                    switch (typeOfStuffToBuyAndSell){
+                        case CARD:
+                            showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards(), transactionResult.getText());
+                            break;
+                        case ITEM:
+                            showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems(), transactionResult.getText());
+                            break;
+                        case AMULET:
+                            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets(), transactionResult.getText());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            shopButtons.add(itemButton);
+        }
+
+        for(Stuff stuff : playerStuff){
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setPrefHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+                textArea.appendText("\nMoney gained from selling: " + stuff.getPrice()/2 + " gil");
+                if(typeOfStuffToBuyAndSell == TypeOfStuffToBuyAndSell.CARD) {
+                    textArea.appendText("\n\n**number in deck: " + Stuff.numberOfStuffInList(stuff, human.getDeckCards()));
+                }
+            });
+            itemButton.setOnMouseClicked(event -> {
+                try {
+                    transactionResult.clear();
+                    Main.sellThingsProcessor(typeOfStuffToBuyAndSell, "sell " + stuff.getName() + " - 1");
+                    switch (typeOfStuffToBuyAndSell){
+                        case CARD:
+                            showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards(), transactionResult.getText());
+                            break;
+                        case ITEM:
+                            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems(), transactionResult.getText());
+                            break;
+                        case AMULET:
+                            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets(), transactionResult.getText());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            playerButtons.add(itemButton);
+        }
+
+//        ScrollBar scrollBar = new ScrollBar();
+//        scrollBar.setMin(0);
+//        scrollBar.setOrientation(Orientation.VERTICAL);
+//        scrollBar.setPrefHeight(600);
+//        scrollBar.setLayoutX(100);
+//        scrollBar.setLayoutY(100);
+//        scrollBar.setMax(playerStuff.size() * 30);
+//
+//        VBox vBox = makeVBox(100.0, 100.0, buttonPrefWidth, 10.0, shopButtons.toArray(new Node[shopButtons.size()]));
+//        vBox.setStyle("-fx-border-width: 2;\n-fx-border-color: black;");
+//
+//        scrollBar.valueProperty().addListener(new ChangeListener<Number>() {
+//            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+//                //vBox.setLayoutY(100-new_val.doubleValue());
+//                for(Button button : shopButtons){
+//                    button.setLayoutY(100 - new_val.doubleValue());
+//                }
+//            }
+//        });
+
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        transactionResult.relocate(600, 525);
+        transactionResult.setEditable(false);
+        transactionResult.setPrefSize(300, 50);
+
+        ListView<Button> shopItemsListView = new ListView<>(FXCollections.observableArrayList(shopButtons));
+        //shopItemsListView.setFixedCellSize(60);
+        shopItemsListView.relocate(150, 100);
+        shopItemsListView.setPrefSize(330, 500);
+
+        ListView<Button> playerItemsListView = new ListView<>(FXCollections.observableArrayList(playerButtons));
+        playerItemsListView.relocate(1000, 100);
+        playerItemsListView.setPrefSize(330, 500);
+
+
+
+        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, gilText, transactionResult);
+        //cardShopGroup.getChildren().addAll(vBox, scrollBar);
     }
 
 //    private static void setPrefWidthOfButtons(double value, Button... buttons){

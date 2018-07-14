@@ -131,6 +131,22 @@ public class Main {
                 e.printStackTrace();
             }
         });
+
+        MenuView.getItemShopButton().setOnMouseClicked(event -> {
+            try {
+                itemShop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
+        MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
+            try {
+                amuletShop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
     }
 
     private static void cardShop() throws Exception{
@@ -155,13 +171,13 @@ public class Main {
             ConsoleView.invalidCommand();
         }
         cardShop();*/
-        ArrayList<Pair<Card, Integer>> uniqueCardsWithNumber = getUniqueWithNumber(human.getShop().getCards());
+        //ArrayList<Pair<Card, Integer>> uniqueCardsWithNumber = getUniqueWithNumber(human.getShop().getCards());
         //uniqueCardsWithNumber.get(0).getKey();
-        MenuView.showCardShop(human.getShop().getCards(), human.getDeckCards());
+        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
     }
 
     private static void itemShop() throws Exception{
-        ConsoleView.itemShop();
+        /*ConsoleView.itemShop();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("itemShop");
         helpHandler(lastViewMethod);
@@ -179,11 +195,12 @@ public class Main {
         } catch (Exception e){
             ConsoleView.invalidCommand();
         }
-        itemShop();
+        itemShop();*/
+        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
     }
 
     private static void amuletShop() throws Exception{
-        ConsoleView.amuletShop();
+        /*ConsoleView.amuletShop();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("amuletShop");
         helpHandler(lastViewMethod);
@@ -203,7 +220,8 @@ public class Main {
         } catch (Exception e){
             ConsoleView.invalidCommand();
         }
-        amuletShop();
+        amuletShop();*/
+        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
     }
 
     private static void editInventory() throws Exception{
@@ -325,7 +343,7 @@ public class Main {
         editAmulet();
     }
 
-    private static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+    public static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
         int numberToBuy = Integer.parseInt(command.split(" - ")[1]);
         if(numberToBuy <= 0)
             throw new Exception();
@@ -343,7 +361,7 @@ public class Main {
         }
     }
 
-    private static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
+    public static void sellThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
         int numberToSell = Integer.parseInt(command.split(" - ")[1]);
         if(numberToSell <= 0)
             throw new Exception();
