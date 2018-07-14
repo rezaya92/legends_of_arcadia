@@ -195,7 +195,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         int slot = owner.getMonsterFieldCards().indexOf(null);
         if (slot != -1)
             return play(slot);
-        return false;
+        else {
+            ConsoleView.noEmptySlot();
+            return false;
+        }
     }
 
     public void castSpell() {

@@ -1,8 +1,10 @@
 package Model;
 
+import Model.Spell.ListShowable;
+
 import java.util.ArrayList;
 
-public interface Stuff extends Cloneable{
+public interface Stuff extends ListShowable {
     String getName();
     int getPrice();
     String toString();

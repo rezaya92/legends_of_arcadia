@@ -1,6 +1,8 @@
 package Model;
 
-public interface SpellCastable extends Cloneable {
+import Model.Spell.ListShowable;
+
+public interface SpellCastable extends ListShowable {
     //ArrayList<Card> getCardPlace();
     Player getOwner();
     //void setCardPlace(ArrayList<Card> cardPlace);

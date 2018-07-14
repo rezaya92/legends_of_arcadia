@@ -213,6 +213,10 @@ abstract public class ConsoleView {
             console.appendText("\nSlot is full!\n" + "\n");
     }
 
+    public static void noEmptySlot(){
+        console.appendText("\nNo empty slot\n");
+    }
+
     public static void insufficientMana(Player player){
         if (player == human)
             console.appendText("\nNot enough MP!\n" + "\n");

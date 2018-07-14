@@ -1,10 +1,13 @@
 package View.GameView;
 
+import Controller.Battle;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.NormalCard;
 import Model.Card.Tribe;
 import Model.Player;
+import Model.Spell.ListShowable;
+import Model.SpellCastable;
 import Model.Stuff;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
@@ -40,7 +44,7 @@ public class GameView {
     private static Group informationGroup;
     private static Group playFieldGroup;
     private static Group menusGroup;
-    private static ListView<Stuff> listView;
+    private static ListView<ListShowable> listView;
     private static Button showItemsButton = new Button("Show Items");
     private static Button showHandButton = new Button("Show Hand");
     private static Button endTurnButton = new Button("End Turn");
@@ -48,6 +52,8 @@ public class GameView {
     private static Button useItemButton = new Button("Use Item");
     private static Button useSpellButton = new Button("Use Spell");
     private static Button attackButton = new Button("Attack");
+    private static Button chooseButton = new Button("Choose");
+    private static Button cancelButton = new Button("Cancel");
     private static HBox playerMonsterField;
     private static HBox playerSpellField;
     private static HBox opponentMonsterField;
@@ -58,6 +64,14 @@ public class GameView {
     private static Button opponentGraveYard;
     private static Text playerDeckCardCount;
     private static Text opponentDeckCardCount;
+    private static Text playerText;
+    private static Text opponentText;
+    private static Text playerMana;
+    private static Text playerMaxMana;
+    private static Text playerHP;
+    private static Text opponentMaxMana;
+    private static Text opponentMana;
+    private static Text opponentHP;
 
     public static void prepare(Stage primaryStage, Player player, Player opponent){
         GameView.primaryStage = primaryStage;
@@ -131,14 +145,14 @@ public class GameView {
         playerButton.relocate(220,primaryStage.getHeight() - 150);
         playerButton.setGraphic(new ImageView(new Image(GameView.class.getResource("PlayerPortrait.jpg").toExternalForm(),60,60,true,true)));
         playerButton.setAlignment(Pos.TOP_CENTER);
-        Text playerText = new Text("HP:\nMP:    /");
+        playerText = new Text("HP:\nMP:    /");
         playerText.setId("text");
         playerText.relocate(220,primaryStage.getHeight() - 93);
         opponentButton = new Button();
         opponentButton.setId("empty");
         opponentButton.setStyle("-fx-background-color: white");
         opponentButton.relocate(220,10);
-        Text opponentText = new Text("HP:\nMP:    /");
+        opponentText = new Text("HP:\nMP:    /");
         opponentText.setId("text");
         opponentText.relocate(220,67);
         opponentButton.setGraphic(new ImageView(new Image(GameView.class.getResource("DemonPortrait.jpg").toExternalForm(),60,60,true,true)));
@@ -155,27 +169,27 @@ public class GameView {
         playerDeck.relocate(400,primaryStage.getHeight() - 160);
         ImageView opponentDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
         opponentDeck.relocate(400,0);
-        Text playerMana = new Text();
+        playerMana = new Text();
         playerMana.textProperty().bind(player.manaProperty().asString());
         playerMana.setId("text");
         playerMana.relocate(245,primaryStage.getHeight() - 77);
-        Text playerMaxMana = new Text();
+        playerMaxMana = new Text();
         playerMaxMana.textProperty().bind(player.maxManaProperty().asString());
         playerMaxMana.setId("text");
         playerMaxMana.relocate(262,primaryStage.getHeight() - 77);
-        Text opponentMaxMana = new Text();
+        opponentMaxMana = new Text();
         opponentMaxMana.textProperty().bind(opponent.maxManaProperty().asString());
         opponentMaxMana.setId("text");
         opponentMaxMana.relocate(262,83);
-        Text opponentMana = new Text();
+        opponentMana = new Text();
         opponentMana.textProperty().bind(opponent.manaProperty().asString());
         opponentMana.setId("text");
         opponentMana.relocate(245,83);
-        Text playerHP = new Text();
+        playerHP = new Text();
         playerHP.textProperty().bind(player.getPlayerHero().hpProperty().asString());
         playerHP.setId("text");
         playerHP.relocate(245,primaryStage.getHeight() - 92);
-        Text opponentHP = new Text();
+        opponentHP = new Text();
         opponentHP.textProperty().bind(opponent.getPlayerHero().hpProperty().asString());
         opponentHP.setId("text");
         opponentHP.relocate(245,68);
@@ -194,7 +208,7 @@ public class GameView {
         listView.setPrefSize(primaryStage.getWidth() / 3 - 200, primaryStage.getHeight() / 3 * 2 - 35);
         listView.setCellFactory(lv -> new ListCell<>() {
             @Override
-            public void updateItem(Stuff item, boolean empty) {
+            public void updateItem(ListShowable item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null)
                     setText("Empty");
@@ -217,13 +231,19 @@ public class GameView {
         attackButton.relocate(300,primaryStage.getHeight() - 200);
         useSpellButton.setPrefSize(100,30);
         useSpellButton.relocate(120,primaryStage.getHeight() - 200);
-        menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton, useItemButton,attackButton,playCardButton,useSpellButton,listView);
+        chooseButton.setPrefSize(100,30);
+        chooseButton.relocate(300,primaryStage.getHeight() - 200);
+        cancelButton.setPrefSize(100,30);
+        cancelButton.relocate(120,primaryStage.getHeight() - 200);
+        menusGroup.getChildren().addAll(chooseButton,cancelButton,showHandButton,endTurnButton,showItemsButton, useItemButton,attackButton,playCardButton,useSpellButton,listView);
     }
 
     public static void showIdleScene(){
         //information group
         details.clear();
         //playfield group
+        updateFields();
+        changePlayFieldVisibility(true);
         playFieldGroup.requestFocus();
         playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
@@ -236,6 +256,7 @@ public class GameView {
         //information group
         details.clear();
         //playfield group
+        updateFields();
         playFieldGroup.requestFocus();
         playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
@@ -244,22 +265,30 @@ public class GameView {
     }
 
     public static void playerClicked(Player player) {
-        menusGroup.getChildren().removeAll(playCardButton,listView,attackButton,useItemButton,useSpellButton);
-        getDetails().setText(player.toString());
+        menusGroup.getChildren().removeAll(playCardButton,attackButton,useItemButton,useSpellButton);
+        if (!playerButton.getId().equals("choice") && !opponentButton.getId().equals("choice")){
+            menusGroup.getChildren().remove(listView);
+        }
+        listView.getSelectionModel().clearSelection();
+        getDetails().setText(player.getPlayerHero().toString());
     }
 
-    public static void fieldSelected(ArrayList<Card> selectedField,int selectedSlot) {
-        menusGroup.getChildren().removeAll(playCardButton,listView,attackButton,useItemButton,useSpellButton);
+    public static void fieldSelected(HBox selectedFieldNode, ArrayList<Card> selectedField,int selectedSlot) {
+        menusGroup.getChildren().removeAll(playCardButton,attackButton,useItemButton,useSpellButton);
         if (selectedField.get(selectedSlot) == null)
             details.setText("Empty Slot");
         else {
             details.setText(selectedField.get(selectedSlot).toString());
             if (selectedField.equals(human.getMonsterFieldCards()) && player.isHisTurn()){
                 menusGroup.getChildren().add(attackButton);
+                Battle.targetNeedingAttacker = (MonsterCard)selectedField.get(selectedSlot);
                 if (((MonsterCard)player.getMonsterFieldCards().get(selectedSlot)).hasGotSpell())
                     menusGroup.getChildren().add(useSpellButton);
             }
         }
+        listView.getSelectionModel().clearSelection();
+        if (!selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice"))
+            menusGroup.getChildren().remove(listView);
     }
 
     public static void graveYardSelected(Player player){
@@ -386,6 +415,84 @@ public class GameView {
         }
     }
 
+    private static void showChoices(ArrayList<SpellCastable> choices){
+        changePlayFieldVisibility(false);
+        for (SpellCastable choice: choices){
+            if (choice.equals(player.getPlayerHero())) {
+                playerButton.setId("choice");
+                playerText.setVisible(true);
+                playerMana.setVisible(true);
+                playerMaxMana.setVisible(true);
+                playerHP.setVisible(true);
+                playerButton.setVisible(true);
+            }
+            else if (choice.equals(opponent.getPlayerHero())) {
+                opponentButton.setId("choice");
+                opponentButton.setId("choice");
+                opponentText.setVisible(true);
+                opponentMana.setVisible(true);
+                opponentMaxMana.setVisible(true);
+                opponentHP.setVisible(true);
+                opponentButton.setVisible(true);
+            }
+            else if (((Card)choice).getCardPlace().equals(player.getMonsterFieldCards())) {
+                playerMonsterField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setId("choice");
+                playerMonsterField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setVisible(true);
+            }
+            else if (((Card)choice).getCardPlace().equals(player.getSpellFieldCards())) {
+                playerSpellField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setId("choice");
+                playerSpellField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setVisible(true);
+            }
+            else if (((Card)choice).getCardPlace().equals(opponent.getMonsterFieldCards())) {
+                opponentMonsterField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setId("choice");
+                opponentMonsterField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setVisible(true);
+            }
+            else if (((Card)choice).getCardPlace().equals(opponent.getSpellFieldCards())) {
+                opponentSpellField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setId("choice");
+                opponentSpellField.getChildren().get(((Card) choice).getCardPlace().indexOf(choice)).setVisible(true);
+            }
+            listView.setItems(FXCollections.observableArrayList(choices));
+        }
+    }
+
+    private static void changePlayFieldVisibility(boolean value){
+        for (Node node: playFieldGroup.getChildren())
+            node.setVisible(value);
+        for (Node node: playerMonsterField.getChildren())
+            node.setVisible(value);
+        for (Node node: playerSpellField.getChildren())
+            node.setVisible(value);
+        for (Node node: opponentMonsterField.getChildren())
+            node.setVisible(value);
+        for (Node node: opponentSpellField.getChildren())
+            node.setVisible(value);
+        playerMonsterField.setVisible(true);
+        playerSpellField.setVisible(true);
+        opponentMonsterField.setVisible(true);
+        opponentSpellField.setVisible(true);
+    }
+
+    public static void showAttackScene(){
+        ArrayList<SpellCastable> targets = new ArrayList<>();
+        if (opponent.isDefenderPresent()){
+            for (Card card: opponent.getMonsterFieldCards()) {
+                if (((MonsterCard)card).isDefender()){
+                    targets.add(card);
+                }
+            }
+        }
+        else {
+            for (Card card: opponent.getMonsterFieldCards()) {
+                if (card != null)
+                    targets.add(card);
+            }
+            targets.add(opponent.getPlayerHero());
+        }
+        menusGroup.getChildren().clear();
+        menusGroup.getChildren().addAll(chooseButton,cancelButton,listView);
+        showChoices(targets);
+    }
+
     public static HBox getPlayerMonsterField() {
         return playerMonsterField;
     }
@@ -418,11 +525,15 @@ public class GameView {
         return opponentGraveYard;
     }
 
-    public static ListView<Stuff> getListView() {
+    public static ListView<ListShowable> getListView() {
         return listView;
     }
 
     public static TextArea getDetails() {
         return details;
+    }
+
+    public static Button getCancelButton() {
+        return cancelButton;
     }
 }

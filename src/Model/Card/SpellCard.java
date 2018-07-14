@@ -84,6 +84,8 @@ public class SpellCard extends Card implements Cloneable{
             int slot = owner.getSpellFieldCards().indexOf(null);
             if (slot != -1)
                 return play(slot);
+            else
+                ConsoleView.noEmptySlot();
         }
         return false;
     }

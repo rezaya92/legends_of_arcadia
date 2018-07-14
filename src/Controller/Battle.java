@@ -5,6 +5,7 @@ import Model.Card.MonsterCard;
 import Model.Item;
 import Model.Player;
 import Model.Spell.NoEffectableCardException;
+import Model.Spell.Spell;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,8 @@ import static Controller.Main.opponentNumber;
 public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
+    public static MonsterCard targetNeedingAttacker;
+    public static Spell targetNeedingSpell;
 
     public static void startGameAgainst(Player opponent, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
         opponent.setOpponent(human);
@@ -305,16 +308,30 @@ public class Battle {
         GameView.getOpponentButton().setOnMouseClicked(event -> GameView.playerClicked(human.getOpponent()));
         for (int i = 0; i < 5; i++) {
             int finalI = i;
-            GameView.getPlayerMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getMonsterFieldCards(),finalI));
-            GameView.getOpponentMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getOpponent().getMonsterFieldCards(),finalI));
+            GameView.getPlayerMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(GameView.getPlayerMonsterField(),human.getMonsterFieldCards(),finalI));
+            GameView.getOpponentMonsterField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(GameView.getOpponentMonsterField(),human.getOpponent().getMonsterFieldCards(),finalI));
         }
         for (int i = 0; i < 3; i++) {
             int finalI = i;
-            GameView.getPlayerSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getSpellFieldCards(),finalI));
-            GameView.getOpponentSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(human.getOpponent().getSpellFieldCards(),finalI));
+            GameView.getPlayerSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(GameView.getPlayerSpellField(),human.getSpellFieldCards(),finalI));
+            GameView.getOpponentSpellField().getChildren().get(i).setOnMouseClicked(event -> GameView.fieldSelected(GameView.getOpponentSpellField(),human.getOpponent().getSpellFieldCards(),finalI));
         }
         GameView.getPlayerGraveYard().setOnMouseClicked(event -> GameView.graveYardSelected(human));
         GameView.getOpponentGraveYard().setOnMouseClicked(event -> GameView.graveYardSelected(human.getOpponent()));
+        GameView.getAttackButton().setOnMouseClicked(event -> {
+            if (!targetNeedingAttacker.isAwake())
+                ConsoleView.cardIsSleep(human);
+            else if (targetNeedingAttacker.hasAttacked())
+                ConsoleView.alreadyAttacked(human);
+            else {
+                GameView.showAttackScene();
+            }
+        });
+        GameView.getCancelButton().setOnMouseClicked(event -> {
+            targetNeedingAttacker = null;
+            targetNeedingSpell = null;
+            GameView.showIdleScene();
+        });
     }
 
     private static void gameEnded(Player winner, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {

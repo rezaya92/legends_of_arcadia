@@ -104,6 +104,23 @@
     -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.6), 20,0.0,0, 1);
 }
 
+#choice {
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-pref-height: 90;
+    -fx-pref-width: 60;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font: 12 "Forte";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: rgba(0, 187, 32, 0.82);
+}
+
+#choice:focused {
+    -fx-effect: dropshadow(three-pass-box, rgba(23, 255, 0, 0.65), 20,0.0,0, 1);
+}
+
 #text {
     -fx-font: 12 "Forte";
 }

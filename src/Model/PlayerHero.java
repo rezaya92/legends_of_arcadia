@@ -71,7 +71,7 @@ public class PlayerHero implements HasHP, Cloneable {
 
     @Override
     public String getName() {
-        return name;
+        return owner.getName();
     }
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
@@ -81,5 +81,10 @@ public class PlayerHero implements HasHP, Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException{
         return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return owner.toString();
     }
 }
