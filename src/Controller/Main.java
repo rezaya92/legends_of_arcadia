@@ -101,7 +101,7 @@ public class Main {
         enterShop();//TODO CHANGE
     }
 
-    private static void enterShop() throws Exception{
+    public static void enterShop() throws Exception{
         /*ConsoleView.enterShop();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("enterShop");
