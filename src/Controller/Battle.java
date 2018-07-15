@@ -4,8 +4,10 @@ import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Item;
 import Model.Player;
+import Model.Spell.ListShowable;
 import Model.Spell.NoEffectableCardException;
 import Model.Spell.Spell;
+import Model.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.beans.value.ChangeListener;
@@ -26,6 +28,7 @@ public class Battle {
     private static int turnNumber;
     private static Scanner scanner = new Scanner(System.in);
     public static MonsterCard targetNeedingAttacker;
+    public static SpellCastable target;
     public static Spell targetNeedingSpell;
 
     public static void startGameAgainst(Player opponent, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
@@ -330,12 +333,35 @@ public class Battle {
         GameView.getCancelButton().setOnMouseClicked(event -> {
             targetNeedingAttacker = null;
             targetNeedingSpell = null;
+            target = null;
             GameView.showIdleScene();
+        });
+        GameView.getChooseButton().setOnMouseClicked(event -> {
+            if (GameView.getListView().getSelectionModel().getSelectedItem() != null)
+                target = (SpellCastable)GameView.getListView().getSelectionModel().getSelectedItem();
+            if (target == null)
+                ConsoleView.noTargetChosen();
+            else if (targetNeedingSpell != null){
+                targetNeedingSpell = null;
+                targetNeedingAttacker = null;
+                target = null;
+                GameView.showIdleScene();
+            }
+            else if (targetNeedingAttacker != null){
+                if (target.equals(human.getOpponent().getPlayerHero()))
+                    targetNeedingAttacker.attackOpponentHero();
+                else
+                    targetNeedingAttacker.attack((MonsterCard)target);
+                targetNeedingAttacker = null;
+                targetNeedingSpell = null;
+                target = null;
+                GameView.showIdleScene();
+            }
         });
     }
 
     private static void gameEnded(Player winner, ArrayList<Card> humanDefaultDeckCardBeforeCustomization, ArrayList<Card> humanDeckCardBeforeCustomization ,ArrayList<Item> humanItemsBeforeCustomization, ArrayList<Card> opponentDefaultDeckCardBeforeCustomization ,ArrayList<Card> opponentDeckCardBeforeCustomization,ArrayList<Item> opponentItemsBeforeCustomization,ArrayList<Card> humanDefaultDeckCardBeforeMatch, ArrayList<Card> humanDeckCardBeforeMatch) {
-        //ToDo change to map
+        //ToDo change to map.enter
         //pStage.close();
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);

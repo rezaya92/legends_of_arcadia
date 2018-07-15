@@ -32,7 +32,7 @@ public class Main {
 //        Player humanBeforeCustomize;
 //        Player humanBeforeMatch;
 
-        preProcess();
+       // preProcess();
 
         opponents.add(goblinChieftain);
         opponents.add(ogreWarlord);
@@ -70,7 +70,6 @@ public class Main {
         ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
         ArrayList<Card> humanDeckCardBeforeMatch = human.getDeckCards();
         Battle.startGameAgainst(opponent,humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
-
     }
 
     /*public void useContinuousSpellCards(){

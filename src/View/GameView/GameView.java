@@ -266,9 +266,10 @@ public class GameView {
 
     public static void playerClicked(Player player) {
         menusGroup.getChildren().removeAll(playCardButton,attackButton,useItemButton,useSpellButton);
-        if (!playerButton.getId().equals("choice") && !opponentButton.getId().equals("choice")){
+        if (playerButton.getId().equals("choice") || opponentButton.getId().equals("choice"))
+            Battle.target = player.getPlayerHero();
+        else
             menusGroup.getChildren().remove(listView);
-        }
         listView.getSelectionModel().clearSelection();
         getDetails().setText(player.getPlayerHero().toString());
     }
@@ -281,13 +282,16 @@ public class GameView {
             details.setText(selectedField.get(selectedSlot).toString());
             if (selectedField.equals(human.getMonsterFieldCards()) && player.isHisTurn()){
                 menusGroup.getChildren().add(attackButton);
-                Battle.targetNeedingAttacker = (MonsterCard)selectedField.get(selectedSlot);
+                if (!selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice"))
+                    Battle.targetNeedingAttacker = (MonsterCard)selectedField.get(selectedSlot);
                 if (((MonsterCard)player.getMonsterFieldCards().get(selectedSlot)).hasGotSpell())
                     menusGroup.getChildren().add(useSpellButton);
             }
         }
         listView.getSelectionModel().clearSelection();
-        if (!selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice"))
+        if (selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice"))
+            Battle.target = selectedField.get(selectedSlot);
+        else
             menusGroup.getChildren().remove(listView);
     }
 
@@ -493,6 +497,29 @@ public class GameView {
         showChoices(targets);
     }
 
+    public static SpellCastable getSelectedPlayFieldButton(){
+        SpellCastable selected = null;
+        if (playerButton.isFocused())
+            selected = player.getPlayerHero();
+        else if (opponentButton.isFocused())
+            selected = opponent.getPlayerHero();
+        else {
+            for (int i = 0; i < 5; i++) {
+                if (playerMonsterField.getChildren().get(i).isFocused())
+                    selected = player.getMonsterFieldCards().get(i);
+                if (opponentMonsterField.getChildren().get(i).isFocused())
+                    selected = opponent.getMonsterFieldCards().get(i);
+            }
+            for (int i = 0; i < 3; i++) {
+                if (opponentSpellField.getChildren().get(i).isFocused())
+                    selected = opponent.getSpellFieldCards().get(i);
+                if (playerSpellField.getChildren().get(i).isFocused())
+                    selected = player.getSpellFieldCards().get(i);
+            }
+        }
+        return selected;
+    }
+
     public static HBox getPlayerMonsterField() {
         return playerMonsterField;
     }
@@ -535,5 +562,9 @@ public class GameView {
 
     public static Button getCancelButton() {
         return cancelButton;
+    }
+
+    public static Button getChooseButton() {
+        return chooseButton;
     }
 }
