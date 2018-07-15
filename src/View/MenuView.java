@@ -16,8 +16,12 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -60,8 +64,13 @@ public class MenuView {
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
-        //setPrefWidthOfButtons(buttonPrefWidth, cardShopButton, itemShopButton, amuletShopButton);
-        VBox vBox = makeVBox(cardShopButton, itemShopButton, amuletShopButton);
+        Button returnButton = new Button("Return");
+
+        returnButton.setOnMouseClicked(event -> {
+            //TODO
+        });
+
+        VBox vBox = makeVBox(cardShopButton, itemShopButton, amuletShopButton, returnButton);
         shopGroup.getChildren().add(vBox);
     }
 
@@ -77,7 +86,22 @@ public class MenuView {
         TextArea textArea = new TextArea("welcome to the shop!\nhere you can buy the stuff you want and sell the stuff that you no longer need.");
         Text gilText = new Text("Remaining Gil: " + human.getGil());
         TextArea transactionResult = new TextArea(transactionMessage);
-        //TODO add return button
+        Button returnButton = new Button();
+
+        StackPane stackPane = new StackPane();
+        Rectangle headLineRectangle = new Rectangle(330, 30);
+        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        Text headLineText = new Text("Shop " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s");
+        stackPane.getChildren().addAll(headLineRectangle, headLineText);
+        stackPane.relocate(150, 60);
+
+        StackPane stackPane1 = new StackPane();
+        Rectangle headLineRectangle1 = new Rectangle(330, 30);
+        headLineRectangle1.setFill(Color.rgb(20, 184, 11));
+        Text headLineText1 = new Text("Your " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s");
+        stackPane1.getChildren().addAll(headLineRectangle1, headLineText1);
+        stackPane1.relocate(1000, 60);
+        //headLine.setText
 
         ConsoleView.setConsole(transactionResult);
 
@@ -85,6 +109,22 @@ public class MenuView {
 
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
+
+        //------------------------return button----------------------
+        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        returnButton.setGraphic(imageView);
+        returnButton.setMaxWidth(50);
+        //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
+        returnButton.relocate(1150, 620);
+        returnButton.setOnMouseClicked(event -> {
+            try {
+                Main.enterShop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
 
         //------------sort shopStuff and playerStuff by name-----------------
         shopStuff.sort(new Comparator<Stuff>() {
@@ -200,7 +240,7 @@ public class MenuView {
 
 
 
-        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, gilText, transactionResult);
+        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, gilText, transactionResult, returnButton, stackPane, stackPane1);
         //cardShopGroup.getChildren().addAll(vBox, scrollBar);
     }
 
