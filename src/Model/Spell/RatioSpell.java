@@ -3,9 +3,7 @@ package Model.Spell;
 import Model.Card.Tribe;
 import Model.HasHP;
 import Model.Player;
-import Model.SpellCastable;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class RatioSpell extends Spell implements Cloneable{
@@ -26,6 +24,8 @@ public class RatioSpell extends Spell implements Cloneable{
         for (SpellCastable card: effectableCard) {
             ((HasHP)card).changeDamageReceivementRatio(coefficentofVariation);
         }
+        effectableCard.clear();
+        effectableAreaCards.clear();
     }
 
     @Override

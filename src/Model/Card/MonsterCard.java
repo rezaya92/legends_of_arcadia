@@ -11,6 +11,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
 
+import static Controller.Main.human;
+
 /**
  * Created by msi-pc on 4/27/2018.
  */
@@ -211,7 +213,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                     ConsoleView.noEffectableCard();
                 }
             }
-            else
+            else if (owner == human)
                 ConsoleView.spellHasBeenCasted();
         }
     }

@@ -1,10 +1,8 @@
 package Model.Spell;
 
-import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
 import Model.PlayerHero;
-import Model.SpellCastable;
 
 import java.util.Set;
 
@@ -27,9 +25,14 @@ public class MPSpell extends Spell implements Cloneable{
             if (card instanceof PlayerHero) {
                 PlayerHero current = (PlayerHero) card;
                 current.getOwner().setMana(current.getOwner().getMana() + changeAmount);
-            } else
+            } else {
+                effectableCard.clear();
+                effectableAreaCards.clear();
                 return;
+            }
         }
+        effectableCard.clear();
+        effectableAreaCards.clear();
     }
 
     @Override

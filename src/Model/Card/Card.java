@@ -1,11 +1,10 @@
 package Model.Card;
 
 import Model.Player;
-import Model.SpellCastable;
+import Model.Spell.SpellCastable;
 import Model.Stuff;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 

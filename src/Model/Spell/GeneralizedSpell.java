@@ -1,9 +1,7 @@
 package Model.Spell;
 
 import Model.Player;
-import Model.SpellCastable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GeneralizedSpell implements Cloneable{

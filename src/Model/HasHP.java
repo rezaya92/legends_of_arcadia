@@ -1,6 +1,6 @@
 package Model;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import Model.Spell.SpellCastable;
 
 public interface HasHP extends SpellCastable, Cloneable{
     int getHp();

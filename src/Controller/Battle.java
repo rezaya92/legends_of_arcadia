@@ -2,16 +2,15 @@ package Controller;
 
 import Model.Card.Card;
 import Model.Card.MonsterCard;
+import Model.Card.SpellCard;
+import Model.Card.SpellCardType;
 import Model.Item;
 import Model.Player;
-import Model.Spell.ListShowable;
 import Model.Spell.NoEffectableCardException;
 import Model.Spell.Spell;
-import Model.SpellCastable;
+import Model.Spell.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 import java.util.*;
 
@@ -299,8 +298,10 @@ public class Battle {
             if (GameView.getListView().getSelectionModel().getSelectedItem() == null)
                 ConsoleView.noSlotSelected();
             else {
+                boolean isInstantSpell = GameView.getListView().getSelectionModel().getSelectedItem() instanceof SpellCard && ((SpellCard)GameView.getListView().getSelectionModel().getSelectedItem()).getSpellCardType().equals(SpellCardType.INSTANT);
                 ((Card) GameView.getListView().getSelectionModel().getSelectedItem()).play();
-                GameView.showHand();
+                if (!isInstantSpell)
+                    GameView.showHand();
             }
         });
         GameView.getListView().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -342,6 +343,8 @@ public class Battle {
             if (target == null)
                 ConsoleView.noTargetChosen();
             else if (targetNeedingSpell != null){
+                targetNeedingSpell.apply(human,target);
+                ConsoleView.spellTargeted(target);
                 targetNeedingSpell = null;
                 targetNeedingAttacker = null;
                 target = null;
@@ -357,6 +360,9 @@ public class Battle {
                 target = null;
                 GameView.showIdleScene();
             }
+        });
+        GameView.getUseSpellButton().setOnMouseClicked(event -> {
+            targetNeedingAttacker.castSpell();
         });
     }
 

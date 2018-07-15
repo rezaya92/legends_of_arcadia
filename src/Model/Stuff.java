@@ -1,7 +1,5 @@
 package Model;
 
-import Model.Spell.ListShowable;
-
 import java.util.ArrayList;
 import java.util.List;
 

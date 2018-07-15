@@ -1,11 +1,8 @@
 package Model.Spell;
 
-import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.HasHP;
 import Model.Player;
-import Model.PlayerHero;
-import Model.SpellCastable;
 
 import java.util.Set;
 
@@ -31,6 +28,8 @@ public class HPSpell extends Spell implements Cloneable{
                     ((HasHP)card).takeDamage(-changeAmount);
                 ((HasHP) card).checkAlive();
         }
+        effectableCard.clear();
+        effectableAreaCards.clear();
     }
 
     @Override

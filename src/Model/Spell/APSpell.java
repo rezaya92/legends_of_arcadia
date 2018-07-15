@@ -3,7 +3,6 @@ package Model.Spell;
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
-import Model.SpellCastable;
 
 import java.util.Set;
 
@@ -26,9 +25,14 @@ public class APSpell extends Spell implements Cloneable{
             if (card instanceof MonsterCard) {
                 MonsterCard current = (MonsterCard) card;
                 current.setAp(current.getAp() + changeAmount);
-            } else
+            } else {
+                effectableCard.clear();
+                effectableAreaCards.clear();
                 return;
+            }
         }
+        effectableCard.clear();
+        effectableAreaCards.clear();
     }
 
     @Override

@@ -8,7 +8,6 @@ import Model.Card.SpellCardType;
 import Model.Card.Tribe;
 import Model.Spell.*;
 import Model.Spell.SpellArea;
-import javafx.beans.property.SimpleIntegerProperty;
 
 import static Controller.Main.*;
 import static Model.Spell.GeneralizedSpell.*;

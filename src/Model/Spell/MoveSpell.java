@@ -2,9 +2,6 @@ package Model.Spell;
 
 import Model.Card.*;
 import Model.Player;
-import Model.SpellCastable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -60,6 +57,8 @@ public class MoveSpell extends Spell implements Cloneable{
         for (SpellCastable card: effectableCard) {
             ((Card)card).transfer(destinationCardList);
         }
+        effectableCard.clear();
+        effectableAreaCards.clear();
     }
 
     @Override

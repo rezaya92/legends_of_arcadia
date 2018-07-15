@@ -3,8 +3,8 @@ package Model.Spell;
 import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
-import Model.SpellCastable;
 import View.GameView.ConsoleView;
+import View.GameView.GameView;
 
 import java.util.*;
 
@@ -119,25 +119,7 @@ public abstract class Spell implements Cloneable{
             case SELECT:
                 if (owner == human) {
                     ConsoleView.viewSpellEffectableCards(effectableCard);
-                    Scanner scanner = new Scanner(System.in);
-                    String action = scanner.next();
-                    while (!action.equals("Exit")) {
-                        switch (action) {
-                            case "Target":
-                                int index = scanner.nextInt() - 1;
-                                SpellCastable choice = effectableCard.get(index);
-                                effectableCard.clear();
-                                effectableCard.add(choice);
-                                ConsoleView.spellTargeted(choice);
-                                return;
-                            case "Help":
-                                ConsoleView.spellCastHelp();
-                                default:
-                                    ConsoleView.invalidCommand();
-                        }
-                        action = scanner.next();
-                    }
-                    ConsoleView.noTargetChosen();
+                    GameView.showSpellCastScene(this);
                     return;
                 }
             case RANDOM:
@@ -152,9 +134,8 @@ public abstract class Spell implements Cloneable{
     void use(Player owner) throws NoEffectableCardException{
         setEffectableCards(owner);
         choose(owner);
-        apply(owner);
-        effectableCard.clear();
-        effectableAreaCards.clear();
+        if (choiceType != SpellChoiceType.SELECT || owner != human)
+            apply(owner);
         //    effectedCard.addAll(effectableCard);
     //    effectableCard.clear();
     }
@@ -168,6 +149,12 @@ public abstract class Spell implements Cloneable{
     }*/
 
     protected abstract void apply(Player owner);
+
+    public void apply(Player owner, SpellCastable effectableCard){
+        this.effectableCard.clear();
+        this.effectableCard.add(effectableCard);
+        apply(owner);
+    }
 
     protected abstract void deuse(Player owner);
 
@@ -183,7 +170,7 @@ public abstract class Spell implements Cloneable{
     //    return effectedCard;
     //}
 
-    public void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
+    void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
         this.effectableCard = effectableCard;
     }
 

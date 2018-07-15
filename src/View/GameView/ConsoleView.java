@@ -4,8 +4,7 @@ import Model.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Spell.GeneralizedSpell;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Model.Spell.SpellCastable;
 import javafx.scene.control.TextArea;
 
 import java.util.ArrayList;
@@ -436,7 +435,7 @@ abstract public class ConsoleView {
     }
 
     public static void noTargetChosen(){
-        console.appendText("No Target was chosen. Such a waste ..." + "\n");
+        console.appendText("No target was chosen" + "\n");
     }
 
     public static void noValidTarget(Player player){

@@ -1,6 +1,7 @@
-package Model;
+package Model.Spell;
 
-import Model.Spell.ListShowable;
+import Model.ListShowable;
+import Model.Player;
 
 public interface SpellCastable extends ListShowable {
     //ArrayList<Card> getCardPlace();

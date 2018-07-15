@@ -6,13 +6,10 @@ import Model.Card.MonsterCard;
 import Model.Card.NormalCard;
 import Model.Card.Tribe;
 import Model.Player;
-import Model.Spell.ListShowable;
-import Model.SpellCastable;
-import Model.Stuff;
+import Model.ListShowable;
+import Model.Spell.Spell;
+import Model.Spell.SpellCastable;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -28,8 +25,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import javax.naming.Binding;
 
 import java.util.ArrayList;
 
@@ -245,8 +240,6 @@ public class GameView {
         updateFields();
         changePlayFieldVisibility(true);
         playFieldGroup.requestFocus();
-        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
-        opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
         //menus group
         menusGroup.getChildren().clear();
         menusGroup.getChildren().addAll(showHandButton,endTurnButton,showItemsButton);
@@ -258,8 +251,6 @@ public class GameView {
         //playfield group
         updateFields();
         playFieldGroup.requestFocus();
-        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
-        opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
         //menus group
         menusGroup.getChildren().clear();
     }
@@ -281,9 +272,10 @@ public class GameView {
         else {
             details.setText(selectedField.get(selectedSlot).toString());
             if (selectedField.equals(human.getMonsterFieldCards()) && player.isHisTurn()){
-                menusGroup.getChildren().add(attackButton);
-                if (!selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice"))
-                    Battle.targetNeedingAttacker = (MonsterCard)selectedField.get(selectedSlot);
+                if (!selectedFieldNode.getChildren().get(selectedSlot).getId().equals("choice")) {
+                    Battle.targetNeedingAttacker = (MonsterCard) selectedField.get(selectedSlot);
+                    menusGroup.getChildren().add(attackButton);
+                }
                 if (((MonsterCard)player.getMonsterFieldCards().get(selectedSlot)).hasGotSpell())
                     menusGroup.getChildren().add(useSpellButton);
             }
@@ -340,7 +332,6 @@ public class GameView {
     public static void showItems(){
         menusGroup.getChildren().clear();
         ConsoleView.availableItems(player);
-        playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         listView.setItems(FXCollections.observableArrayList(player.getItems()));
         menusGroup.getChildren().addAll(showHandButton,listView,endTurnButton,showItemsButton,useItemButton);
     }
@@ -351,7 +342,7 @@ public class GameView {
             for (i = 0; i < 5; ++i) {
                 if (player.getMonsterFieldCards().get(i) != null) {
                     ((Button) playerMonsterField.getChildren().get(i)).textProperty().bind(Bindings.concat(player.getMonsterFieldCards().get(i).getName()).concat("\nHP:").concat(((MonsterCard) player.getMonsterFieldCards().get(i)).hpProperty()).concat("\nAP:").concat(((MonsterCard) player.getMonsterFieldCards().get(i)).apProperty()));
-                    switch (((MonsterCard) player.getMonsterFieldCards().get(i)).getTribe()){
+                    switch (((MonsterCard) player.getMonsterFieldCards().get(i)).getTribe()) {
                         case ELVEN:
                             playerMonsterField.getChildren().get(i).setId("ELVEN");
                             break;
@@ -365,8 +356,7 @@ public class GameView {
                             playerMonsterField.getChildren().get(i).setId("DEMONIC");
                             break;
                     }
-                }
-                else {
+                } else {
                     ((Button) playerMonsterField.getChildren().get(i)).textProperty().unbind();
                     ((Button) playerMonsterField.getChildren().get(i)).setText("EmptySlot");
                     playerMonsterField.getChildren().get(i).setId("empty");
@@ -389,8 +379,7 @@ public class GameView {
                             opponentMonsterField.getChildren().get(i).setId("DEMONIC");
                             break;
                     }
-                }
-                else {
+                } else {
                     ((Button) opponentMonsterField.getChildren().get(i)).textProperty().unbind();
                     ((Button) opponentMonsterField.getChildren().get(i)).setText("EmptySlot");
                     opponentMonsterField.getChildren().get(i).setId("empty");
@@ -400,8 +389,7 @@ public class GameView {
                 if (player.getSpellFieldCards().get(i) != null) {
                     ((Button) playerSpellField.getChildren().get(i)).setText(player.getSpellFieldCards().get(i).getName());
                     playerSpellField.getChildren().get(i).setId("spell");
-                }
-                else {
+                } else {
                     ((Button) playerSpellField.getChildren().get(i)).setText("EmptySlot");
                     playerSpellField.getChildren().get(i).setId("empty");
                 }
@@ -410,12 +398,12 @@ public class GameView {
                 if (opponent.getSpellFieldCards().get(i) != null) {
                     ((Button) opponentSpellField.getChildren().get(i)).setText(opponent.getSpellFieldCards().get(i).getName());
                     opponentSpellField.getChildren().get(i).setId("spell");
-                }
-                else {
+                } else {
                     ((Button) opponentSpellField.getChildren().get(i)).setText("EmptySlot");
                     opponentSpellField.getChildren().get(i).setId("empty");
                 }
             }
+            playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         }
     }
 
@@ -495,6 +483,13 @@ public class GameView {
         menusGroup.getChildren().clear();
         menusGroup.getChildren().addAll(chooseButton,cancelButton,listView);
         showChoices(targets);
+    }
+
+    public static void showSpellCastScene(Spell spell){
+        menusGroup.getChildren().clear();
+        menusGroup.getChildren().addAll(chooseButton,cancelButton,listView);
+        Battle.targetNeedingSpell = spell;
+        showChoices(spell.getEffectableCard());
     }
 
     public static SpellCastable getSelectedPlayFieldButton(){
