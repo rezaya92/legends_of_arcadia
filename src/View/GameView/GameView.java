@@ -404,6 +404,7 @@ public class GameView {
                 }
             }
             playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
+            opponentDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
         }
     }
 

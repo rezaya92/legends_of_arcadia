@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import View.MenuView;
 
+import static Controller.Main.lucifer;
+
 public class LegendsOfArcadia extends Application {
     static Stage pStage;
 
@@ -26,7 +28,7 @@ public class LegendsOfArcadia extends Application {
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
         primaryStage.show();
-        Main.startOfOperations();
+        Battle.startGameAgainst(lucifer);
     }
 
     private void preProcessEventHandling(Stage primaryStage){

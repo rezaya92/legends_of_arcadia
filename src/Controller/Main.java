@@ -20,57 +20,11 @@ public class Main {
     static Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static Player vampireLord = new Player("Vampire Lord", 10000);
     static Player lucifer = new Player("Lucifer", 10000);
-    static int opponentNumber = 0;
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);
-    static ArrayList<Player> opponents = new ArrayList<>();
     static int mysticHourGlass = 3;  //change place?
     private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();//TODO correct?
-
-    public static void startOfOperations() throws Exception{
-//        Player humanBeforeCustomize;
-//        Player humanBeforeMatch;
-
-       // preProcess();
-
-        opponents.add(goblinChieftain);
-        opponents.add(ogreWarlord);
-        opponents.add(vampireLord);
-        opponents.add(lucifer);
-
-        //Stuff stuff = (Stuff)allStuff.get(0).clone();
-        //((Card)allStuff.get(0)).setName("23");//.setName("23");
-        //System.out.println(allSpells);
-        //System.out.println(allStuff.get(0));
-//        for(Stuff stuff : allStuff)
-//            if(stuff instanceof NormalCard)
-//                System.out.println(stuff);
-        //System.out.println(stuff);
-        //System.out.println(allStuff);
-        //System.out.println(allStuff.get(1));
-        //System.out.println(human.getShop().cardToString());
-        //System.out.println(human.inventoryToString());
-        //System.out.println(human.deckToString());////
-        //System.out.println(lucifer.getEquippedAmulet());
-
-
-        Player opponent = opponents.get(opponentNumber);
-        //humanBeforeCustomize = (Player)human.clone();
-        human.restore();
-        opponent.restore();
-        ArrayList<Card> humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
-        ArrayList<Card> humanDeckCardBeforeCustomization = human.getDeckCards();
-        ArrayList<Item> humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
-        ArrayList<Card> opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
-        ArrayList<Card> opponentDeckCardBeforeCustomization = opponent.getDeckCards();
-        ArrayList<Item> opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
-        afterMatch();
-        //humanBeforeMatch = (Player)human.clone();
-        ArrayList<Card> humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
-        ArrayList<Card> humanDeckCardBeforeMatch = human.getDeckCards();
-        Battle.startGameAgainst(opponent,humanDefaultDeckCardBeforeCustomization, humanDeckCardBeforeCustomization , humanItemsBeforeCustomization, opponentDefaultDeckCardBeforeCustomization , opponentDeckCardBeforeCustomization, opponentItemsBeforeCustomization, humanDefaultDeckCardBeforeMatch, humanDeckCardBeforeMatch);
-    }
 
     /*public void useContinuousSpellCards(){
     for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
