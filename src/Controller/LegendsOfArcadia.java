@@ -9,10 +9,12 @@ import View.MenuView;
 
 import java.util.Random;
 
+import static Controller.Main.human;
 import static Controller.Main.lucifer;
 
 public class LegendsOfArcadia extends Application {
     static Stage pStage;
+    private static Map map;
 
     public static void main(String[] args) {
         launch(args);
@@ -27,22 +29,24 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setTitle("Legends of Arcadia");
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
-        //preProcessEventHandling(primaryStage);
-        //MenuView.showMainMenu();
+        preProcessEventHandling(primaryStage);
+        MenuView.showMainMenu();
+        //Main.editInventory();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
         primaryStage.show();
-        Battle.startGameAgainst(lucifer,new Random().nextInt(2),false);
+        //Battle.startGameAgainst(lucifer,new Random().nextInt(2),false);
     }
 
     private void preProcessEventHandling(Stage primaryStage){
         MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
             try {
                 Main.afterMatch();
-                //TODO change to Map.enterMap(1);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            map = new Map(primaryStage, 1);
+
         });
 
         MenuView.getExitButton().setOnMouseClicked(event -> {
@@ -53,4 +57,6 @@ public class LegendsOfArcadia extends Application {
     public static Stage getPrimaryStage() {
         return pStage;
     }
+
+    public static Map getMap() {return map;}
 }
