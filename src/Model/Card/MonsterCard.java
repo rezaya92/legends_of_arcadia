@@ -299,6 +299,11 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
 
     @Override
     public Object clone() throws CloneNotSupportedException{
-        return super.clone();
+        MonsterCard cloned = (MonsterCard) super.clone();
+        cloned.hp = new SimpleIntegerProperty();
+        cloned.ap = new SimpleIntegerProperty();
+        cloned.hp.set(this.hp.get());
+        cloned.ap.set(this.ap.get());
+        return cloned;
     }
 }

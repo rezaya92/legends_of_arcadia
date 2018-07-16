@@ -4,7 +4,7 @@ First Aid Kit - 3 - Instant
 Reaper's Scythe - 4 - Instant
 Meteor Shower - 8 - Continuous
 Lunar Blessing - 6 - Aura
-Strategic Retreat - 6 - Aura
+Strategic Retreat - 6 - Instant
 War Drum - 6 - Aura
 Healing Ward - 5 - Continuous
 Blood Feast - 4 - Instant

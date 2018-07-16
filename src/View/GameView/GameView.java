@@ -404,7 +404,7 @@ public class GameView {
                 }
             }
             playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
-            opponentDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
+            opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
         }
     }
 
@@ -469,7 +469,7 @@ public class GameView {
         ArrayList<SpellCastable> targets = new ArrayList<>();
         if (opponent.isDefenderPresent()){
             for (Card card: opponent.getMonsterFieldCards()) {
-                if (((MonsterCard)card).isDefender()){
+                if (card != null && ((MonsterCard)card).isDefender()){
                     targets.add(card);
                 }
             }

@@ -28,15 +28,15 @@ public class Battle {
     public static MonsterCard targetNeedingAttacker;
     public static SpellCastable target;
     public static Spell targetNeedingSpell;
-    static ArrayList<Card> humanDefaultDeckCardBeforeCustomization;
-    static ArrayList<Card> humanDeckCardBeforeCustomization;
-    static ArrayList<Item> humanItemsBeforeCustomization;
-    static ArrayList<Card> opponentDefaultDeckCardBeforeCustomization;
-    static ArrayList<Card> opponentDeckCardBeforeCustomization;
-    static ArrayList<Item> opponentItemsBeforeCustomization;
-    static ArrayList<Card> humanDefaultDeckCardBeforeMatch;
-    static ArrayList<Card> humanDeckCardBeforeMatch;
-    static Player opponent;
+    private static ArrayList<Card> humanDefaultDeckCardBeforeCustomization;
+    private static ArrayList<Card> humanDeckCardBeforeCustomization;
+    private static ArrayList<Item> humanItemsBeforeCustomization;
+    private static ArrayList<Card> opponentDefaultDeckCardBeforeCustomization;
+    private static ArrayList<Card> opponentDeckCardBeforeCustomization;
+    private static ArrayList<Item> opponentItemsBeforeCustomization;
+    private static ArrayList<Card> humanDefaultDeckCardBeforeMatch;
+    private static ArrayList<Card> humanDeckCardBeforeMatch;
+    private static Player opponent;
 
     public static void startGameAgainst(Player opponent) {
         human.restore();
@@ -50,19 +50,18 @@ public class Battle {
         opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
         humanDefaultDeckCardBeforeMatch = new ArrayList<>(human.getDefaultDeckCards());
         humanDeckCardBeforeMatch = new ArrayList<>(human.getDeckCards());
+        opponent.setOpponent(human);
+        human.setOpponent(opponent);
         try {
             Main.afterMatch();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        opponent.setOpponent(human);
-        human.setOpponent(opponent);
         GameView.prepare(pStage,human,opponent);
         ConsoleView.battleStarted(opponent);
         Random random = new Random();
         int coin = random.nextInt(2);
         turnNumber = 0;
-        Player winner = null;
         human.setIsPlaying(true);
         opponent.setIsPlaying(true);
         Collections.shuffle(human.getDeckCards());
