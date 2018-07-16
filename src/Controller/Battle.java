@@ -11,6 +11,7 @@ import Model.Spell.Spell;
 import Model.Spell.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
+import View.MenuView;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -332,9 +333,12 @@ public class Battle {
                 mysticHourGlass--;
                 ConsoleView.mysticHourGlassUsed();
                 LegendsOfArcadia.getMap().continueMap();
+                System.out.println(mysticHourGlass);
             } else {
                 ConsoleView.gameOver(human);
-                //TODO end game
+                //TODO Thread.sleep()
+                mysticHourGlass = 3;   //todo other restorations ??
+                MenuView.showMainMenu();
             }
         }
 
@@ -345,7 +349,7 @@ public class Battle {
             pStage.close();
         }
         else {
-            pStage.close();
+            //pStage.close();
         }
     }
 

@@ -41,7 +41,7 @@ public class Map {
     private int actionTime = 0;
 
     private Image mapImage;
-    private ImageView mapImageView;
+    private ImageView mapImageView = new ImageView();
 
     private ImageView character = new ImageView();
     private ArrayList<Image> toRight = new ArrayList<>();
@@ -77,6 +77,39 @@ public class Map {
         root.getChildren().add(character);
         root.getChildren().add(message);
 
+        createMoveEvent();
+
+        createMoveTimer();
+
+        scene.setOnKeyPressed(event -> {
+            if (!firstKey) {
+                root.getChildren().remove(message);
+                firstKey = true;
+            }
+            switch (event.getCode()){
+                case W:     goNorth = true; break;
+                case D:     goEast  = true; break;
+                case S:     goSouth = true; break;
+                case A:     goWest  = true; break;
+                case SHIFT: durationTime /= 2; createMoveTimer(); break;    //fps change(not good)
+                case E:     doAction= true; break;
+            }
+        });
+
+        scene.setOnKeyReleased(event -> {
+            switch (event.getCode()){
+                case W:     goNorth = false; break;
+                case D:     goEast  = false; break;
+                case S:     goSouth = false; break;
+                case A:     goWest  = false; break;
+                case SHIFT: durationTime *= 2; createMoveTimer(); break;    //fps change(not good)
+                case E:     doAction= false; break;
+            }
+        });
+    }
+
+
+    private void createMoveEvent() {
         moveEvent = event -> {
             double newX = character.getLayoutX();
             double newY = character.getLayoutY();
@@ -143,7 +176,7 @@ public class Map {
                 }
                 if (doAction) {
                     actionTime += durationTime;
-                    if (actionTime >= 1500){
+                    if (actionTime >= 1000){
                         //todo go shop
                         moveTimeline.pause();
                         MenuView.showShop();
@@ -161,7 +194,7 @@ public class Map {
                 }
                 if (doAction) {
                     actionTime += durationTime;
-                    if (actionTime >= 1500){
+                    if (actionTime >= 1000){
                         //todo go battle
                         moveTimeline.pause();
                         Battle.startGameAgainst(Main.opponents.get(level - 1),new Random().nextInt(2),false);
@@ -179,36 +212,7 @@ public class Map {
                 shownMessage = false;
             }
         };
-
-        createMoveTimer();
-
-        scene.setOnKeyPressed(event -> {
-            if (!firstKey) {
-                root.getChildren().remove(message);
-                firstKey = true;
-            }
-            switch (event.getCode()){
-                case W:     goNorth = true; break;
-                case D:     goEast  = true; break;
-                case S:     goSouth = true; break;
-                case A:     goWest  = true; break;
-                case SHIFT: durationTime /= 2; createMoveTimer(); break;    //fps change(not good)
-                case E:     doAction= true; break;
-            }
-        });
-
-        scene.setOnKeyReleased(event -> {
-            switch (event.getCode()){
-                case W:     goNorth = false; break;
-                case D:     goEast  = false; break;
-                case S:     goSouth = false; break;
-                case A:     goWest  = false; break;
-                case SHIFT: durationTime *= 2; createMoveTimer(); break;    //fps change(not good)
-                case E:     doAction= false; break;
-            }
-        });
     }
-
 
     private boolean blockPoints(double x, double y) {
         double mapX = x - mapImageView.getLayoutX();
@@ -294,7 +298,7 @@ public class Map {
 
         File mapFile = new File("map resource/map_level" + level + ".png");
         mapImage = new Image(mapFile.toURI().toString());
-        mapImageView = new ImageView(mapImage);
+        mapImageView.setImage(mapImage);
 
         mapImageView.setLayoutX(0);     // extra here
         if (level <= 2)
@@ -306,19 +310,37 @@ public class Map {
     public void continueMap() {
         actionTime = 0;
         goNorth = goSouth = goEast = goWest = doAction = false;
-        moveTimeline.play();
+        durationTime = 30;
+        moveTimeline.play();//
+        //createMoveEvent();
+        //imagesProcess();
+        //levelProcess();
         stageProcess();
     }
 
     public void continueMap(int level) {
-        double x = character.getLayoutX();
-        double y = character.getLayoutY();
-        levelProcess();
-        if (level != this.level) {
-            character.setLayoutX(x);
-            character.setLayoutY(y);
-            this.level = level;
+        boolean differLevel = (this.level != level);
+        this.level = level;
+        if (differLevel) {
+            mapImageView.setImage(new Image(new File("map resource/map_level" + level + ".png").toURI().toString()));
+            mapCastle = new Image(new File("map resource/map_castle" + level + ".png").toURI().toString()).getPixelReader();
+            switch (level) {
+                case 2:
+                    mapBlocks1 = mapTransparent;
+                    break;
+                case 3:
+                    mapBlocks1 = mapBlocks2 = mapTransparent;
+                    break;
+                case 4:
+                    mapBlocks1 = mapBlocks2 = mapBlocks3 = mapTransparent;
+                    break;
+            }
+            createMoveEvent();
+            continueMap(); // createMoveTimer ?
         }
-        continueMap();
+        else {
+            levelProcess();
+            continueMap();
+        }
     }
 }
