@@ -28,6 +28,8 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+import static Controller.Battle.isMultiplayer;
+import static Controller.Main.cellTower;
 import static Controller.Main.human;
 
 public class GameView {
@@ -405,6 +407,9 @@ public class GameView {
             }
             playerDeckCardCount.setText(String.valueOf(player.getDeckCards().size()));
             opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
+            if (human.isHisTurn() && isMultiplayer){
+                cellTower.transmitPlayerData(player);
+            }
         }
     }
 
