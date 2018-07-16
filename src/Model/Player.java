@@ -413,6 +413,22 @@ public class Player implements Cloneable{
 //        return null;
     }
 
+    //---------------------------------------------Inventory minus deck------------------------------------------------------------
+    public ArrayList<Card> getInventoryMinusDeck(){
+        ArrayList<Card> result = new ArrayList<>(inventoryCards);
+        for(int i=0; i<30; i++){
+            if(defaultDeckCards.get(i) == null) {
+                continue;
+            }
+            for(int j=0; j<result.size(); j++){
+                if(result.get(j).getName().equalsIgnoreCase(defaultDeckCards.get(i).getName())){
+                    result.remove(j);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
     //-----------------------------------------------------------------------------------------------------------------------------
 
     public boolean equipAmulet(String amuletName){

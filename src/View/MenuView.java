@@ -2,6 +2,7 @@ package View;
 
 import Controller.LegendsOfArcadia;
 import Controller.Main;
+import Model.Card.Card;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
@@ -45,6 +46,9 @@ public class MenuView {
     private static Button cardShopButton = new Button("Card Shop");
     private static Button itemShopButton = new Button("Item Shop");
     private static Button amuletShopButton = new Button("Amulet Shop");
+
+    private static Button editDeckButton = new Button("Edit Deck");
+    private static Button editAmuletButton = new Button("Edit Amulet");
 
     public static void showMainMenu(){
         Group mainMenuGroup = new Group();
@@ -249,6 +253,180 @@ public class MenuView {
 //            button.setPrefWidth(buttonPrefWidth);
 //        }
 //    }
+
+
+
+
+
+    public static void showInventoryMenu(){
+        Group shopGroup = new Group();
+        Scene scene = new Scene(shopGroup);
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        Button returnButton = new Button("Return");
+
+        returnButton.setOnMouseClicked(event -> {
+            //TODO
+        });
+
+        editDeckButton.setOnMouseClicked(event -> {
+            MenuView.showEditDeck(human.getInventoryMinusDeck(), human.getDefaultDeckCards(), null, false);
+        });
+
+        editAmuletButton.setOnMouseClicked(event -> {
+            Main.editAmulet();//TODO
+        });
+
+        VBox vBox = makeVBox(editDeckButton, editAmuletButton, returnButton);
+        shopGroup.getChildren().add(vBox);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public static void showEditDeck(ArrayList<Card> inventoryCardsMinusDeck, ArrayList<Card> deckCardsWithNull, String transferMessage, boolean nextIsBattle){
+        Group cardShopGroup = new Group();
+        Scene scene = new Scene(cardShopGroup);
+        ArrayList<Button> inventoryButtons = new ArrayList<>();
+        ArrayList<Button> deckButtons = new ArrayList<>();
+        TextArea textArea = new TextArea("Here you can edit your Deck.");
+        TextArea transferResult = new TextArea(transferMessage);
+        Button returnButton = new Button();
+
+        StackPane stackPane = new StackPane();
+        Rectangle headLineRectangle = new Rectangle(330, 30);
+        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        Text headLineText = new Text("Inventory");
+        stackPane.getChildren().addAll(headLineRectangle, headLineText);
+        stackPane.relocate(150, 60);
+
+        StackPane stackPane1 = new StackPane();
+        Rectangle headLineRectangle1 = new Rectangle(330, 30);
+        headLineRectangle1.setFill(Color.rgb(20, 184, 11));
+        Text headLineText1 = new Text("Deck");
+        stackPane1.getChildren().addAll(headLineRectangle1, headLineText1);
+        stackPane1.relocate(1000, 60);
+        //headLine.setText
+
+        ConsoleView.setConsole(transferResult);
+
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
+
+        //------------------------return button----------------------
+        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        returnButton.setGraphic(imageView);
+        returnButton.setMaxWidth(50);
+        //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
+        returnButton.relocate(1150, 620);
+        returnButton.setOnMouseClicked(event -> {
+            try {
+                MenuView.showInventoryMenu();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
+        //------------sort shopStuff and playerStuff by name-----------------
+        inventoryCardsMinusDeck.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        //-------------------------------------------------------------------
+
+        for(Stuff stuff : inventoryCardsMinusDeck){
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setMinHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+            });
+            itemButton.setOnMouseClicked(event -> {
+                try {
+                    transferResult.clear();
+                    for(int i=0; i<30; i++){
+                        if(deckCardsWithNull.get(i) == null){
+                            Main.editDeck("add " + stuff.getName() + " " + (i+1), nextIsBattle);
+                            MenuView.showEditDeck(human.getInventoryMinusDeck(), human.getDefaultDeckCards(), transferResult.getText(), nextIsBattle);
+                            return;
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            inventoryButtons.add(itemButton);
+        }
+
+        for(int i=0; i<30; i++){
+            Button itemButton = new Button(deckCardsWithNull.get(i) == null ? "empty" : deckCardsWithNull.get(i).getName());
+            if(deckCardsWithNull.get(i) == null){
+                itemButton.setDisable(true);
+            }else {
+                final Stuff stuff = deckCardsWithNull.get(i);
+                itemButton.setOnMouseEntered(event -> {
+                    textArea.setText(stuff.toString());
+                });
+                final int ind = i+1;
+                itemButton.setOnMouseClicked(event -> {
+                    try {
+                        transferResult.clear();
+                        Main.editDeck("remove " + ind, nextIsBattle);
+                        MenuView.showEditDeck(human.getInventoryMinusDeck(), human.getDefaultDeckCards(), transferResult.getText(), nextIsBattle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            deckButtons.add(itemButton);
+        }
+
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        transferResult.relocate(600, 525);
+        transferResult.setEditable(false);
+        transferResult.setPrefSize(300, 50);
+
+        ListView<Button> shopItemsListView = new ListView<>(FXCollections.observableArrayList(inventoryButtons));
+        //shopItemsListView.setFixedCellSize(60);
+        shopItemsListView.relocate(150, 100);
+        shopItemsListView.setPrefSize(330, 500);
+
+        ListView<Button> playerItemsListView = new ListView<>(FXCollections.observableArrayList(deckButtons));
+        playerItemsListView.relocate(1000, 100);
+        playerItemsListView.setPrefSize(330, 500);
+
+
+        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transferResult, returnButton, stackPane, stackPane1);
+    }
+
+
+
+
+
+
+    public static void showEditAmulet(){
+
+    }
+
+
+
+
+
+
+
 
     private static VBox makeVBox(double x, double y, double prefWidth, double spacing, Node... nodes){
         VBox vBox = new VBox(spacing, nodes);

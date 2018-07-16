@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import View.MenuView;
 
+import static Controller.Main.human;
 import static Controller.Main.lucifer;
 
 public class LegendsOfArcadia extends Application {
@@ -23,12 +24,15 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setHeight(800);
         primaryStage.setTitle("Legends of Arcadia");
 
-        //preProcessEventHandling(primaryStage);
+        preProcessEventHandling(primaryStage);
         //MenuView.showMainMenu();
+        System.out.println(human.inventoryToString());
+        System.out.println(human.getInventoryCards());
+        Main.editInventory();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
         primaryStage.show();
-        Battle.startGameAgainst(lucifer);
+        //Battle.startGameAgainst(lucifer);
     }
 
     private void preProcessEventHandling(Stage primaryStage){

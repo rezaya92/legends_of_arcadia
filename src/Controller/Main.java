@@ -177,8 +177,8 @@ public class Main {
         MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
     }
 
-    private static void editInventory() throws Exception{
-        ConsoleView.editInventory();
+    public static void editInventory() throws Exception{
+        /*ConsoleView.editInventory();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editInventory");
         helpHandler(lastViewMethod);
@@ -203,10 +203,11 @@ public class Main {
                 default:
                     ConsoleView.invalidCommand();
         }
-        editInventory();
+        editInventory();*/
+        MenuView.showInventoryMenu();
     }
 
-    private static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
+    /*public static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
         ConsoleView.stuffInventory(typeOfStuffToBuyAndSell);
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
@@ -221,13 +222,14 @@ public class Main {
             ConsoleView.invalidCommand();
         }
         stuffInventory(typeOfStuffToBuyAndSell);
-    }
+    }*/
 
-    private static void editDeck(boolean nextIsBattle) throws Exception{
-        ConsoleView.editDeck();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editDeck");
-        helpHandler(lastViewMethod, nextIsBattle);
+    public static void editDeck(String action, boolean nextIsBattle) /*throws Exception*/{
+
+        //ConsoleView.editDeck();
+        //action = scanner.nextLine();
+        //lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editDeck");
+        //helpHandler(lastViewMethod, nextIsBattle);
         try {
             if (action.startsWith("Add ") || action.startsWith("add ")) {
                 int splitIndex = 0;
@@ -263,11 +265,11 @@ public class Main {
         }catch (Exception e){
             ConsoleView.invalidCommand();
         }
-        editDeck(nextIsBattle);
+        //editDeck(nextIsBattle);
     }
 
-    private static void editAmulet() throws Exception{
-        ConsoleView.editAmulet();
+    public static void editAmulet() /*throws Exception*/{
+        /*ConsoleView.editAmulet();
         action = scanner.nextLine();
         lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editAmulet");
         helpHandler(lastViewMethod);
@@ -293,7 +295,8 @@ public class Main {
         }catch(Exception e){
             ConsoleView.invalidCommand();
         }
-        editAmulet();
+        editAmulet();*/
+        MenuView.showEditAmulet();
     }
 
     public static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{
@@ -342,7 +345,7 @@ public class Main {
         return false;
     }
 
-    private static void helpHandler(Method lastViewMethod) throws Exception{
+    /*private static void helpHandler(Method lastViewMethod) throws Exception{
         while(true){
             if(action.equalsIgnoreCase("Help"))
                 Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help").invoke(null);
@@ -378,7 +381,7 @@ public class Main {
                 break;
             action = scanner.nextLine();
         }
-    }
+    }*/
 
     public static <T extends Stuff> ArrayList<Pair<T, Integer>> getUniqueWithNumber(ArrayList<T> stuffs){
         Boolean[] repetitious = new Boolean[stuffs.size()];
