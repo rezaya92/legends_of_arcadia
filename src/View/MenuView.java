@@ -73,6 +73,7 @@ public class MenuView {
 
         returnButton.setOnMouseClicked(event -> {
             //TODO
+            LegendsOfArcadia.getMap().continueMap();
         });
 
         VBox vBox = makeVBox(cardShopButton, itemShopButton, amuletShopButton, returnButton);

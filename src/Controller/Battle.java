@@ -73,6 +73,7 @@ public class Battle {
                 opponent.getEquippedAmulet().getEffect().use(opponent);
         } catch (NoEffectableCardException e){ // todo correct
             // todo view
+            e.printStackTrace();
         }
 
         for (int i = 0; i < 4; i++) {
@@ -187,7 +188,7 @@ public class Battle {
 
 
     private static boolean spellCastingMenu(MonsterCard monsterCard){   // returns false if opponent hero dies
-        monsterCard.castSpell();  // todo is this enough ??
+        monsterCard.castSpell();
         return monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive();
     }
 

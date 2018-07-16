@@ -201,7 +201,7 @@ public class GameView {
         menusGroup.relocate(primaryStage.getWidth()/3 * 2,0);
         listView = new ListView<>(FXCollections.observableArrayList(new NormalCard(Tribe.ELVEN,"Elven Ranger",100,100,1,false,false)));
         listView.setPrefSize(primaryStage.getWidth() / 3 - 200, primaryStage.getHeight() / 3 * 2 - 35);
-        listView.setCellFactory(lv -> new ListCell<>() {
+        listView.setCellFactory(lv -> new ListCell<ListShowable>() {
             @Override
             public void updateItem(ListShowable item, boolean empty) {
                 super.updateItem(item, empty);

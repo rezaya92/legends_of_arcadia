@@ -1,5 +1,6 @@
 package Controller;
 
+import View.MenuView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -142,8 +143,10 @@ public class Map {
                 }
                 if (doAction) {
                     actionTime += durationTime;
-                    if (actionTime >= 2000){
+                    if (actionTime >= 1500){
                         //todo go shop
+                        moveTimeline.pause();
+                        MenuView.showShop();
                     }
                 }
                 else {
@@ -158,8 +161,9 @@ public class Map {
                 }
                 if (doAction) {
                     actionTime += durationTime;
-                    if (actionTime >= 2000){
+                    if (actionTime >= 1500){
                         //todo go battle
+                        moveTimeline.pause();
                     }
                 }
                 else {
@@ -296,5 +300,23 @@ public class Map {
             mapImageView.setLayoutY(-747);
         else
             mapImageView.setLayoutY(0);
+    }
+
+    public void continueMap() {
+        actionTime = 0;
+        goNorth = goSouth = goEast = goWest = doAction = false;
+        moveTimeline.play();
+        stageProcess();
+    }
+
+    public void continueMap(int level) {
+        double x = character.getLayoutX();
+        double y = character.getLayoutY();
+        levelProcess();
+        if (level != this.level) {
+            character.setLayoutX(x);
+            character.setLayoutY(y);
+        }
+        continueMap();
     }
 }
