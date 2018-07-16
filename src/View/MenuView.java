@@ -52,6 +52,8 @@ public class MenuView {
     private static Button editAmuletButton = new Button("Edit Amulet");
 
     public static void showMainMenu(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group mainMenuGroup = new Group();
         Scene scene = new Scene(mainMenuGroup);
         primaryStage.setScene(scene);
@@ -65,6 +67,8 @@ public class MenuView {
     }
 
     public static void showShop(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group shopGroup = new Group();
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
@@ -120,7 +124,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);
@@ -258,12 +262,14 @@ public class MenuView {
 //            button.setPrefWidth(buttonPrefWidth);
 //        }
 //    }
-
+//
 
 
 
 
     public static void showInventoryMenu(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group shopGroup = new Group();
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
@@ -329,7 +335,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);
@@ -458,7 +464,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);

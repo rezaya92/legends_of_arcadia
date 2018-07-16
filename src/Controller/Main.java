@@ -38,7 +38,7 @@ public class Main {
 
     }
     */
-
+    //
     //executing with while improves performance a lot?
     static void afterMatch() throws Exception{
         /*ConsoleView.afterMatch();
