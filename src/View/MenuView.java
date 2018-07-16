@@ -120,7 +120,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);
@@ -329,7 +329,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);
@@ -458,7 +458,7 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
 
         //------------------------return button----------------------
-        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         returnButton.setGraphic(imageView);
