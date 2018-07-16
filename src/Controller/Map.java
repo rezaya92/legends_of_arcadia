@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by msi-pc on 6/18/2018.
@@ -163,7 +164,7 @@ public class Map {
                     if (actionTime >= 1500){
                         //todo go battle
                         moveTimeline.pause();
-                        Battle.startGameAgainst(Main.opponents.get(level - 1));
+                        Battle.startGameAgainst(Main.opponents.get(level - 1),new Random().nextInt(2),false);
                     }
                 }
                 else {
