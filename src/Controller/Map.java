@@ -75,7 +75,6 @@ public class Map {
         root.getChildren().add(mapImageView);
         root.getChildren().add(character);
         root.getChildren().add(message);
-        System.out.println(message.getText());
 
         moveEvent = event -> {
             double newX = character.getLayoutX();
@@ -164,6 +163,7 @@ public class Map {
                     if (actionTime >= 1500){
                         //todo go battle
                         moveTimeline.pause();
+                        Battle.startGameAgainst(Main.opponents.get(level - 1));
                     }
                 }
                 else {
@@ -316,6 +316,7 @@ public class Map {
         if (level != this.level) {
             character.setLayoutX(x);
             character.setLayoutY(y);
+            this.level = level;
         }
         continueMap();
     }

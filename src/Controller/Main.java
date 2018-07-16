@@ -25,6 +25,13 @@ public class Main {
     static Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static Player vampireLord = new Player("Vampire Lord", 10000);
     static Player lucifer = new Player("Lucifer", 10000);
+    static ArrayList<Player> opponents = new ArrayList<>();
+    static {
+        opponents.add(goblinChieftain);
+        opponents.add(ogreWarlord);
+        opponents.add(vampireLord);
+        opponents.add(lucifer);
+    }
     private static String action;
     private static Method lastViewMethod;
     private static Scanner scanner = new Scanner(System.in);

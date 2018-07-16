@@ -316,6 +316,7 @@ public class Battle {
             human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
             human.setDeckCards(humanDeckCardBeforeMatch);
             //human.setItems(humanItemsAfterMatch);
+            LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
         } else {
             if (mysticHourGlass > 0) {
                 //System.out.println(humanBeforeCustomize.getDeckCards().size());
@@ -328,6 +329,7 @@ public class Battle {
                 human.getOpponent().setItems(opponentItemsBeforeCustomization);
                 mysticHourGlass--;
                 ConsoleView.mysticHourGlassUsed();
+                LegendsOfArcadia.getMap().continueMap();
             } else {
                 ConsoleView.gameOver(human);
                 //TODO end game
