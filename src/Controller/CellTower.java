@@ -4,6 +4,7 @@ import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Player;
+import View.GameView.GameView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,17 +16,15 @@ import java.util.Scanner;
 import static Controller.Main.human;
 
 public class CellTower implements Runnable {
-    private Socket socket;
     private Scanner scanner;
     private Formatter formatter;
 
     CellTower(Socket socket) throws IOException {
-        this.socket = socket;
         scanner = new Scanner(socket.getInputStream());
         formatter = new Formatter(socket.getOutputStream());
     }
 
-    private void transmitText(String text){
+    void transmitText(String text){
         formatter.format(text + "\n");
     }
 
@@ -53,26 +52,27 @@ public class CellTower implements Runnable {
         transmitText("Player Hp:" + player.getPlayerHero().getHp());
         transmitText("Player Mp:" + player.getMana());
         transmitText("player Max Mp:" + player.getMaxMana());
+        transmitText("MonsterField:");
         for (int i = 0; i < 5; i++) {
-            transmitText("MonsterField:");
             transmitMonsterFieldCard((MonsterCard)player.getMonsterFieldCards().get(i));
         }
+        transmitText("SpellField:");
         for (int i = 0; i < 3; i++) {
-            transmitText("SpellField:");
             transmitCard(player.getSpellFieldCards().get(i));
         }
+        transmitText("GraveYard:");
         for (Card card: player.getGraveyardCards()){
-            transmitText("GraveYard:");
             transmitCard(card);
         }
+        transmitText("Hand:");
         for (Card card: player.getHandCards()){
-            transmitText("Hand:");
             transmitCard(card);
         }
+        transmitText("Deck:");
         for (Card card: player.getDeckCards()){
-            transmitText("Deck");
             transmitCard(card);
         }
+        transmitText("end of transmission");
     }
 
     private void transmitMonsterFieldCard(MonsterCard monsterCard){
@@ -87,15 +87,28 @@ public class CellTower implements Runnable {
 
     private void transmitCard(Card card){
         if (card == null)
-            transmitText("card:NULL");
+            transmitText("card name:NULL");
         else {
-            transmitText("monsterC");
+            transmitText("card name:" + card.getName());
         }
     }
 
     @Override
     public void run() {
-
+        String command = receiveText();
+        while (!command.equals("Winner is:")){
+            switch (command){
+                case "Opponent Data:":
+                    Battle.processReceivedPlayerData(human.getOpponent());
+                    break;
+                case "My Data:":
+                    Battle.processReceivedPlayerData(human);
+                    break;
+                case "End Turn":
+                    GameView.showIdleScene();
+            }
+            command = receiveText();
+        }
     }
 
 

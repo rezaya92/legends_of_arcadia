@@ -19,7 +19,6 @@ public class PlayerHero implements HasHP, Cloneable {
     private int defaultHP;
     private SimpleIntegerProperty hp = new SimpleIntegerProperty();
     private double damageReceivementRatio = 1;
-    private String name = "Player";
     private Player owner;
 
     public PlayerHero(int defaultHP, Player owner){
@@ -28,10 +27,14 @@ public class PlayerHero implements HasHP, Cloneable {
         this.owner = owner;
     }
 
-    private ObservableList<Card> a = FXCollections.observableArrayList(new ArrayList<>());
     public int getHp(){
         return hp.get();
     }
+
+    public void setHp(int hp) {
+        this.hp.set(hp);
+    }
+
     public SimpleIntegerProperty hpProperty() {
         return hp;
     }

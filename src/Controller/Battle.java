@@ -12,13 +12,11 @@ import Model.Spell.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.stage.Stage;
-
+import static Model.Stuff.getStuffByName;
 import java.util.*;
 
 import static Controller.LegendsOfArcadia.pStage;
-import static Controller.Main.human;
-import static Controller.Main.lucifer;
-import static Controller.Main.mysticHourGlass;
+import static Controller.Main.*;
 
 /**
  * Created by msi-pc on 5/14/2018.
@@ -83,6 +81,9 @@ public class Battle {
             drawingCard.transfer(human.getHandCards());
             opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
+
+        new Thread(cellTower).start();
+        cellTower.transmitPlayerData(human);
 
         if (coin == 0) {
             ConsoleView.announceBattleStarter(human.getName());
@@ -212,7 +213,12 @@ public class Battle {
             human.endTurn();
             if (human.getDeckCards().isEmpty() && human.getHandCards().isEmpty() && human.getMonsterFieldCards().isEmpty() && human.getOpponent().getDeckCards().isEmpty() && human.getOpponent().getHandCards().isEmpty() && human.getOpponent().getMonsterFieldCards().isEmpty())
                 gameEnded((human.getPlayerHero().getHp() > human.getOpponent().getPlayerHero().getHp()) ? human : human.getOpponent());
-            botPlayTurn(human.getOpponent());
+            if (isMultiplayer) {
+                GameView.showOpponentTurnScene();
+                cellTower.transmitText("End Turn");
+            }
+            else
+                botPlayTurn(human.getOpponent());
         });
         human.getPlayerHero().hpProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() <= 0){
@@ -334,18 +340,8 @@ public class Battle {
                 LegendsOfArcadia.getMap().continueMap();
             } else {
                 ConsoleView.gameOver(human);
-                //TODO end game
+                pStage.close();
             }
-        }
-
-        //TODO go to map
-
-        if (opponent == lucifer) {
-            ConsoleView.wholeWinner();
-            pStage.close();
-        }
-        else {
-            pStage.close();
         }
     }
 
@@ -396,5 +392,50 @@ public class Battle {
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
         primaryStage.setTitle("Legends of Arcadia - Battle");
+    }
+
+    static void processReceivedPlayerData(Player player){
+        player.getPlayerHero().setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+        player.setMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+        player.setMaxMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+        cellTower.receiveText();
+        for (int i = 0; i < 5; i++) {
+            String monsterCardName = cellTower.receiveText().split(":")[1];
+            if (!monsterCardName.equals("NULL")){
+                player.getMonsterFieldCards().set(i,(Card)getStuffByName(monsterCardName));
+                ((MonsterCard)player.getMonsterFieldCards().get(i)).setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+                ((MonsterCard)player.getMonsterFieldCards().get(i)).setAp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+            }
+            else
+                player.getMonsterFieldCards().set(i,null);
+        }
+        cellTower.receiveText();
+        for (int i = 0; i < 3; i++) {
+            String cardName = cellTower.receiveText().split(":")[1];
+            if (!cardName.equals("NULL"))
+                player.getSpellFieldCards().set(i,(Card)getStuffByName(cardName));
+            else
+                player.getSpellFieldCards().set(i,null);
+        }
+        cellTower.receiveText();
+        String command = cellTower.receiveText();
+        player.getGraveyardCards().clear();
+        while (!command.equals("Hand:")){
+            player.getGraveyardCards().add((Card) getStuffByName(command.split(":")[1]));
+            command = cellTower.receiveText();
+        }
+        player.getHandCards().clear();
+        command = cellTower.receiveText();
+        while (!command.equals("Deck:")){
+            player.getHandCards().add((Card) getStuffByName(command.split(":")[1]));
+            command = cellTower.receiveText();
+        }
+        player.getDeckCards().clear();
+        command = cellTower.receiveText();
+        while (!command.equals("end of transmission")){
+            player.getDeckCards().add((Card) getStuffByName(command.split(":")[1]));
+            command = cellTower.receiveText();
+        }
+        GameView.updateFields();
     }
 }

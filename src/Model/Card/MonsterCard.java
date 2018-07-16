@@ -233,6 +233,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
         return hp.get();
     }
 
+    public void setHp(int hp) {
+        this.hp.set(hp);
+    }
+
     public SimpleIntegerProperty hpProperty() {return hp; }
 
 
