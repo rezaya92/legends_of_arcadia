@@ -25,10 +25,8 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setTitle("Legends of Arcadia");
 
         preProcessEventHandling(primaryStage);
-        //MenuView.showMainMenu();
-        System.out.println(human.inventoryToString());
-        System.out.println(human.getInventoryCards());
-        Main.editInventory();
+        MenuView.showMainMenu();
+        //Main.editInventory();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
 
         primaryStage.show();

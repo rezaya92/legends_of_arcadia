@@ -268,11 +268,11 @@ public class Main {
         //editDeck(nextIsBattle);
     }
 
-    public static void editAmulet() /*throws Exception*/{
-        /*ConsoleView.editAmulet();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editAmulet");
-        helpHandler(lastViewMethod);
+    public static void editAmulet(String action) /*throws Exception*/{
+        //ConsoleView.editAmulet();
+        //action = scanner.nextLine();
+        //lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editAmulet");
+        //helpHandler(lastViewMethod);
         try{
             if(action.startsWith("Equip ") || action.startsWith("equip ")){
                 String amuletName = action.substring(6);
@@ -295,8 +295,8 @@ public class Main {
         }catch(Exception e){
             ConsoleView.invalidCommand();
         }
-        editAmulet();*/
-        MenuView.showEditAmulet();
+        //editAmulet();
+        //MenuView.showEditAmulet();
     }
 
     public static void buyThingsProcessor(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, String command) throws Exception{

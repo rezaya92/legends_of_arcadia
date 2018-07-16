@@ -2,6 +2,7 @@ package View;
 
 import Controller.LegendsOfArcadia;
 import Controller.Main;
+import Model.Amulet;
 import Model.Card.Card;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
@@ -87,7 +88,10 @@ public class MenuView {
         Scene scene = new Scene(cardShopGroup);
         ArrayList<Button> shopButtons = new ArrayList<>();
         ArrayList<Button> playerButtons = new ArrayList<>();
-        TextArea textArea = new TextArea("welcome to the shop!\nhere you can buy the stuff you want and sell the stuff that you no longer need.");
+        TextArea textArea = new TextArea();
+        if(transactionMessage == null) {
+            textArea.setText("welcome to the shop!\nhere you can buy the stuff you want and sell the stuff that you no longer need.");
+        }
         Text gilText = new Text("Remaining Gil: " + human.getGil());
         TextArea transactionResult = new TextArea(transactionMessage);
         Button returnButton = new Button();
@@ -274,7 +278,7 @@ public class MenuView {
         });
 
         editAmuletButton.setOnMouseClicked(event -> {
-            Main.editAmulet();//TODO
+            MenuView.showEditAmulet(human.getAmulets(), human.getEquippedAmulet(), null);
         });
 
         VBox vBox = makeVBox(editDeckButton, editAmuletButton, returnButton);
@@ -292,11 +296,14 @@ public class MenuView {
 
 
     public static void showEditDeck(ArrayList<Card> inventoryCardsMinusDeck, ArrayList<Card> deckCardsWithNull, String transferMessage, boolean nextIsBattle){
-        Group cardShopGroup = new Group();
-        Scene scene = new Scene(cardShopGroup);
+        Group editDeckGroup = new Group();
+        Scene scene = new Scene(editDeckGroup);
         ArrayList<Button> inventoryButtons = new ArrayList<>();
         ArrayList<Button> deckButtons = new ArrayList<>();
-        TextArea textArea = new TextArea("Here you can edit your Deck.");
+        TextArea textArea = new TextArea();
+        if(transferMessage == null) {
+            textArea.setText("Here you can edit your Deck.");
+        }
         TextArea transferResult = new TextArea(transferMessage);
         Button returnButton = new Button();
 
@@ -409,7 +416,7 @@ public class MenuView {
         playerItemsListView.setPrefSize(330, 500);
 
 
-        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transferResult, returnButton, stackPane, stackPane1);
+        editDeckGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transferResult, returnButton, stackPane, stackPane1);
     }
 
 
@@ -417,8 +424,115 @@ public class MenuView {
 
 
 
-    public static void showEditAmulet(){
+    public static void showEditAmulet(ArrayList<Amulet> amulets, Amulet equippedAmulet, String transferMessage){
+        Group editAmuletGroup = new Group();
+        Scene scene = new Scene(editAmuletGroup);
+        ArrayList<Button> amuletsButtons = new ArrayList<>();
+        ArrayList<Button> equippedAmuletButtons = new ArrayList<>();
+        TextArea textArea = new TextArea();
+        if(transferMessage == null) {
+            textArea.setText("Here you can pick your desired Amulet.");
+        }
+        TextArea transferResult = new TextArea(transferMessage);
+        Button returnButton = new Button();
 
+        StackPane stackPane = new StackPane();
+        Rectangle headLineRectangle = new Rectangle(330, 30);
+        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        Text headLineText = new Text("Amulets");
+        stackPane.getChildren().addAll(headLineRectangle, headLineText);
+        stackPane.relocate(150, 60);
+
+        StackPane stackPane1 = new StackPane();
+        Rectangle headLineRectangle1 = new Rectangle(330, 30);
+        headLineRectangle1.setFill(Color.rgb(20, 184, 11));
+        Text headLineText1 = new Text("Equipped");
+        stackPane1.getChildren().addAll(headLineRectangle1, headLineText1);
+        stackPane1.relocate(1000, 60);
+        //headLine.setText
+
+        ConsoleView.setConsole(transferResult);
+
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
+
+        //------------------------return button----------------------
+        ImageView imageView = new ImageView(new Image("file:return-icon.jpg"));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        returnButton.setGraphic(imageView);
+        returnButton.setMaxWidth(50);
+        //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
+        returnButton.relocate(1150, 620);
+        returnButton.setOnMouseClicked(event -> {
+            try {
+                MenuView.showInventoryMenu();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
+        //------------sort shopStuff and playerStuff by name-----------------
+        amulets.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        //-------------------------------------------------------------------
+
+        for(Stuff stuff : amulets){
+            if(equippedAmulet != null && stuff.getName().equalsIgnoreCase(equippedAmulet.getName()))
+                continue;
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setMinHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+            });
+            itemButton.setOnMouseClicked(event -> {
+                transferResult.clear();
+                Main.editAmulet("equip " + stuff.getName());
+                showEditAmulet(human.getAmulets(), human.getEquippedAmulet(), transferResult.getText());
+            });
+            amuletsButtons.add(itemButton);
+        }
+
+
+        if(equippedAmulet != null) {
+            Button equippedAmuletButton = new Button(equippedAmulet.getName());
+            //final Stuff stuff = deckCardsWithNull.get(i);
+            equippedAmuletButton.setOnMouseEntered(event -> {
+                textArea.setText(equippedAmulet.toString());
+            });
+            //final int ind = i + 1;
+            equippedAmuletButton.setOnMouseClicked(event -> {
+                transferResult.clear();
+                Main.editAmulet("remove amulet");
+                showEditAmulet(human.getAmulets(), human.getEquippedAmulet(), transferResult.getText());
+            });
+            equippedAmuletButtons.add(equippedAmuletButton);
+        }
+
+
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        transferResult.relocate(600, 525);
+        transferResult.setEditable(false);
+        transferResult.setPrefSize(300, 50);
+
+        ListView<Button> shopItemsListView = new ListView<>(FXCollections.observableArrayList(amuletsButtons));
+        //shopItemsListView.setFixedCellSize(60);
+        shopItemsListView.relocate(150, 100);
+        shopItemsListView.setPrefSize(330, 500);
+
+        ListView<Button> playerItemsListView = new ListView<>(FXCollections.observableArrayList(equippedAmuletButtons));
+        playerItemsListView.relocate(1000, 100);
+        playerItemsListView.setPrefSize(330, 500);
+
+
+        editAmuletGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transferResult, returnButton, stackPane, stackPane1);
     }
 
 
