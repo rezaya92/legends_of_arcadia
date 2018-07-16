@@ -11,6 +11,7 @@ import Model.Spell.Spell;
 import Model.Spell.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
+import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -39,6 +40,7 @@ public class Battle {
     private static Player opponent;
 
     public static void startGameAgainst(Player opponent) {
+        processStage();
         human.restore();
         opponent.restore();
         Battle.opponent = opponent;
@@ -380,5 +382,12 @@ public class Battle {
             action =scanner.next();
         }
         return true;
+    }
+
+    private static void processStage() {
+        Stage primaryStage = LegendsOfArcadia.getPrimaryStage();
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
+        primaryStage.setTitle("Legends of Arcadia - Battle");
     }
 }
