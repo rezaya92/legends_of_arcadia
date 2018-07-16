@@ -38,12 +38,14 @@ public class Battle {
     private static ArrayList<Card> humanDefaultDeckCardBeforeMatch;
     private static ArrayList<Card> humanDeckCardBeforeMatch;
     private static Player opponent;
+    public static boolean isMultiplayer;
 
-    public static void startGameAgainst(Player opponent) {
+    public static void startGameAgainst(Player opponent,int coin,boolean isMultiplayer) {
         processStage();
         human.restore();
         opponent.restore();
         Battle.opponent = opponent;
+        Battle.isMultiplayer = isMultiplayer;
         humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
         humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
         humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
@@ -61,8 +63,6 @@ public class Battle {
         }
         GameView.prepare(pStage,human,opponent);
         ConsoleView.battleStarted(opponent);
-        Random random = new Random();
-        int coin = random.nextInt(2);
         turnNumber = 0;
         human.setIsPlaying(true);
         opponent.setIsPlaying(true);
@@ -90,7 +90,10 @@ public class Battle {
         }
         else {
             ConsoleView.announceBattleStarter(opponent.getName());
-            botPlayTurn(opponent);
+            if (isMultiplayer)
+                humanOpponentPlayTurn();
+            else
+                botPlayTurn(opponent);
         }
         prepareButtons();
     }
@@ -104,6 +107,10 @@ public class Battle {
         ConsoleView.showPlayerMana(human);
     }
 
+    private static void  humanOpponentPlayTurn(){
+        GameView.showOpponentTurnScene();
+        ConsoleView.turnAnnouncer(++turnNumber, human.getOpponent().getName());
+    }
 
     private static void botPlayTurn(Player bot) {
         GameView.showOpponentTurnScene();
