@@ -4,6 +4,7 @@ import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Player;
+import View.GameView.ConsoleView;
 import View.GameView.GameView;
 
 import java.io.IOException;
@@ -101,6 +102,11 @@ public class CellTower implements Runnable {
         }
     }
 
+    public void transmitConsoleView(String text){
+        transmitText("Console Text:");
+        transmitText(text);
+    }
+
     @Override
     public void run() {
         String command = receiveText();
@@ -122,6 +128,9 @@ public class CellTower implements Runnable {
                     break;
                 case "End Turn":
                     Battle.humanPlayTurn();
+                    break;
+                case "Console Text:":
+                    ConsoleView.viewText(receiveText());
             }
             command = receiveText();
         }

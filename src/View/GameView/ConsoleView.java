@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 
 import java.util.ArrayList;
 
+import static Controller.Main.cellTower;
 import static Controller.Main.human;
 
 abstract public class ConsoleView {
@@ -17,6 +18,10 @@ abstract public class ConsoleView {
 
     public static void setConsole(TextArea console) {
         ConsoleView.console = console;
+    }
+
+    public static void viewText(String text){
+        console.appendText(text + "\n");
     }
 
     public static void afterMatch(){
@@ -232,6 +237,7 @@ abstract public class ConsoleView {
 
     public static void clashWith(String attackerCard, String attackedCard){
         console.appendText(attackerCard + " clashed with " + attackedCard + "\n");
+        cellTower.transmitConsoleView(attackerCard + " clashed with " + attackedCard);
     }
 
     public static void alreadyAttacked(Player player){
@@ -447,6 +453,8 @@ abstract public class ConsoleView {
     public static void spellCasted(String caster, GeneralizedSpell spell){
         console.appendText(caster + " has cast a spell:" + "\n");
         console.appendText(spell.getName() + ": " + spell.getDetail() + "\n");
+        cellTower.transmitConsoleView(caster + " has cast a spell:" );
+        cellTower.transmitConsoleView(spell.getName() + ": " + spell.getDetail());
     }
 
     public static void noEffectableCard(){
@@ -545,6 +553,7 @@ abstract public class ConsoleView {
 
     public static void spellCardCasted(String name){
         console.appendText(name + "  casted and went to Graveyard" + "\n");
+        cellTower.transmitConsoleView(name + "  casted and went to Graveyard");
     }
 
     public static void spellHasBeenCasted(){
