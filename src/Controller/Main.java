@@ -21,7 +21,7 @@ import static Model.Stuff.getStuffByName;
  */
 public class Main {
     public static Player human = new Player("human", 10000);
-    static Player goblinChieftain = new Player("Goblin Chieftain", 100);
+    static Player goblinChieftain = new Player("Goblin Chieftain", 10000);
     static Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static Player vampireLord = new Player("Vampire Lord", 10000);
     static Player lucifer = new Player("Lucifer", 10000);

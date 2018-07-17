@@ -85,9 +85,10 @@ public class Battle {
             if (!isMultiplayer)
                 opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
-
-        new Thread(cellTower).start();
-        cellTower.transmitPlayerData(human);
+if (isMultiplayer) {
+    new Thread(cellTower).start();
+    cellTower.transmitPlayerData(human);
+}
 
         if (coin == 0) {
             ConsoleView.announceBattleStarter(human.getName());
