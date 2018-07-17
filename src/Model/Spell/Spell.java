@@ -134,8 +134,10 @@ public abstract class Spell implements Cloneable{
     void use(Player owner) throws NoEffectableCardException{
         setEffectableCards(owner);
         choose(owner);
-        if (choiceType != SpellChoiceType.SELECT || owner != human)
+        if (choiceType != SpellChoiceType.SELECT || owner != human) {
             apply(owner);
+            GameView.updateFields();
+        }
         //    effectedCard.addAll(effectableCard);
     //    effectableCard.clear();
     }
@@ -154,6 +156,7 @@ public abstract class Spell implements Cloneable{
         this.effectableCard.clear();
         this.effectableCard.add(effectableCard);
         apply(owner);
+        GameView.updateFields();
     }
 
     protected abstract void deuse(Player owner);

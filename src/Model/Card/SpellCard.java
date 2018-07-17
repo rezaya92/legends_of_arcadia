@@ -21,7 +21,7 @@ public class SpellCard extends Card implements Cloneable{
     }
 
     public SpellCard(GeneralizedSpell spell, int defaultManaCost, SpellCardType spellCardType){
-        this.defaultManaCost = defaultManaCost;
+        this.manaCost = this.defaultManaCost = defaultManaCost;
         this.spell = spell;
         this.spellCardType = spellCardType;
         this.name = spell.getName();

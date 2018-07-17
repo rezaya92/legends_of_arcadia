@@ -85,10 +85,10 @@ public class Battle {
             if (!isMultiplayer)
                 opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
-if (isMultiplayer) {
-    new Thread(cellTower).start();
-    cellTower.transmitPlayerData(human);
-}
+        if (isMultiplayer) {
+            new Thread(cellTower).start();
+            cellTower.transmitPlayerData(human);
+        }
 
         if (coin == 0) {
             ConsoleView.announceBattleStarter(human.getName());
@@ -104,12 +104,14 @@ if (isMultiplayer) {
     }
 
     static void humanPlayTurn() {
-        Platform.runLater(GameView::showIdleScene);
-        ConsoleView.turnAnnouncer(++turnNumber, human.getName());
-        if (human.getDeckCards().isEmpty())
-            ConsoleView.emptyDeck();
-        human.startTurn();
-        ConsoleView.showPlayerMana(human);
+        Platform.runLater(() -> {
+            GameView.showIdleScene();
+            ConsoleView.turnAnnouncer(++turnNumber, human.getName());
+            if (human.getDeckCards().isEmpty())
+                ConsoleView.emptyDeck();
+            human.startTurn();
+            ConsoleView.showPlayerMana(human);
+        });
     }
 
     private static void humanOpponentPlayTurn() {

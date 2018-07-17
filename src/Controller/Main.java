@@ -409,20 +409,20 @@ public class Main {
         return output;
     }
 
-    public static void hostGame(int portNumber) throws IOException {
+    static void hostGame(int portNumber) throws IOException {
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Socket socket = serverSocket.accept();
         int coin = new Random().nextInt(2);
         cellTower = new CellTower(socket);
         cellTower.transmitInitials(coin);
-        Player opponent = new Player(cellTower.receiveText(),10000);
+        Player opponent = new Player(cellTower.receiveText().split(":")[1],10000);
         String amuletName = cellTower.receiveText().split(":")[1];
         if (!amuletName.equals("NULL"))
             opponent.setEquippedAmulet((Amulet)getStuffByName(amuletName));
         Battle.startGameAgainst(opponent,coin,true);
     }
 
-    public static void joinGame(String ip, int portNumber) throws IOException {
+    static void joinGame(String ip, int portNumber) throws IOException {
         Socket socket = new Socket(ip,portNumber);
         cellTower = new CellTower(socket);
         Player opponent = new Player(cellTower.receiveText().split(":")[1],1000);
