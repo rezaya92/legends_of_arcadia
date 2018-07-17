@@ -9,6 +9,7 @@ import View.GameView.GameView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -17,15 +18,16 @@ import static Controller.Main.human;
 
 public class CellTower implements Runnable {
     private Scanner scanner;
-    private Formatter formatter;
+    private PrintWriter printWriter;
+    private final Object lock = new Object();
 
     CellTower(Socket socket) throws IOException {
         scanner = new Scanner(socket.getInputStream());
-        formatter = new Formatter(socket.getOutputStream());
+        printWriter = new PrintWriter(socket.getOutputStream(),true);
     }
 
     void transmitText(String text){
-        formatter.format(text + "\n");
+        printWriter.println(text);
     }
 
     String receiveText(){
@@ -41,38 +43,44 @@ public class CellTower implements Runnable {
 
     void transmitInitials(){
         transmitText("name:" + human.getName());
-        transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
+        if (human.getEquippedAmulet() == null)
+            transmitText("equipped amulet:NULL");
+        else
+            transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
     }
 
+
     public void transmitPlayerData(Player player){
-        if (player == human)
-            transmitText("Opponent Data:");
-        else
-            transmitText("My Data:");
-        transmitText("Player Hp:" + player.getPlayerHero().getHp());
-        transmitText("Player Mp:" + player.getMana());
-        transmitText("player Max Mp:" + player.getMaxMana());
-        transmitText("MonsterField:");
-        for (int i = 0; i < 5; i++) {
-            transmitMonsterFieldCard((MonsterCard)player.getMonsterFieldCards().get(i));
+        synchronized (lock) {
+            if (player == human)
+                transmitText("Opponent Data:");
+            else
+                transmitText("My Data:");
+            transmitText("Player Hp:" + player.getPlayerHero().getHp());
+            transmitText("Player Mp:" + player.getMana());
+            transmitText("player Max Mp:" + player.getMaxMana());
+            transmitText("MonsterField:");
+            for (int i = 0; i < 5; i++) {
+                transmitMonsterFieldCard((MonsterCard) player.getMonsterFieldCards().get(i));
+            }
+            transmitText("SpellField:");
+            for (int i = 0; i < 3; i++) {
+                transmitCard(player.getSpellFieldCards().get(i));
+            }
+            transmitText("GraveYard:");
+            for (Card card : player.getGraveyardCards()) {
+                transmitCard(card);
+            }
+            transmitText("Hand:");
+            for (Card card : player.getHandCards()) {
+                transmitCard(card);
+            }
+            transmitText("Deck:");
+            for (Card card : player.getDeckCards()) {
+                transmitCard(card);
+            }
+            transmitText("end of transmission");
         }
-        transmitText("SpellField:");
-        for (int i = 0; i < 3; i++) {
-            transmitCard(player.getSpellFieldCards().get(i));
-        }
-        transmitText("GraveYard:");
-        for (Card card: player.getGraveyardCards()){
-            transmitCard(card);
-        }
-        transmitText("Hand:");
-        for (Card card: player.getHandCards()){
-            transmitCard(card);
-        }
-        transmitText("Deck:");
-        for (Card card: player.getDeckCards()){
-            transmitCard(card);
-        }
-        transmitText("end of transmission");
     }
 
     private void transmitMonsterFieldCard(MonsterCard monsterCard){
@@ -99,13 +107,21 @@ public class CellTower implements Runnable {
         while (!command.equals("Winner is:")){
             switch (command){
                 case "Opponent Data:":
-                    Battle.processReceivedPlayerData(human.getOpponent());
+                    try {
+                        Battle.processReceivedPlayerData(human.getOpponent());
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "My Data:":
-                    Battle.processReceivedPlayerData(human);
+                    try {
+                        Battle.processReceivedPlayerData(human);
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "End Turn":
-                    GameView.showIdleScene();
+                    Battle.humanPlayTurn();
             }
             command = receiveText();
         }

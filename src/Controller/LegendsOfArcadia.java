@@ -3,6 +3,7 @@ package Controller;
 import Model.Player;
 import View.GameView.GameView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import View.MenuView;
@@ -30,10 +31,10 @@ public class LegendsOfArcadia extends Application {
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
         preProcessEventHandling(primaryStage);
-        MenuView.showMainMenu();
+        //MenuView.showMainMenu();
         //Main.editInventory();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
-
+        Main.joinGame("127.0.0.1",656);
         primaryStage.show();
         //Battle.startGameAgainst(lucifer,new Random().nextInt(2),false);
     }
