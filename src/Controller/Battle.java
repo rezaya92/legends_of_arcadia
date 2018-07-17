@@ -12,6 +12,8 @@ import Model.Spell.SpellCastable;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.application.Platform;
+import View.MenuView;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import static Model.Stuff.getStuffByName;
 import java.util.*;
@@ -335,10 +337,23 @@ public class Battle {
                 mysticHourGlass--;
                 ConsoleView.mysticHourGlassUsed();
                 LegendsOfArcadia.getMap().continueMap();
+                System.out.println(mysticHourGlass);
             } else {
                 ConsoleView.gameOver(human);
-                pStage.close();
+                //TODO Thread.sleep()
+                mysticHourGlass = 3;   //todo other restorations ??
+                MenuView.showMainMenu();
             }
+        }
+
+        //TODO go to map
+
+        if (opponent == lucifer) {
+            ConsoleView.wholeWinner();
+            pStage.close();
+        }
+        else {
+            //pStage.close();
         }
     }
 

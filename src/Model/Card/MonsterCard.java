@@ -278,11 +278,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public void transfer(ArrayList<Card> destination){  // how about will ??
         super.transfer(destination);
         if (destination == owner.getMonsterFieldCards()) {  // how about enemy monsterFieldCards ?
-            if (isNimble)
-                isAwake = true;
-            else {
-                isAwake = false;
-            }
+            isAwake = isNimble;
         }
     }
 

@@ -34,7 +34,8 @@ public class LegendsOfArcadia extends Application {
         //MenuView.showMainMenu();
         //Main.editInventory();
         //GameView.ShowGame(primaryStage, new Player("1",1000), new Player("2",1000));
-        Main.joinGame("127.0.0.1",656);
+        //Main.joinGame("127.0.0.1",656);
+        Main.hostGame(656);
         primaryStage.show();
         //Battle.startGameAgainst(lucifer,new Random().nextInt(2),false);
     }
