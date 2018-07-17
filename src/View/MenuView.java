@@ -52,6 +52,8 @@ public class MenuView {
     private static Button editAmuletButton = new Button("Edit Amulet");
 
     public static void showMainMenu(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group mainMenuGroup = new Group();
         Scene scene = new Scene(mainMenuGroup);
         primaryStage.setScene(scene);
@@ -65,6 +67,8 @@ public class MenuView {
     }
 
     public static void showShop(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group shopGroup = new Group();
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
@@ -258,12 +262,14 @@ public class MenuView {
 //            button.setPrefWidth(buttonPrefWidth);
 //        }
 //    }
-
+//
 
 
 
 
     public static void showInventoryMenu(){
+        primaryStage.setWidth(1500);
+        primaryStage.setHeight(800);
         Group shopGroup = new Group();
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
