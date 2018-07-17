@@ -409,24 +409,28 @@ public class Main {
         return output;
     }
 
-    public static void hostGame(int portNumber,String opponentName) throws IOException {
+    public static void hostGame(int portNumber) throws IOException {
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Socket socket = serverSocket.accept();
-        int coin = new Random().nextInt();
+        int coin = new Random().nextInt(2);
         cellTower = new CellTower(socket);
         cellTower.transmitInitials(coin);
         Player opponent = new Player(cellTower.receiveText(),10000);
-        opponent.setEquippedAmulet((Amulet)getStuffByName(cellTower.receiveText()));
+        String amuletName = cellTower.receiveText().split(":")[1];
+        if (!amuletName.equals("NULL"))
+            opponent.setEquippedAmulet((Amulet)getStuffByName(amuletName));
         Battle.startGameAgainst(opponent,coin,true);
     }
 
-    private static void joinGame(String ip, int portNumber) throws IOException {
+    public static void joinGame(String ip, int portNumber) throws IOException {
         Socket socket = new Socket(ip,portNumber);
         cellTower = new CellTower(socket);
+        Player opponent = new Player(cellTower.receiveText().split(":")[1],1000);
+        String amuletName = cellTower.receiveText().split(":")[1];
         cellTower.transmitInitials();
-        Player oppponent = new Player(cellTower.receiveText(),1000);
-        oppponent.setEquippedAmulet((Amulet)getStuffByName(cellTower.receiveText()));
+        if (!amuletName.equals("NULL"))
+            opponent.setEquippedAmulet((Amulet)getStuffByName(amuletName));
         cellTower.transmitPlayerData(human);
-        Battle.startGameAgainst(oppponent,1 - Integer.parseInt(cellTower.receiveText()),true);
+        Battle.startGameAgainst(opponent,1 - Integer.parseInt(cellTower.receiveText().split(":")[1]),true);
     }
 }

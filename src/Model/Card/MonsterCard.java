@@ -169,7 +169,6 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
                 if (isNimble)
                     getAwake();
                 else {
-                    owner.addSleepingPlayedCard(this);
                     isAwake = false;                // because card may be played more than once
                 }
                 if (battleCry != null) {
@@ -279,12 +278,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public void transfer(ArrayList<Card> destination){  // how about will ??
         super.transfer(destination);
         if (destination == owner.getMonsterFieldCards()) {  // how about enemy monsterFieldCards ?
-            if (isNimble)
-                isAwake = true;
-            else {
-                owner.addSleepingPlayedCard(this);
-                isAwake = false;
-            }
+            isAwake = isNimble;
         }
     }
 
