@@ -139,7 +139,7 @@ public abstract class Spell implements Cloneable{
             GameView.updateFields();
         }
         //    effectedCard.addAll(effectableCard);
-    //    effectableCard.clear();
+        //    effectableCard.clear();
     }
 
     /*void use(SpellCastable choice){

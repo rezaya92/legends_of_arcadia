@@ -31,9 +31,9 @@ public class LegendsOfArcadia extends Application {
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
         preProcessEventHandling(primaryStage);
-        MenuView.showMainMenu();
+        //MenuView.showMainMenu();
         //Main.editInventory();
-        //Main.joinGame("127.0.0.1",656);
+        Main.joinGame("127.0.0.1",656);
         //Main.hostGame(656);
         primaryStage.show();
     }
