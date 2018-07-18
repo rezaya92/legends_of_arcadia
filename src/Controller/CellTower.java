@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -18,13 +19,21 @@ import java.util.Scanner;
 import static Controller.Main.human;
 
 public class CellTower implements Runnable {
+    private Socket socket;
+    private ServerSocket serverSocket;
     private Scanner scanner;
     private PrintWriter printWriter;
     private final Object lock = new Object();
 
     CellTower(Socket socket) throws IOException {
+        this.socket = socket;
         scanner = new Scanner(socket.getInputStream());
         printWriter = new PrintWriter(socket.getOutputStream(),true);
+    }
+
+    CellTower(Socket socket, ServerSocket serverSocket) throws IOException {
+        this(socket);
+        this.serverSocket = serverSocket;
     }
 
     void transmitText(String text){
@@ -107,6 +116,11 @@ public class CellTower implements Runnable {
         transmitText(text);
     }
 
+    public void transmitWinner(Player winner){
+        transmitText("Winner is:");
+        transmitText(winner.getName());
+    }
+
     @Override
     public void run() {
         String command = receiveText();
@@ -133,6 +147,13 @@ public class CellTower implements Runnable {
                     ConsoleView.viewText(receiveText());
             }
             command = receiveText();
+        }
+        try {
+            socket.close();
+            if (serverSocket != null)
+                serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

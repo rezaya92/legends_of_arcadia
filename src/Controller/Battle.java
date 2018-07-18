@@ -264,30 +264,31 @@ public class Battle {
     }
 
     private static void gameEnded(Player winner) {
-        System.out.println(mysticHourGlass);
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);
-        if (winner == human) {
-            human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
-            human.setDeckCards(humanDeckCardBeforeMatch);
-            LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
-        } else {
-            if (mysticHourGlass > 0) {
-                human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
-                human.setDeckCards(humanDeckCardBeforeCustomization);
-                human.setItems(humanItemsBeforeCustomization);
-                human.getOpponent().setDefaultDeckCards(opponentDefaultDeckCardBeforeCustomization);
-                human.getOpponent().setDeckCards(opponentDeckCardBeforeCustomization);
-                human.getOpponent().setItems(opponentItemsBeforeCustomization);
-                mysticHourGlass--;
-                ConsoleView.mysticHourGlassUsed();
-                LegendsOfArcadia.getMap().continueMap();
+        human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
+        human.setDeckCards(humanDeckCardBeforeCustomization);
+        human.getOpponent().setDefaultDeckCards(opponentDefaultDeckCardBeforeCustomization);
+        human.getOpponent().setDeckCards(opponentDeckCardBeforeCustomization);
+        human.getOpponent().setItems(opponentItemsBeforeCustomization);
+        if (!isMultiplayer){
+            if (winner == human) {
+                LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
             } else {
-                ConsoleView.gameOver(human);
-                //TODO Thread.sleep()
-                mysticHourGlass = 3;   //todo other restorations ??
-                MenuView.showMainMenu();
+                if (mysticHourGlass > 0) {
+                    human.setItems(humanItemsBeforeCustomization);
+                    mysticHourGlass--;
+                    LegendsOfArcadia.getMap().continueMap();
+                } else {
+                    mysticHourGlass = 3;   //todo other restorations ??
+                    MenuView.showMainMenu();
+                }
             }
+        }
+        else {
+            human.setItems(humanItemsBeforeCustomization);
+            MenuView.showMainMenu();
+            cellTower.transmitWinner(winner);
         }
     }
 
