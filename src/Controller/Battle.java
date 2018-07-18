@@ -85,7 +85,7 @@ public class Battle {
                 opponent.getDeckCards().get(0).transfer(opponent.getHandCards());
         }
         if (isMultiplayer) {
-            new Thread(cellTower).start();
+            cellTower.start();
             cellTower.transmitPlayerData(human);
         }
 
@@ -289,6 +289,8 @@ public class Battle {
             human.setItems(humanItemsBeforeCustomization);
             MenuView.showMainMenu();
             cellTower.transmitWinner(winner);
+            cellTower.closeSockets();
+            cellTower.stop();
         }
     }
 

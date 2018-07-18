@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 import static Controller.Main.human;
 
-public class CellTower implements Runnable {
+public class CellTower extends Thread {
     private Socket socket;
     private ServerSocket serverSocket;
     private Scanner scanner;
@@ -148,6 +148,10 @@ public class CellTower implements Runnable {
             }
             command = receiveText();
         }
+        closeSockets();
+    }
+
+    public void closeSockets() {
         try {
             socket.close();
             if (serverSocket != null)
