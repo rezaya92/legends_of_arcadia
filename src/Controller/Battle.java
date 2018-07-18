@@ -26,7 +26,6 @@ import static Controller.Main.*;
  */
 public class Battle {
     private static int turnNumber;
-    private static Scanner scanner = new Scanner(System.in);
     public static MonsterCard targetNeedingAttacker;
     public static SpellCastable target;
     public static Spell targetNeedingSpell;
@@ -150,57 +149,6 @@ public class Battle {
     }
 
 
-    private static boolean monsterCardUseMenu(MonsterCard monsterCard) {  // returns false if opponent hero dies
-        ConsoleView.usingMonsterCardInfo(monsterCard);
-        String action = scanner.next();
-        while (!action.equalsIgnoreCase("Exit")) {
-            switch (action) {
-                case "Again":
-                case "again":
-                    ConsoleView.usingMonsterCardInfo(monsterCard);
-                    break;
-                case "Help":
-                case "help":
-                    ConsoleView.usingMonsterCardHelp(monsterCard.hasGotSpell());
-                    break;
-                case "Info":
-                case "info":
-                    ConsoleView.printStuffInfo(monsterCard);
-                    break;
-                case "Attack":
-                case "attack":
-                    String beingAttackedSlot = scanner.next();
-                    if (beingAttackedSlot.equals("Player")) {
-                        if (!monsterCard.attackOpponentHero())
-                            return false;
-                    } else {
-                        try {
-                            monsterCard.attack(Integer.parseInt(beingAttackedSlot) - 1);  //must be < 5
-                        } catch (NumberFormatException e) {
-                            ConsoleView.invalidCommand();
-                        } catch (IndexOutOfBoundsException e) {
-                            ConsoleView.noSlotSelected();
-                        }
-                    }
-                    return true;
-                case "Cast":
-                case "cast":
-                    String s = scanner.next();
-                    if (!monsterCard.hasGotSpell() || !s.equals("Spell"))
-                        ConsoleView.invalidCommand();
-                    else {
-                        if (!spellCastingMenu(monsterCard))
-                            return false;
-                    }
-                    return true;
-                default:
-                    ConsoleView.invalidCommand();
-            }
-            action = scanner.next();
-        }
-        return true;
-    }
-
 
     private static boolean spellCastingMenu(MonsterCard monsterCard) {   // returns false if opponent hero dies
         monsterCard.castSpell();
@@ -225,7 +173,7 @@ public class Battle {
                 botPlayTurn(human.getOpponent());
         });
         human.getPlayerHero().hpProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() <= 0) {
+            if (newValue.intValue() <= 0 && oldValue.intValue() > 0) {
                 gameEnded(human.getOpponent());
             }
         });
@@ -316,21 +264,15 @@ public class Battle {
     }
 
     private static void gameEnded(Player winner) {
-        //ToDo change to map.enter
-        //pStage.close();
+        System.out.println(mysticHourGlass);
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);
         if (winner == human) {
-            //ArrayList<Item> humanItemsAfterMatch = human.getItems();
-            //human = humanBeforeMatch;
             human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
             human.setDeckCards(humanDeckCardBeforeMatch);
-            //human.setItems(humanItemsAfterMatch);
             LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
         } else {
             if (mysticHourGlass > 0) {
-                //System.out.println(humanBeforeCustomize.getDeckCards().size());
-                //human = humanBeforeCustomize;
                 human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
                 human.setDeckCards(humanDeckCardBeforeCustomization);
                 human.setItems(humanItemsBeforeCustomization);
@@ -340,7 +282,6 @@ public class Battle {
                 mysticHourGlass--;
                 ConsoleView.mysticHourGlassUsed();
                 LegendsOfArcadia.getMap().continueMap();
-                System.out.println(mysticHourGlass);
             } else {
                 ConsoleView.gameOver(human);
                 //TODO Thread.sleep()
@@ -348,56 +289,6 @@ public class Battle {
                 MenuView.showMainMenu();
             }
         }
-
-        //TODO go to map
-
-        if (opponent == lucifer) {
-            ConsoleView.wholeWinner();
-            pStage.close();
-        }
-        else {
-            //pStage.close();
-        }
-    }
-
-
-    private static boolean itemUseMenu() {
-        ConsoleView.availableItems(human);
-        String action = scanner.next();
-        while (!action.equalsIgnoreCase("Exit")) {
-            switch (action) {
-                case "Again":
-                case "again":
-                    ConsoleView.availableItems(human);
-                    break;
-                case "Help":
-                case "help":
-                    ConsoleView.itemHelp();
-                    break;
-                case "Use":
-                case "use":
-                    String itemName = scanner.nextLine().substring(1);
-                    for (Item item : human.getItems()) {          // invalid input ?
-                        if (item.getName().equals(itemName)) {
-                            item.use(human);
-                            ConsoleView.spellCasted(itemName, item.getEffect());
-                            human.getItems().remove(item);
-                            return human.getOpponent().getPlayerHero().checkAlive();
-                        }
-                    }
-                    ConsoleView.itemDontExist();
-                    break;
-                case "Info":
-                    itemName = scanner.nextLine();
-                    if (!Main.printInfoStuff(itemName))
-                        ConsoleView.itemDontExist();
-                    break;
-                default:
-                    ConsoleView.invalidCommand();
-            }
-            action = scanner.next();
-        }
-        return true;
     }
 
     private static void processStage() {

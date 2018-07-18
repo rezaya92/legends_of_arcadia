@@ -43,7 +43,7 @@ public class PlayerHero implements HasHP, Cloneable {
     //}
 
     public void restore(){
-        hp.set(defaultHP);
+        hp = new SimpleIntegerProperty(defaultHP);
     }
 
     public Player getOwner(){return owner;}
