@@ -408,6 +408,7 @@ public class Main {
     }
 
     static void hostGame(int portNumber) throws IOException {
+        human.setIsPlaying(true);
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Socket socket = serverSocket.accept();
         int coin = new Random().nextInt(2);
@@ -421,6 +422,7 @@ public class Main {
     }
 
     static void joinGame(String ip, int portNumber) throws IOException {
+        human.setIsPlaying(true);
         Socket socket = new Socket(ip,portNumber);
         cellTower = new CellTower(socket);
         Player opponent = new Player(cellTower.receiveText().split(":")[1],1000);

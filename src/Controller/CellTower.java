@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Formatter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static Controller.Main.human;
@@ -43,9 +44,13 @@ public class CellTower extends Thread {
     }
 
     String receiveText(){
-        String receivedText = scanner.nextLine();
-        System.out.println(receivedText);
-        return receivedText;
+        if (human.getIsPlaying()) {
+            String receivedText = scanner.nextLine();
+            System.out.println(receivedText);
+            return receivedText;
+        }
+        else
+            return null;
     }
 
     void transmitInitials(int coin){
@@ -100,21 +105,25 @@ public class CellTower extends Thread {
     }
 
     private void transmitMonsterFieldCard(MonsterCard monsterCard){
-        if (monsterCard == null)
-            transmitText("monster card name:NULL");
-        else {
-            transmitText("monster card name:" + monsterCard.getName());
-            transmitText("monster card hp:" + monsterCard.getHp());
-            transmitText("monster card ap:" + monsterCard.getAp());
-            transmitText("monster card hasUsedSpell:" + monsterCard.hasUsedSpell());
+        synchronized (lock) {
+            if (monsterCard == null)
+                transmitText("monster card name:NULL");
+            else {
+                transmitText("monster card name:" + monsterCard.getName());
+                transmitText("monster card hp:" + monsterCard.getHp());
+                transmitText("monster card ap:" + monsterCard.getAp());
+                transmitText("monster card hasUsedSpell:" + monsterCard.hasUsedSpell());
+            }
         }
     }
 
     private void transmitCard(Card card){
-        if (card == null)
-            transmitText("card name:NULL");
-        else {
-            transmitText("card name:" + card.getName());
+        synchronized (lock) {
+            if (card == null)
+                transmitText("card name:NULL");
+            else {
+                transmitText("card name:" + card.getName());
+            }
         }
     }
 
@@ -127,16 +136,16 @@ public class CellTower extends Thread {
 
     void transmitWinner(Player winner){
         synchronized (lock) {
-            transmitPlayerData(winner);
-            transmitText("Winner is:");
-            transmitText(winner.getName());
+            transmitPlayerData(new Player("lost",-1000));
+            //transmitText("Winner is:");
+            //transmitText(winner.getName());
         }
     }
 
     @Override
     public void run() {
         String command = receiveText();
-        while (!command.equals("Winner is:")){
+        while (human.getIsPlaying()){
             switch (command){
                 case "Opponent Data:":
                     try {
@@ -158,18 +167,22 @@ public class CellTower extends Thread {
                 case "Console Text:":
                     ConsoleView.viewText(receiveText());
             }
-            command = receiveText();
+            try{
+                command = receiveText();
+            }catch (NoSuchElementException ignored){}
         }
-        closeSockets();
+        System.out.println("Battle ended");
     }
 
     void closeSockets() {
-        try {
-            socket.close();
-            if (serverSocket != null)
-                serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        synchronized (lock) {
+            try {
+                socket.close();
+                if (serverSocket != null)
+                    serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

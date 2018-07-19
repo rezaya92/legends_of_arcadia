@@ -42,7 +42,7 @@ public class LegendsOfArcadia extends Application {
         primaryStage.setTitle("Legends of Arcadia");
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
-        //preProcessEventHandling(primaryStage);
+        preProcessEventHandling(primaryStage);
         //MenuView.showMainMenu();
         //Main.editInventory();
         //Main.joinGame("127.0.0.1",656);
