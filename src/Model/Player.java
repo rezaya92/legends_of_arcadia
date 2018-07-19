@@ -5,9 +5,10 @@ import Model.Spell.NoEffectableCardException;
 import View.GameView.ConsoleView;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player implements Cloneable{
+public class Player implements Cloneable, Serializable{
     //private final int deckCapacity = 30; TODO check if using final doesn't corrupt cloning
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -21,12 +22,11 @@ public class Player implements Cloneable{
     private Amulet equippedAmulet;
     private Shop shop = new Shop();
     private int gil = 10000;
-    private SimpleIntegerProperty mana = new SimpleIntegerProperty(0);
-    private SimpleIntegerProperty maxMana = new SimpleIntegerProperty(0);
+    private transient SimpleIntegerProperty mana = new SimpleIntegerProperty(0);
+    private transient SimpleIntegerProperty maxMana = new SimpleIntegerProperty(0);//TODO add method for serializing
     private String name;
     private PlayerHero playerHero;
     private Player opponent;
-    private ArrayList<MonsterCard> sleepingPlayedCards = new ArrayList<>();
     private ArrayList<MonsterCard> hasAttackedCards = new ArrayList<>();
     private boolean isPlaying = false;
 
@@ -236,15 +236,12 @@ public class Player implements Cloneable{
     }
 
     //---------------------------------------------------------------------------------------------------------------
-    public void addSleepingPlayedCard(MonsterCard sleepingPlayedCard){
-        sleepingPlayedCards.add(sleepingPlayedCard);
-    }
 
     public void awakeSleepingPlayedCards(){   // must be called when turn ends   "also consider being empty when next game starts"
-        for (MonsterCard sleepingPlayedCard: sleepingPlayedCards){
-            sleepingPlayedCard.getAwake();
+        for (Card card: monsterFieldCards){
+            if (card != null)
+                ((MonsterCard)card).getAwake();
         }
-        sleepingPlayedCards.clear();
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -273,7 +270,7 @@ public class Player implements Cloneable{
             case ITEM:
                 shopStuff = shop.getItems();
                 break;
-                default:
+            default:
                 shopStuff = shop.getAmulets();
         }
 
@@ -456,7 +453,7 @@ public class Player implements Cloneable{
         return false;
     }
 
-//--------------------------------------------------------Aura Cards deuse and use---------------------------------------------------
+    //--------------------------------------------------------Aura Cards deuse and use---------------------------------------------------
     public void deuseAuraCards(){
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.AURA)
@@ -485,13 +482,13 @@ public class Player implements Cloneable{
             }
     }
 
-//------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
+    //------------------------------------------------------------Start Turn, End Turn --------------------------------------------------
     public void startTurn(){
         isHisTurn = true;
         for (Card spellCard: spellFieldCards){
             if (spellCard != null && ((SpellCard) spellCard).getSpellCardType() == SpellCardType.CONTINUOUS)
                 try {
-                ((SpellCard) spellCard).getSpell().use(this);
+                    ((SpellCard) spellCard).getSpell().use(this);
                 }
                 catch (NoEffectableCardException e){
                     //ConsoleView.noEffectableCard();
@@ -502,6 +499,7 @@ public class Player implements Cloneable{
         if (!deckCards.isEmpty()){    // else needed ??
             deckCards.get(0).transfer(handCards);
         }
+        awakeSleepingPlayedCards();
     }
 
     public void endTurn(){

@@ -1,11 +1,12 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by msi-pc on 5/10/2018.
  */
-public class PlayAreaArrayList<E> extends ArrayList<E> implements Cloneable {
+public class PlayAreaArrayList<E> extends ArrayList<E> implements Cloneable, Serializable {
 
     public PlayAreaArrayList(){
         super();

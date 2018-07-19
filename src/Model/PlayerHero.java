@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -15,11 +16,10 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero implements HasHP, Cloneable {
+public class PlayerHero implements HasHP, Cloneable, Serializable {
     private int defaultHP;
-    private SimpleIntegerProperty hp = new SimpleIntegerProperty();
+    private transient SimpleIntegerProperty hp = new SimpleIntegerProperty();//TODO serialize
     private double damageReceivementRatio = 1;
-    private String name = "Player";
     private Player owner;
 
     public PlayerHero(int defaultHP, Player owner){
@@ -28,10 +28,14 @@ public class PlayerHero implements HasHP, Cloneable {
         this.owner = owner;
     }
 
-    private ObservableList<Card> a = FXCollections.observableArrayList(new ArrayList<>());
     public int getHp(){
         return hp.get();
     }
+
+    public void setHp(int hp) {
+        this.hp.set(hp);
+    }
+
     public SimpleIntegerProperty hpProperty() {
         return hp;
     }
@@ -40,7 +44,7 @@ public class PlayerHero implements HasHP, Cloneable {
     //}
 
     public void restore(){
-        hp.set(defaultHP);
+        hp = new SimpleIntegerProperty(defaultHP);
     }
 
     public Player getOwner(){return owner;}

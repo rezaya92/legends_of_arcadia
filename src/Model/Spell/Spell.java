@@ -6,11 +6,12 @@ import Model.Player;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static Controller.Main.human;
 
-public abstract class Spell implements Cloneable{
+public abstract class Spell implements Cloneable, Serializable{
     ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;
@@ -134,10 +135,12 @@ public abstract class Spell implements Cloneable{
     void use(Player owner) throws NoEffectableCardException{
         setEffectableCards(owner);
         choose(owner);
-        if (choiceType != SpellChoiceType.SELECT || owner != human)
+        if (choiceType != SpellChoiceType.SELECT || owner != human) {
             apply(owner);
+            GameView.updateFields();
+        }
         //    effectedCard.addAll(effectableCard);
-    //    effectableCard.clear();
+        //    effectableCard.clear();
     }
 
     /*void use(SpellCastable choice){
@@ -154,6 +157,7 @@ public abstract class Spell implements Cloneable{
         this.effectableCard.clear();
         this.effectableCard.add(effectableCard);
         apply(owner);
+        GameView.updateFields();
     }
 
     protected abstract void deuse(Player owner);

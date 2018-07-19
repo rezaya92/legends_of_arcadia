@@ -4,9 +4,10 @@ import Model.Card.Tribe;
 import Model.HasHP;
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class RatioSpell extends Spell implements Cloneable{
+public class RatioSpell extends Spell implements Cloneable, Serializable{
     private double coefficentofVariation;
 
     public RatioSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType,double coefficentofVariation) {

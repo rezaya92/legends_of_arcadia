@@ -409,6 +409,7 @@ public class GameView {
             opponentDeckCardCount.setText(String.valueOf(opponent.getDeckCards().size()));
             if (human.isHisTurn() && isMultiplayer){
                 cellTower.transmitPlayerData(player);
+                cellTower.transmitPlayerData(opponent);
             }
         }
     }

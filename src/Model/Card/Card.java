@@ -6,6 +6,7 @@ import Model.Stuff;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static Controller.Main.human;
@@ -13,7 +14,7 @@ import static Controller.Main.human;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public abstract class Card implements SpellCastable, Stuff, Cloneable {
+public abstract class Card implements SpellCastable, Stuff, Cloneable, Serializable {
 
     int defaultManaCost;
     int manaCost;
