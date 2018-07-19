@@ -287,10 +287,11 @@ public class Battle {
         }
         else {
             human.setItems(humanItemsBeforeCustomization);
-            MenuView.showMainMenu();
-            cellTower.transmitWinner(winner);
+            if (winner == human)
+                cellTower.transmitWinner(winner);
             cellTower.closeSockets();
             cellTower.stop();
+            Platform.runLater(MenuView::showMainMenu);
         }
     }
 
