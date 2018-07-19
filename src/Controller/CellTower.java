@@ -127,6 +127,7 @@ public class CellTower extends Thread {
 
     void transmitWinner(Player winner){
         synchronized (lock) {
+            transmitPlayerData(winner);
             transmitText("Winner is:");
             transmitText(winner.getName());
         }
@@ -159,7 +160,6 @@ public class CellTower extends Thread {
             }
             command = receiveText();
         }
-        Battle.gameEnded(human.getOpponent());
         closeSockets();
     }
 
