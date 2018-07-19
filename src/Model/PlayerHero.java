@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 /**
  * Created by msi-pc on 5/7/2018.
  */
-public class PlayerHero implements HasHP, Cloneable {
+public class PlayerHero implements HasHP, Cloneable, Serializable {
     private int defaultHP;
-    private SimpleIntegerProperty hp = new SimpleIntegerProperty();
+    private transient SimpleIntegerProperty hp = new SimpleIntegerProperty();//TODO serialize
     private double damageReceivementRatio = 1;
     private Player owner;
 

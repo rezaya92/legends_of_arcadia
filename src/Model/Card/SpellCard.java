@@ -1,14 +1,17 @@
 package Model.Card;
 
+import Controller.Main;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 
+import java.io.Serializable;
+
 /**
  * Created by msi-pc on 5/5/2018.
  */
-public class SpellCard extends Card implements Cloneable{
+public class SpellCard extends Card implements Cloneable, Serializable{
     GeneralizedSpell spell;
     SpellCardType spellCardType;
 
@@ -26,7 +29,7 @@ public class SpellCard extends Card implements Cloneable{
         this.spellCardType = spellCardType;
         this.name = spell.getName();
         this.price = 700*defaultManaCost;
-        allStuff.add(this);
+        Main.allStuff.add(this);
     }
 
     @Override

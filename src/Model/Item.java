@@ -1,10 +1,13 @@
 package Model;
 
+import Controller.Main;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
 import View.GameView.ConsoleView;
 
-public class Item implements Stuff, Cloneable{
+import java.io.Serializable;
+
+public class Item implements Stuff, Cloneable, Serializable{
     private GeneralizedSpell effect;
     private String name;
     private int price;
@@ -14,7 +17,7 @@ public class Item implements Stuff, Cloneable{
         this.effect = effect;
         this.price = price;
         this.name = effect.getName();
-        Stuff.allStuff.add(this);
+        Main.allStuff.add(this);
     }
 
     public GeneralizedSpell getEffect() {

@@ -1,14 +1,15 @@
 package Model.Card;
 
+import Controller.Main;
 import Model.HasHP;
 import Model.Player;
 import Model.Spell.GeneralizedSpell;
 import Model.Spell.NoEffectableCardException;
-import Model.Stuff;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static Controller.Main.human;
@@ -16,7 +17,7 @@ import static Controller.Main.human;
 /**
  * Created by msi-pc on 4/27/2018.
  */
-public class MonsterCard extends Card implements HasHP, Cloneable {
+public class MonsterCard extends Card implements HasHP, Cloneable, Serializable {
 
     final boolean isNimble;
     final boolean isDefender;
@@ -24,8 +25,8 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     boolean isAwake = false;
     final int defaultHP;
     final int defaultAP;
-    SimpleIntegerProperty ap = new SimpleIntegerProperty();
-    SimpleIntegerProperty hp = new SimpleIntegerProperty();
+    transient SimpleIntegerProperty ap = new SimpleIntegerProperty();
+    transient SimpleIntegerProperty hp = new SimpleIntegerProperty();//TODO serialize
     Tribe tribe;
     boolean hasGotSpell = false;
     boolean hasUsedSpell = false;
@@ -67,7 +68,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
             hasGotSpell = true;
         this.isNimble = isNimble;
         this.isDefender = isDefender;
-        Stuff.allStuff.add(this);
+        Main.allStuff.add(this);
     }
 
     public void attack(int slotNumber){

@@ -4,9 +4,10 @@ import Model.Card.MonsterCard;
 import Model.Card.Tribe;
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class APSpell extends Spell implements Cloneable{
+public class APSpell extends Spell implements Cloneable, Serializable{
     private int changeAmount;
 
     public APSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {

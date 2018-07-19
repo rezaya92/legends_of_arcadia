@@ -4,9 +4,10 @@ import Model.Card.Tribe;
 import Model.HasHP;
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class HPSpell extends Spell implements Cloneable{
+public class HPSpell extends Spell implements Cloneable, Serializable{
     private int changeAmount;
 
     public HPSpell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType, int changeAmount) {

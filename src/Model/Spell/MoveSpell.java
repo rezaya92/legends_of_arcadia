@@ -3,10 +3,11 @@ package Model.Spell;
 import Model.Card.*;
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MoveSpell extends Spell implements Cloneable{
+public class MoveSpell extends Spell implements Cloneable, Serializable{
     private SpellArea destination;
     private ArrayList<Card> destinationCardList;
 

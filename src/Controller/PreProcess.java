@@ -11,7 +11,7 @@ import Model.Spell.SpellArea;
 
 import static Controller.Main.*;
 import static Model.Spell.GeneralizedSpell.*;
-import static Model.Stuff.allStuff;
+import static Controller.Main.allStuff;
 import static Model.Stuff.getStuffByName;
 import static Model.TypeOfStuffToBuyAndSell.getTypeOfStuffByName;
 

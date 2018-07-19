@@ -6,11 +6,12 @@ import Model.Player;
 import View.GameView.ConsoleView;
 import View.GameView.GameView;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static Controller.Main.human;
 
-public abstract class Spell implements Cloneable{
+public abstract class Spell implements Cloneable, Serializable{
     ArrayList<ArrayList<SpellCastable>> effectableAreaCards = new ArrayList<>();
     private Set<SpellArea> effectableArea;
     private Class[] effectableCardType;

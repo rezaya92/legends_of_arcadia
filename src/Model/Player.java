@@ -5,9 +5,10 @@ import Model.Spell.NoEffectableCardException;
 import View.GameView.ConsoleView;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player implements Cloneable{
+public class Player implements Cloneable, Serializable{
     //private final int deckCapacity = 30; TODO check if using final doesn't corrupt cloning
     private ArrayList<Card> inventoryCards = new ArrayList<>();
     private ArrayList<Card> defaultDeckCards = new ArrayList<>(30);
@@ -21,8 +22,8 @@ public class Player implements Cloneable{
     private Amulet equippedAmulet;
     private Shop shop = new Shop();
     private int gil = 10000;
-    private SimpleIntegerProperty mana = new SimpleIntegerProperty(0);
-    private SimpleIntegerProperty maxMana = new SimpleIntegerProperty(0);
+    private transient SimpleIntegerProperty mana = new SimpleIntegerProperty(0);
+    private transient SimpleIntegerProperty maxMana = new SimpleIntegerProperty(0);//TODO add method for serializing
     private String name;
     private PlayerHero playerHero;
     private Player opponent;

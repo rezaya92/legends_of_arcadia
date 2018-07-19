@@ -3,9 +3,10 @@ package Model;
 import Model.Card.Card;
 import Model.Spell.GeneralizedSpell;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Shop implements Cloneable{//TODO (not vital): add a sentence to tell that the price in selling divides by 2
+public class Shop implements Cloneable, Serializable{//TODO (not vital): add a sentence to tell that the price in selling divides by 2
     private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<Amulet> amulets = new ArrayList<>();
