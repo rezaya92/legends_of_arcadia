@@ -413,7 +413,7 @@ public class Main {
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Socket socket = serverSocket.accept();
         int coin = new Random().nextInt(2);
-        cellTower = new CellTower(socket);
+        cellTower = new CellTower(socket,serverSocket);
         cellTower.transmitInitials(coin);
         Player opponent = new Player(cellTower.receiveText().split(":")[1],10000);
         String amuletName = cellTower.receiveText().split(":")[1];

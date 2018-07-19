@@ -263,7 +263,7 @@ public class Battle {
         });
     }
 
-    private static void gameEnded(Player winner) {
+    static void gameEnded(Player winner) {
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);
         human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
@@ -312,6 +312,7 @@ public class Battle {
                 player.getMonsterFieldCards().set(i, (Card) getStuffByName(monsterCardName).clone());
                 ((MonsterCard) player.getMonsterFieldCards().get(i)).setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
                 ((MonsterCard) player.getMonsterFieldCards().get(i)).setAp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+                ((MonsterCard) player.getMonsterFieldCards().get(i)).setHasUsedSpell(Boolean.parseBoolean(cellTower.receiveText().split(":")[1]));
                 player.getMonsterFieldCards().get(i).setCardPlace(player.getMonsterFieldCards());
                 player.getMonsterFieldCards().get(i).setOwner(player);
             } else

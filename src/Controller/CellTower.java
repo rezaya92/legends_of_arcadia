@@ -37,7 +37,9 @@ public class CellTower extends Thread {
     }
 
     void transmitText(String text){
-        printWriter.println(text);
+        synchronized (lock) {
+            printWriter.println(text);
+        }
     }
 
     String receiveText(){
@@ -47,16 +49,20 @@ public class CellTower extends Thread {
     }
 
     void transmitInitials(int coin){
-        transmitInitials();
-        transmitText("coin:" + String.valueOf(coin));
+        synchronized (lock) {
+            transmitInitials();
+            transmitText("coin:" + String.valueOf(coin));
+        }
     }
 
     void transmitInitials(){
-        transmitText("name:" + human.getName());
-        if (human.getEquippedAmulet() == null)
-            transmitText("equipped amulet:NULL");
-        else
-            transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
+        synchronized (lock) {
+            transmitText("name:" + human.getName());
+            if (human.getEquippedAmulet() == null)
+                transmitText("equipped amulet:NULL");
+            else
+                transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
+        }
     }
 
 
@@ -100,6 +106,7 @@ public class CellTower extends Thread {
             transmitText("monster card name:" + monsterCard.getName());
             transmitText("monster card hp:" + monsterCard.getHp());
             transmitText("monster card ap:" + monsterCard.getAp());
+            transmitText("monster card hasUsedSpell:" + monsterCard.hasUsedSpell());
         }
     }
 
@@ -112,13 +119,17 @@ public class CellTower extends Thread {
     }
 
     public void transmitConsoleView(String text){
-        transmitText("Console Text:");
-        transmitText(text);
+        synchronized (lock) {
+            transmitText("Console Text:");
+            transmitText(text);
+        }
     }
 
-    public void transmitWinner(Player winner){
-        transmitText("Winner is:");
-        transmitText(winner.getName());
+    void transmitWinner(Player winner){
+        synchronized (lock) {
+            transmitText("Winner is:");
+            transmitText(winner.getName());
+        }
     }
 
     @Override
@@ -148,10 +159,11 @@ public class CellTower extends Thread {
             }
             command = receiveText();
         }
+        Battle.gameEnded(human.getOpponent());
         closeSockets();
     }
 
-    public void closeSockets() {
+    void closeSockets() {
         try {
             socket.close();
             if (serverSocket != null)

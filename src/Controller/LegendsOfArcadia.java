@@ -12,7 +12,7 @@ import java.util.Random;
 
 import static Controller.Main.human;
 import static Controller.Main.lucifer;
-
+//todo spell cast bugfix
 public class LegendsOfArcadia extends Application {
     static Stage pStage;
     private static Map map;

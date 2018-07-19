@@ -45,6 +45,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable {
     public boolean hasGotSpell(){return hasGotSpell;}
     public boolean hasUsedSpell(){return hasUsedSpell;}
 
+    public void setHasUsedSpell(boolean hasUsedSpell) {
+        this.hasUsedSpell = hasUsedSpell;
+    }
+
     public boolean hasAttacked(){return hasAttacked;}
     public void setHasAttacked(boolean hasAttacked){this.hasAttacked = hasAttacked;}
 
