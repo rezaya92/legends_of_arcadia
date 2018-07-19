@@ -332,8 +332,7 @@ public class Battle {
                 human.getOpponent().setItems(opponentItemsBeforeCustomization);
                 mysticHourGlass--;
                 ConsoleView.mysticHourGlassUsed();
-                LegendsOfArcadia.getMap().continueMap();
-                System.out.println(mysticHourGlass);
+                LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
             } else {
                 ConsoleView.gameOver(human);
                 //TODO Thread.sleep()
