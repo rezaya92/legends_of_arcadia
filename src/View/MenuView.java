@@ -64,6 +64,10 @@ public class MenuView {
         VBox vBox = makeVBox(singlePlayerButton, customGameButton, multiPlayerButton, settingsButton, exitButton);
 
         mainMenuGroup.getChildren().addAll(vBox);
+
+        customGameButton.setOnMouseClicked(event -> {
+            CustomGameView.showMainEntrance();
+        });
     }
 
     public static void showShop(){

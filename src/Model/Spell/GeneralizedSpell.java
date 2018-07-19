@@ -2,9 +2,10 @@ package Model.Spell;
 
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GeneralizedSpell implements Cloneable{
+public class GeneralizedSpell implements Cloneable, Serializable{
     final private Spell[] spells;
     final private String detail;
     final private String name;

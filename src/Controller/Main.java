@@ -1,36 +1,34 @@
 package Controller;
 
 import Model.*;
-import Model.Card.*;
 import View.*;
 import View.GameView.ConsoleView;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketImpl;
 import java.util.*;
-import static Controller.PreProcess.*;
+
 import static Model.Stuff.getStuffByName;
 
 /**
  * Created by msi-pc on 4/27/2018.
  */
 public class Main {
+    public static ArrayList<Game> customGames = new ArrayList<>();
+    public static ArrayList<Stuff> allStuff = new ArrayList<>();
     public static Player human = new Player("human", 10000);
     static Player goblinChieftain = new Player("Goblin Chieftain", 10000);
     static Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static Player vampireLord = new Player("Vampire Lord", 10000);
     static Player lucifer = new Player("Lucifer", 10000);
-    private static String action;
-    private static Method lastViewMethod;
-    private static Scanner scanner = new Scanner(System.in);
+//    private static String action;
+//    private static Method lastViewMethod;
+//    private static Scanner scanner = new Scanner(System.in);
     static int mysticHourGlass = 3;  //change place?
     public static ArrayList<Player> opponents = new ArrayList<>(Arrays.asList(goblinChieftain,ogreWarlord,vampireLord,lucifer));
-    private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();//TODO correct?
+//    private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();//TODO correct?
     public static CellTower cellTower;
 
     /*public void useContinuousSpellCards(){
@@ -343,7 +341,7 @@ public class Main {
     }
 
     static boolean printInfoStuff(String stuffName){
-        for(Stuff stuff : Stuff.allStuff){
+        for(Stuff stuff : allStuff){
             if(stuff.getName().equalsIgnoreCase(stuffName)){
                 ConsoleView.printStuffInfo(stuff);
                 return true;

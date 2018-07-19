@@ -1,16 +1,16 @@
 package Model;
 
-import java.util.ArrayList;
+import Controller.Main;
+
 import java.util.List;
 
 public interface Stuff extends ListShowable {
     String getName();
     int getPrice();
     String toString();
-    public static ArrayList<Stuff> allStuff = new ArrayList<>();
 
     static Stuff getStuffByName(String name){
-        for (Stuff stuff: allStuff){
+        for (Stuff stuff: Main.allStuff){
             if (stuff.getName().equals(name)){
                 return stuff;
             }

@@ -1,8 +1,11 @@
 package Model;
 
+import Controller.Main;
 import Model.Spell.GeneralizedSpell;
 
-public class Amulet implements Stuff, Cloneable {
+import java.io.Serializable;
+
+public class Amulet implements Stuff, Cloneable, Serializable {
     private GeneralizedSpell effect;
     private String name;
     private int price;
@@ -12,7 +15,7 @@ public class Amulet implements Stuff, Cloneable {
         this.effect = effect;
         this.price = price;
         this.name = effect.getName();
-        Stuff.allStuff.add(this);
+        Main.allStuff.add(this);
     }
 
     public GeneralizedSpell getEffect() {
