@@ -559,7 +559,7 @@ public class MenuView {
 
 
 
-    private static VBox makeVBox(double x, double y, double prefWidth, double spacing, Node... nodes){
+    public static VBox makeVBox(double x, double y, double prefWidth, double spacing, Node... nodes){
         VBox vBox = new VBox(spacing, nodes);
         vBox.setPrefWidth(prefWidth);//TODO css VBox?
         vBox.setPrefHeight(primaryStage.getHeight()/2);
@@ -570,14 +570,14 @@ public class MenuView {
         return vBox;
     }
 
-    private static VBox makeVBox(Node... nodes){
+    public static VBox makeVBox(Node... nodes){
 //        for(Node button : buttons){
 //            button.setPrefWidth(buttonPrefWidth);
 //        }
         return makeVBox(primaryStage.getWidth()/2 - buttonPrefWidth/2, primaryStage.getHeight()/2 - buttonPrefWidth/2, buttonPrefWidth, primaryStage.getHeight()/28, nodes);
     }
 
-    private static VBox makeVBox(List<? extends Node> nodes){
+    public static VBox makeVBox(List<? extends Node> nodes){
         Node[] nodes1 = new Node[nodes.size()];
         for(int i=0; i<nodes.size(); i++){
             nodes1[i] = nodes.get(i);
