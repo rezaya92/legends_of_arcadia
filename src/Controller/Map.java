@@ -28,7 +28,7 @@ public class Map {
     private int level;
     private int height = 900;
     private int width = 1618;
-    private Text message = new Text(width/2 - 100, height - 150, "move\tWASD\nrun\t\tSHIFT");
+    private Text message = new Text(width/2 - 100, height - 150, "move\tWASD\nrun\t\tSHIFT" + "\ninventory\t  I");
     private boolean shownMessage = false;
     private boolean firstKey = false;
 
@@ -93,6 +93,7 @@ public class Map {
                 case A:     goWest  = true; break;
                 case SHIFT: durationTime /= 2; createMoveTimer(); break;    //fps change(not good)
                 case E:     doAction= true; break;
+                case I:     MenuView.showInventoryMenu();
             }
         });
 
@@ -177,7 +178,6 @@ public class Map {
                 if (doAction) {
                     actionTime += durationTime;
                     if (actionTime >= 1000){
-                        //todo go shop
                         moveTimeline.pause();
                         MenuView.showShop();
                     }
@@ -195,7 +195,6 @@ public class Map {
                 if (doAction) {
                     actionTime += durationTime;
                     if (actionTime >= 1000){
-                        //todo go battle
                         moveTimeline.pause();
                         Battle.startGameAgainst(Main.opponents.get(level - 1),new Random().nextInt(2),false);
                     }
@@ -311,10 +310,7 @@ public class Map {
         actionTime = 0;
         goNorth = goSouth = goEast = goWest = doAction = false;
         durationTime = 30;
-        moveTimeline.play();//
-        //createMoveEvent();
-        //imagesProcess();
-        //levelProcess();
+        moveTimeline.play();
         stageProcess();
     }
 

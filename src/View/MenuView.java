@@ -2,25 +2,19 @@ package View;
 
 import Controller.LegendsOfArcadia;
 import Controller.Main;
+import Controller.Popup;
 import Model.Amulet;
 import Model.Card.Card;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,7 +23,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -79,8 +72,19 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
         Button returnButton = new Button("Return");
 
+        MenuView.getCardShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
+        });
+
+        MenuView.getItemShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
+        });
+
+        MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
+        });
+
         returnButton.setOnMouseClicked(event -> {
-            //TODO
             LegendsOfArcadia.getMap().continueMap();
         });
 
@@ -136,11 +140,7 @@ public class MenuView {
         //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
         returnButton.relocate(1150, 620);
         returnButton.setOnMouseClicked(event -> {
-            try {
-                Main.enterShop();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            Main.enterShop();
         });
 
         //------------sort shopStuff and playerStuff by name-----------------
@@ -281,7 +281,13 @@ public class MenuView {
         Button returnButton = new Button("Return");
 
         returnButton.setOnMouseClicked(event -> {
-            //TODO
+            if (human.getDeckCards().size() < 25) {
+                Popup popup = new Popup("Deck must contain at least 25 cards!");
+                popup.show();
+            }
+            else {
+                LegendsOfArcadia.getMap().continueMap();
+            }
         });
 
         editDeckButton.setOnMouseClicked(event -> {
@@ -553,7 +559,7 @@ public class MenuView {
 
 
 
-    private static VBox makeVBox(double x, double y, double prefWidth, double spacing, Node... nodes){
+    public static VBox makeVBox(double x, double y, double prefWidth, double spacing, Node... nodes){
         VBox vBox = new VBox(spacing, nodes);
         vBox.setPrefWidth(prefWidth);//TODO css VBox?
         vBox.setPrefHeight(primaryStage.getHeight()/2);
@@ -564,14 +570,14 @@ public class MenuView {
         return vBox;
     }
 
-    private static VBox makeVBox(Node... nodes){
+    public static VBox makeVBox(Node... nodes){
 //        for(Node button : buttons){
 //            button.setPrefWidth(buttonPrefWidth);
 //        }
         return makeVBox(primaryStage.getWidth()/2 - buttonPrefWidth/2, primaryStage.getHeight()/2 - buttonPrefWidth/2, buttonPrefWidth, primaryStage.getHeight()/28, nodes);
     }
 
-    private static VBox makeVBox(List<? extends Node> nodes){
+    public static VBox makeVBox(List<? extends Node> nodes){
         Node[] nodes1 = new Node[nodes.size()];
         for(int i=0; i<nodes.size(); i++){
             nodes1[i] = nodes.get(i);

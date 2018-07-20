@@ -14,7 +14,6 @@ import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.application.Platform;
 import View.MenuView;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import static Model.Stuff.getStuffByName;
 import java.util.*;
@@ -258,6 +257,15 @@ public class Battle {
         human.getOpponent().setItems(opponentItemsBeforeCustomization);
         if (!isMultiplayer){
             if (winner == human) {
+                if (opponent == lucifer) {
+                    ConsoleView.wholeWinner();
+                    Popup popup = new Popup("Game Over" + "\n\n" + "*** YOU WIN *** " + "\n\n" + "Thank you for playing.");
+                    popup.show();
+                    MenuView.showMainMenu();
+                }
+                else {
+                    LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
+                }
                 human.setGil(human.getGil() + (Main.opponents.indexOf(human.getOpponent()) + 1) * 10000);
                 human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
                 human.setDeckCards(humanDeckCardBeforeMatch);
@@ -281,9 +289,13 @@ public class Battle {
                     human.setInventoryCards(humanInventoryBeforeCustomization);
                     human.setGil(humanGilBeforeCustomization);
                     mysticHourGlass--;
-                    LegendsOfArcadia.getMap().continueMap();
+                    Popup popup = new Popup("You lost the battle" + "\n\n" + "remaining hourglasses: " + mysticHourGlass);
+                    popup.show();
+                    LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 } else {
                     pStage.close();
+                    new Popup("You are out of mystic hourglass" + "\n\n" + "Game Over").show();
+                    MenuView.showMainMenu();
                 }
             }
         }
@@ -359,4 +371,5 @@ public class Battle {
             Platform.runLater(GameView::updateFields);
         } catch (NullPointerException ignored){ }
     }
+
 }
