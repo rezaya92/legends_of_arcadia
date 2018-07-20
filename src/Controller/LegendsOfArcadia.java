@@ -54,7 +54,7 @@ public class LegendsOfArcadia extends Application {
     private void preProcessEventHandling(Stage primaryStage){
         MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
             Game.setCurrentGame(LegendsOfArcadia.customGames.get(0));
-            Main.afterMatch();
+            //Main.afterMatch();
             map = new Map(primaryStage, 1);
         });
 

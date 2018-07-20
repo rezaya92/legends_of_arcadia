@@ -56,11 +56,9 @@ public class Battle {
         humanDeckCardBeforeMatch = new ArrayList<>(human.getDeckCards());
         opponent.setOpponent(human);
         human.setOpponent(opponent);
-        try {
-            Main.afterMatch();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        Main.afterMatch();
+
         GameView.prepare(pStage, human, opponent);
         ConsoleView.battleStarted(opponent);
         turnNumber = 0;

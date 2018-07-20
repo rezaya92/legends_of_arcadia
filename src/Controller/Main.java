@@ -33,42 +33,24 @@ public class Main {
     public static void enterShop() {
         MenuView.showShop();
         //TODO get onMouseClicked actions in one place
-        MenuView.getCardShopButton().setOnMouseClicked(event -> {
-            try {
-                cardShop();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        });
 
-        MenuView.getItemShopButton().setOnMouseClicked(event -> {
-            try {
-                itemShop();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        });
-
-        MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
-            amuletShop();
-        });
     }
 
-    private static void cardShop() {
-        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
-    }
-
-    private static void itemShop() {
-        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
-    }
-
-    private static void amuletShop() {
-        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
-    }
-
-    public static void editInventory() {
-        MenuView.showInventoryMenu();
-    }
+//    public static void cardShop() {
+//        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
+//    }
+//
+//    public static void itemShop() {
+//        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
+//    }
+//
+//    public static void amuletShop() {
+//        MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
+//    }
+//
+//    public static void editInventory() {
+//        MenuView.showInventoryMenu();
+//    }
 
     public static void editDeck(String action, boolean nextIsBattle) {
         try {
