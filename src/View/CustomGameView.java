@@ -1,6 +1,7 @@
 package View;
 
 import Controller.*;
+import Model.Spell.Spell;
 import javafx.collections.FXCollections;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import static View.MenuView.makeVBox;
 public class CustomGameView {
     private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();
     private static Game newCustomGame;
+    private static ArrayList<Spell> customGameSpells = new ArrayList<>();
 
     public static void showMainEntrance(){
         Group root = new Group();
@@ -93,7 +95,8 @@ public class CustomGameView {
             //load game
             final int ind = i;
             gameButton.setOnMouseClicked(event -> {
-                newCustomGame = (Game)DeepCopy.copy(LegendsOfArcadia.customGames.get(ind));
+                newCustomGame = (Game)DeepCopy.copy(LegendsOfArcadia.customGames.get(ind));//TODO not nesseccery
+                Game.setCurrentGame(newCustomGame);
                 showEditPart();
             });
 

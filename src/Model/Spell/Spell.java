@@ -19,6 +19,7 @@ public abstract class Spell implements Cloneable, Serializable{
     SpellChoiceType choiceType;
     ArrayList<SpellCastable> effectableCard = new ArrayList<>();
     //ArrayList<SpellCastable> effectedCard = new ArrayList<>();
+    private String name;
 
 
     public Spell(Set<SpellArea> effectableArea, Class[] effectableCardType, Set<Tribe> effectableTribe, SpellChoiceType choiceType) {
@@ -176,6 +177,14 @@ public abstract class Spell implements Cloneable, Serializable{
 
     void setEffectableCard(ArrayList<SpellCastable> effectableCard) {
         this.effectableCard = effectableCard;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
