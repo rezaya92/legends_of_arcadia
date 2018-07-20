@@ -83,6 +83,10 @@ public class Shop implements Cloneable, Serializable{//TODO (not vital): add a s
 
     @Override
     public Object clone() throws CloneNotSupportedException{
-        return super.clone();
+        Shop cloned = (Shop) super.clone();
+        cloned.amulets = new ArrayList<>(this.amulets);
+        cloned.cards = new ArrayList<>(this.cards);
+        cloned.items = new ArrayList<>(this.items);
+        return cloned;
     }
 }

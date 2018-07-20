@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 public class PreProcess {
@@ -34,6 +35,12 @@ public class PreProcess {
         instantiatePlayerInventory(ogreWarlord, "database/Inventories/OgreWarlordInventory.txt");
         instantiatePlayerInventory(vampireLord, "database/Inventories/VampireLordInventory.txt");
         instantiatePlayerInventory(lucifer, "database/Inventories/LuciferInventory.txt");
+        Battle.humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
+        Battle.humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+        Battle.humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
+        Battle.shopBeforeCustomization = (Shop) human.getShop().clone();
+        Battle.humanInventoryBeforeCustomization = new ArrayList<>(human.getInventoryCards());
+        Battle.humanGilBeforeCustomization = human.getGil();
     }
 
     private static void instantiateSpells(){

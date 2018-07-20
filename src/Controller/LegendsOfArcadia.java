@@ -20,7 +20,6 @@ public class LegendsOfArcadia extends Application {
         PreProcess.preProcess();//TODO delete duplicate in Main
 
 
-
 //        System.out.println(Main.mysticHourGlass);
 
         Game game = Game.getCopyOfCurrentGame();
@@ -43,10 +42,10 @@ public class LegendsOfArcadia extends Application {
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
         preProcessEventHandling(primaryStage);
-        //MenuView.showMainMenu();
+        MenuView.showMainMenu();
         //Main.editInventory();
         //Main.joinGame("127.0.0.1",656);
-        Main.hostGame(656);
+        //Main.hostGame(656);
         primaryStage.show();
     }
 

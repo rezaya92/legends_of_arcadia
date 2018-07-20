@@ -6,6 +6,7 @@ import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
 import Model.Item;
 import Model.Player;
+import Model.Shop;
 import Model.Spell.NoEffectableCardException;
 import Model.Spell.Spell;
 import Model.Spell.SpellCastable;
@@ -29,26 +30,24 @@ public class Battle {
     public static MonsterCard targetNeedingAttacker;
     public static SpellCastable target;
     public static Spell targetNeedingSpell;
-    private static ArrayList<Card> humanDefaultDeckCardBeforeCustomization;
-    private static ArrayList<Card> humanDeckCardBeforeCustomization;
-    private static ArrayList<Item> humanItemsBeforeCustomization;
+    static ArrayList<Card> humanDefaultDeckCardBeforeCustomization;
+    static ArrayList<Card> humanDeckCardBeforeCustomization;
+    static ArrayList<Item> humanItemsBeforeCustomization;
+    static Shop shopBeforeCustomization;
+    static ArrayList<Card> humanInventoryBeforeCustomization;
+    static int humanGilBeforeCustomization;
     private static ArrayList<Card> opponentDefaultDeckCardBeforeCustomization;
     private static ArrayList<Card> opponentDeckCardBeforeCustomization;
     private static ArrayList<Item> opponentItemsBeforeCustomization;
     private static ArrayList<Card> humanDefaultDeckCardBeforeMatch;
     private static ArrayList<Card> humanDeckCardBeforeMatch;
-    private static Player opponent;
     public static boolean isMultiplayer;
 
-    public static void startGameAgainst(Player opponent, int coin, boolean isMultiplayer) {
+    static void startGameAgainst(Player opponent, int coin, boolean isMultiplayer) {
         processStage();
         human.restore();
         opponent.restore();
-        Battle.opponent = opponent;
         Battle.isMultiplayer = isMultiplayer;
-        humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
-        humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
-        humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
         opponentDefaultDeckCardBeforeCustomization = new ArrayList<>(opponent.getDefaultDeckCards());
         opponentDeckCardBeforeCustomization = new ArrayList<>(opponent.getDeckCards());
         opponentItemsBeforeCustomization = new ArrayList<>(opponent.getItems());
@@ -56,11 +55,6 @@ public class Battle {
         humanDeckCardBeforeMatch = new ArrayList<>(human.getDeckCards());
         opponent.setOpponent(human);
         human.setOpponent(opponent);
-        try {
-            Main.afterMatch();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         GameView.prepare(pStage, human, opponent);
         ConsoleView.battleStarted(opponent);
         turnNumber = 0;
@@ -146,13 +140,6 @@ public class Battle {
         }
         bot.endTurn();
         humanPlayTurn();
-    }
-
-
-
-    private static boolean spellCastingMenu(MonsterCard monsterCard) {   // returns false if opponent hero dies
-        monsterCard.castSpell();
-        return monsterCard.getOwner().getOpponent().getPlayerHero().checkAlive();
     }
 
     private static void prepareButtons() {
@@ -263,30 +250,46 @@ public class Battle {
         });
     }
 
-    static void gameEnded(Player winner) {
+    private static void gameEnded(Player winner) {
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);
-        human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
-        human.setDeckCards(humanDeckCardBeforeCustomization);
         human.getOpponent().setDefaultDeckCards(opponentDefaultDeckCardBeforeCustomization);
         human.getOpponent().setDeckCards(opponentDeckCardBeforeCustomization);
         human.getOpponent().setItems(opponentItemsBeforeCustomization);
         if (!isMultiplayer){
             if (winner == human) {
+                human.setGil(human.getGil() + (Main.opponents.indexOf(human.getOpponent()) + 1) * 10000);
+                human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
+                human.setDeckCards(humanDeckCardBeforeMatch);
+                humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
+                humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+                humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
+                humanInventoryBeforeCustomization = new ArrayList<>(human.getInventoryCards());
+                humanGilBeforeCustomization = human.getGil();
+                try {
+                    shopBeforeCustomization = (Shop) human.getShop().clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
                 LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
             } else {
                 if (mysticHourGlass > 0) {
+                    human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
+                    human.setDeckCards(humanDeckCardBeforeCustomization);
                     human.setItems(humanItemsBeforeCustomization);
+                    human.setShop(shopBeforeCustomization);
+                    human.setInventoryCards(humanInventoryBeforeCustomization);
+                    human.setGil(humanGilBeforeCustomization);
                     mysticHourGlass--;
                     LegendsOfArcadia.getMap().continueMap();
                 } else {
-                    mysticHourGlass = 3;   //todo other restorations ??
-                    MenuView.showMainMenu();
+                    pStage.close();
                 }
             }
         }
         else {
-            human.setItems(humanItemsBeforeCustomization);
+            human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
+            human.setDeckCards(humanDeckCardBeforeMatch);
             cellTower.transmitWinner(winner);
             cellTower.closeSockets();
             Platform.runLater(MenuView::showMainMenu);

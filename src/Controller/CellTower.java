@@ -185,6 +185,4 @@ public class CellTower extends Thread {
             }
         }
     }
-
-
 }
