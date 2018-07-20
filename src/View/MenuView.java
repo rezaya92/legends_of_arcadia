@@ -79,6 +79,18 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
         Button returnButton = new Button("Return");
 
+        MenuView.getCardShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
+        });
+
+        MenuView.getItemShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
+        });
+
+        MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
+            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
+        });
+
         returnButton.setOnMouseClicked(event -> {
             //TODO
             LegendsOfArcadia.getMap().continueMap();

@@ -41,7 +41,7 @@ public class CustomGameView {
             final int ind = i;
             gameButton.setOnMouseClicked(event -> {
                 Game.setCurrentGame(LegendsOfArcadia.customGames.get(ind));
-                Main.afterMatch();
+                //Main.afterMatch();
                 LegendsOfArcadia.setMap(new Map(primaryStage, 1));
             });
 
