@@ -440,6 +440,8 @@ abstract public class ConsoleView {
 
     public static void spellTargeted(SpellCastable target){
         console.appendText(target.getName() + " has been targeted." + "\n");
+        if (Battle.isMultiplayer)
+            cellTower.transmitConsoleView(target.getName() + " has been targeted.");
     }
 
     public static void noTargetChosen(){
@@ -549,10 +551,14 @@ abstract public class ConsoleView {
 
     public static void playedInMonsterField(String name){
         console.appendText(name + "  played in MonsterField" + "\n");
+        if (Battle.isMultiplayer)
+            cellTower.transmitConsoleView(name + "  played in MonsterField" + "\n");
     }
 
     public static void playedInSpellField(String name){
         console.appendText(name + "  played in SpellField" + "\n");
+        if (Battle.isMultiplayer)
+            cellTower.transmitConsoleView(name + "  played in SpellField" + "\n");
     }
 
     public static void spellCardCasted(String name){
@@ -562,6 +568,6 @@ abstract public class ConsoleView {
     }
 
     public static void spellHasBeenCasted(){
-        console.appendText("Spell has Already been casted");
+        console.appendText("Spell has Already been casted" + "\n");
     }
 }

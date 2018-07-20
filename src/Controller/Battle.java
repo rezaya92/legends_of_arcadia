@@ -263,7 +263,7 @@ public class Battle {
         });
     }
 
-    private static void gameEnded(Player winner) {
+    static void gameEnded(Player winner) {
         human.setIsPlaying(false);
         human.getOpponent().setIsPlaying(false);
         human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
@@ -287,10 +287,9 @@ public class Battle {
         }
         else {
             human.setItems(humanItemsBeforeCustomization);
-            MenuView.showMainMenu();
             cellTower.transmitWinner(winner);
             cellTower.closeSockets();
-            cellTower.stop();
+            Platform.runLater(MenuView::showMainMenu);
         }
     }
 
@@ -302,57 +301,59 @@ public class Battle {
     }
 
     static void processReceivedPlayerData(Player player) throws CloneNotSupportedException {
-        player.getPlayerHero().setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
-        player.setMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
-        player.setMaxMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
-        cellTower.receiveText();
-        for (int i = 0; i < 5; i++) {
-            String monsterCardName = cellTower.receiveText().split(":")[1];
-            if (!monsterCardName.equals("NULL")) {
-                player.getMonsterFieldCards().set(i, (Card) getStuffByName(monsterCardName).clone());
-                ((MonsterCard) player.getMonsterFieldCards().get(i)).setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
-                ((MonsterCard) player.getMonsterFieldCards().get(i)).setAp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
-                player.getMonsterFieldCards().get(i).setCardPlace(player.getMonsterFieldCards());
-                player.getMonsterFieldCards().get(i).setOwner(player);
-            } else
-                player.getMonsterFieldCards().set(i, null);
-        }
-        cellTower.receiveText();
-        for (int i = 0; i < 3; i++) {
-            String cardName = cellTower.receiveText().split(":")[1];
-            if (!cardName.equals("NULL")) {
-                player.getSpellFieldCards().set(i, (Card) getStuffByName(cardName).clone());
-                player.getSpellFieldCards().get(i).setCardPlace(player.getSpellFieldCards());
-                player.getSpellFieldCards().get(i).setOwner(player);
+        try {
+            player.getPlayerHero().setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+            player.setMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+            player.setMaxMana(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+            cellTower.receiveText();
+            for (int i = 0; i < 5; i++) {
+                String monsterCardName = cellTower.receiveText().split(":")[1];
+                if (!monsterCardName.equals("NULL")) {
+                    player.getMonsterFieldCards().set(i, (Card) getStuffByName(monsterCardName).clone());
+                    ((MonsterCard) player.getMonsterFieldCards().get(i)).setHp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+                    ((MonsterCard) player.getMonsterFieldCards().get(i)).setAp(Integer.parseInt(cellTower.receiveText().split(":")[1]));
+                    ((MonsterCard) player.getMonsterFieldCards().get(i)).setHasUsedSpell(Boolean.parseBoolean(cellTower.receiveText().split(":")[1]));
+                    player.getMonsterFieldCards().get(i).setCardPlace(player.getMonsterFieldCards());
+                    player.getMonsterFieldCards().get(i).setOwner(player);
+                } else
+                    player.getMonsterFieldCards().set(i, null);
             }
-            else
-                player.getSpellFieldCards().set(i, null);
-        }
-        cellTower.receiveText();
-        String command = cellTower.receiveText();
-        player.getGraveyardCards().clear();
-        while (!command.equals("Hand:")) {
-            player.getGraveyardCards().add((Card) getStuffByName(command.split(":")[1]).clone());
-            player.getGraveyardCards().get(player.getGraveyardCards().size() - 1).setOwner(player);
-            player.getGraveyardCards().get(player.getGraveyardCards().size() - 1).setCardPlace(player.getGraveyardCards());
+            cellTower.receiveText();
+            for (int i = 0; i < 3; i++) {
+                String cardName = cellTower.receiveText().split(":")[1];
+                if (!cardName.equals("NULL")) {
+                    player.getSpellFieldCards().set(i, (Card) getStuffByName(cardName).clone());
+                    player.getSpellFieldCards().get(i).setCardPlace(player.getSpellFieldCards());
+                    player.getSpellFieldCards().get(i).setOwner(player);
+                } else
+                    player.getSpellFieldCards().set(i, null);
+            }
+            cellTower.receiveText();
+            String command = cellTower.receiveText();
+            player.getGraveyardCards().clear();
+            while (!command.equals("Hand:")) {
+                player.getGraveyardCards().add((Card) getStuffByName(command.split(":")[1]).clone());
+                player.getGraveyardCards().get(player.getGraveyardCards().size() - 1).setOwner(player);
+                player.getGraveyardCards().get(player.getGraveyardCards().size() - 1).setCardPlace(player.getGraveyardCards());
+                command = cellTower.receiveText();
+            }
+            player.getHandCards().clear();
             command = cellTower.receiveText();
-        }
-        player.getHandCards().clear();
-        command = cellTower.receiveText();
-        while (!command.equals("Deck:")) {
-            player.getHandCards().add((Card) getStuffByName(command.split(":")[1]).clone());
-            player.getHandCards().get(player.getHandCards().size() - 1).setOwner(player);
-            player.getHandCards().get(player.getHandCards().size() - 1).setCardPlace(player.getHandCards());
+            while (!command.equals("Deck:")) {
+                player.getHandCards().add((Card) getStuffByName(command.split(":")[1]).clone());
+                player.getHandCards().get(player.getHandCards().size() - 1).setOwner(player);
+                player.getHandCards().get(player.getHandCards().size() - 1).setCardPlace(player.getHandCards());
+                command = cellTower.receiveText();
+            }
+            player.getDeckCards().clear();
             command = cellTower.receiveText();
-        }
-        player.getDeckCards().clear();
-        command = cellTower.receiveText();
-        while (!command.equals("end of transmission")) {
-            player.getDeckCards().add((Card) getStuffByName(command.split(":")[1]).clone());
-            player.getDeckCards().get(player.getDeckCards().size() - 1).setOwner(player);
-            player.getDeckCards().get(player.getDeckCards().size() - 1).setCardPlace(player.getDeckCards());
-            command = cellTower.receiveText();
-        }
-        Platform.runLater(GameView::updateFields);
+            while (!command.equals("end of transmission")) {
+                player.getDeckCards().add((Card) getStuffByName(command.split(":")[1]).clone());
+                player.getDeckCards().get(player.getDeckCards().size() - 1).setOwner(player);
+                player.getDeckCards().get(player.getDeckCards().size() - 1).setCardPlace(player.getDeckCards());
+                command = cellTower.receiveText();
+            }
+            Platform.runLater(GameView::updateFields);
+        } catch (NullPointerException ignored){ }
     }
 }

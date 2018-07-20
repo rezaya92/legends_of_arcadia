@@ -9,6 +9,9 @@ import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -26,7 +29,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
     final int defaultHP;
     final int defaultAP;
     transient SimpleIntegerProperty ap = new SimpleIntegerProperty();
-    transient SimpleIntegerProperty hp = new SimpleIntegerProperty();//TODO serialize
+    transient SimpleIntegerProperty hp = new SimpleIntegerProperty();
     Tribe tribe;
     boolean hasGotSpell = false;
     boolean hasUsedSpell = false;
@@ -45,6 +48,10 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
 
     public boolean hasGotSpell(){return hasGotSpell;}
     public boolean hasUsedSpell(){return hasUsedSpell;}
+
+    public void setHasUsedSpell(boolean hasUsedSpell) {
+        this.hasUsedSpell = hasUsedSpell;
+    }
 
     public boolean hasAttacked(){return hasAttacked;}
     public void setHasAttacked(boolean hasAttacked){this.hasAttacked = hasAttacked;}
@@ -294,6 +301,20 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
         this.damageReceivementRatio *= coefficentofVariation;
+    }
+
+    private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
+        objectOutputStream.defaultWriteObject();
+        Integer apInteger = ap.getValue();
+        objectOutputStream.writeObject(apInteger);
+        Integer hpInteger = hp.getValue();
+        objectOutputStream.writeObject(hpInteger);
+    }
+
+    private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException{
+        objectInputStream.defaultReadObject();
+        ap = new SimpleIntegerProperty((Integer)objectInputStream.readObject());
+        hp = new SimpleIntegerProperty((Integer)objectInputStream.readObject());
     }
 
     @Override

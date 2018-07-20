@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Formatter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static Controller.Main.human;
@@ -37,26 +38,36 @@ public class CellTower extends Thread {
     }
 
     void transmitText(String text){
-        printWriter.println(text);
+        synchronized (lock) {
+            printWriter.println(text);
+        }
     }
 
     String receiveText(){
-        String receivedText = scanner.nextLine();
-        System.out.println(receivedText);
-        return receivedText;
+        if (human.getIsPlaying()) {
+            String receivedText = scanner.nextLine();
+            System.out.println(receivedText);
+            return receivedText;
+        }
+        else
+            return null;
     }
 
     void transmitInitials(int coin){
-        transmitInitials();
-        transmitText("coin:" + String.valueOf(coin));
+        synchronized (lock) {
+            transmitInitials();
+            transmitText("coin:" + String.valueOf(coin));
+        }
     }
 
     void transmitInitials(){
-        transmitText("name:" + human.getName());
-        if (human.getEquippedAmulet() == null)
-            transmitText("equipped amulet:NULL");
-        else
-            transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
+        synchronized (lock) {
+            transmitText("name:" + human.getName());
+            if (human.getEquippedAmulet() == null)
+                transmitText("equipped amulet:NULL");
+            else
+                transmitText("equipped amulet:" + human.getEquippedAmulet().getName());
+        }
     }
 
 
@@ -94,37 +105,47 @@ public class CellTower extends Thread {
     }
 
     private void transmitMonsterFieldCard(MonsterCard monsterCard){
-        if (monsterCard == null)
-            transmitText("monster card name:NULL");
-        else {
-            transmitText("monster card name:" + monsterCard.getName());
-            transmitText("monster card hp:" + monsterCard.getHp());
-            transmitText("monster card ap:" + monsterCard.getAp());
+        synchronized (lock) {
+            if (monsterCard == null)
+                transmitText("monster card name:NULL");
+            else {
+                transmitText("monster card name:" + monsterCard.getName());
+                transmitText("monster card hp:" + monsterCard.getHp());
+                transmitText("monster card ap:" + monsterCard.getAp());
+                transmitText("monster card hasUsedSpell:" + monsterCard.hasUsedSpell());
+            }
         }
     }
 
     private void transmitCard(Card card){
-        if (card == null)
-            transmitText("card name:NULL");
-        else {
-            transmitText("card name:" + card.getName());
+        synchronized (lock) {
+            if (card == null)
+                transmitText("card name:NULL");
+            else {
+                transmitText("card name:" + card.getName());
+            }
         }
     }
 
     public void transmitConsoleView(String text){
-        transmitText("Console Text:");
-        transmitText(text);
+        synchronized (lock) {
+            transmitText("Console Text:");
+            transmitText(text);
+        }
     }
 
-    public void transmitWinner(Player winner){
-        transmitText("Winner is:");
-        transmitText(winner.getName());
+    void transmitWinner(Player winner){
+        synchronized (lock) {
+            transmitPlayerData(new Player("lost",-1000));
+            //transmitText("Winner is:");
+            //transmitText(winner.getName());
+        }
     }
 
     @Override
     public void run() {
         String command = receiveText();
-        while (!command.equals("Winner is:")){
+        while (human.getIsPlaying()){
             switch (command){
                 case "Opponent Data:":
                     try {
@@ -146,18 +167,22 @@ public class CellTower extends Thread {
                 case "Console Text:":
                     ConsoleView.viewText(receiveText());
             }
-            command = receiveText();
+            try{
+                command = receiveText();
+            }catch (NoSuchElementException ignored){}
         }
-        closeSockets();
+        System.out.println("Battle ended");
     }
 
-    public void closeSockets() {
-        try {
-            socket.close();
-            if (serverSocket != null)
-                serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    void closeSockets() {
+        synchronized (lock) {
+            try {
+                socket.close();
+                if (serverSocket != null)
+                    serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

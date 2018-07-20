@@ -8,6 +8,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,7 +21,7 @@ import java.util.ArrayList;
  */
 public class PlayerHero implements HasHP, Cloneable, Serializable {
     private int defaultHP;
-    private transient SimpleIntegerProperty hp = new SimpleIntegerProperty();//TODO serialize
+    private transient SimpleIntegerProperty hp = new SimpleIntegerProperty();
     private double damageReceivementRatio = 1;
     private Player owner;
 
@@ -80,6 +83,17 @@ public class PlayerHero implements HasHP, Cloneable, Serializable {
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
         this.damageReceivementRatio *= coefficentofVariation;
+    }
+
+    private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
+        objectOutputStream.defaultWriteObject();
+        Integer hpInteger = hp.getValue();
+        objectOutputStream.writeObject(hpInteger);
+    }
+
+    private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException{
+        objectInputStream.defaultReadObject();
+        hp = new SimpleIntegerProperty((Integer)objectInputStream.readObject());
     }
 
     @Override
