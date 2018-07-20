@@ -257,15 +257,14 @@ public class Battle {
         human.getOpponent().setItems(opponentItemsBeforeCustomization);
         if (!isMultiplayer){
             if (winner == human) {
-                if (opponent == lucifer) {
+                if (human.getOpponent() == lucifer) {
                     ConsoleView.wholeWinner();
                     Popup popup = new Popup("Game Over" + "\n\n" + "*** YOU WIN *** " + "\n\n" + "Thank you for playing.");
                     popup.show();
-                    MenuView.showMainMenu();
+                    LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 }
-                else {
+                else
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
-                }
                 human.setGil(human.getGil() + (Main.opponents.indexOf(human.getOpponent()) + 1) * 10000);
                 human.setDefaultDeckCards(humanDefaultDeckCardBeforeMatch);
                 human.setDeckCards(humanDeckCardBeforeMatch);
@@ -279,7 +278,6 @@ public class Battle {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-                LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
             } else {
                 if (mysticHourGlass > 0) {
                     human.setDefaultDeckCards(humanDefaultDeckCardBeforeCustomization);
@@ -293,9 +291,8 @@ public class Battle {
                     popup.show();
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 } else {
-                    pStage.close();
                     new Popup("You are out of mystic hourglass" + "\n\n" + "Game Over").show();
-                    MenuView.showMainMenu();
+                    pStage.close();
                 }
             }
         }
