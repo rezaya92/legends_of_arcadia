@@ -2,6 +2,8 @@ package Controller;
 
 import javafx.application.Application;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import View.MenuView;
 
@@ -13,6 +15,10 @@ public class LegendsOfArcadia extends Application {
     private static Map map;
 
     public static void main(String[] args) {
+        String path = LegendsOfArcadia.class.getResource("/music.mp3").toString();
+        Media media = new Media(path);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
         launch(args);
     }
 
