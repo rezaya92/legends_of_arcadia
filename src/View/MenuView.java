@@ -149,11 +149,7 @@ public class MenuView {
         //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
         returnButton.relocate(1150, 620);
         returnButton.setOnMouseClicked(event -> {
-            try {
-                Main.enterShop();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            Main.enterShop();
         });
 
         //------------sort shopStuff and playerStuff by name-----------------

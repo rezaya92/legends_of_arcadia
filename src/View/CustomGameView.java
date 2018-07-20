@@ -59,7 +59,16 @@ public class CustomGameView {
 
         Button newGameButton = new Button("+new game");
         newGameButton.setId("newGameButton");
+        newGameButton.setOnMouseClicked(event -> {
+            //TODO
+        });
         hBoxes.add(new HBox(newGameButton));
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            MenuView.showMainMenu();
+        });
 
         ListView<HBox> listView = new ListView<>(FXCollections.observableArrayList(hBoxes));
         listView.setPrefSize(330, 550);
@@ -67,6 +76,16 @@ public class CustomGameView {
 
         //VBox vBox = MenuView.makeVBox(listView);
 
-        root.getChildren().add(listView);
+        root.getChildren().addAll(listView, returnButton);
+    }
+
+    public static void setStatusOfReturnButton(Button returnButton, double x, double y){
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        returnButton.setGraphic(imageView);
+        returnButton.setMaxWidth(50);
+        //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
+        returnButton.relocate(x, y);
     }
 }
