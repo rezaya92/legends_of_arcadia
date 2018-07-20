@@ -7,12 +7,15 @@ import Model.Spell.Spell;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
+import Model.Spell.SpellArea;
+import Model.Spell.SpellChoiceType;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -133,12 +136,15 @@ public class CustomGameView {
 
     public static void showEditPart(){
         Group root = new Group();
-        Scene entranceScene = new Scene(root);
-        entranceScene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());//TODO css
-        primaryStage.setScene(entranceScene);
+        Scene editPartScene = new Scene(root);
+        editPartScene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());//TODO css
+        primaryStage.setScene(editPartScene);
         primaryStage.setTitle("Customize Game");
 
         Button createSpellButton = new Button("Create Spell");
+        createSpellButton.setOnMouseClicked(event -> {
+            showCreateSpell();
+        });
         Button createGeneralizedSpellButton = new Button("Create Generalized Spell");
         Button editCardsButton = new Button("Edit Cards");
         Button editItemsButton = new Button("Edit Items");//TODO create or edit?
@@ -153,6 +159,97 @@ public class CustomGameView {
         VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, editCardsButton, editItemsButton, editAmuletsButton, editShopButton, editDecksButton);
 
         root.getChildren().addAll(vBox);
+    }
+
+    public static void showCreateSpell(){
+        Group root = new Group();
+        Scene createSpellScene = new Scene(root);
+        createSpellScene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());//TODO css
+        primaryStage.setScene(createSpellScene);
+        primaryStage.setTitle("Create Spell");
+
+        ArrayList<HBox> hBoxes = new ArrayList<>();
+        ArrayList<HBox> hBoxes1 = new ArrayList<>();
+
+        ChoiceBox<String> typeChoiceBox = new ChoiceBox(FXCollections.observableArrayList("move spell", "hp spell", "ap spell"));
+        ChoiceBox<SpellArea> targetPlaceChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellArea.values()));
+        ChoiceBox<String> targetCardTypeChoiceBox = new ChoiceBox(FXCollections.observableArrayList("Monster Card", "Spell Card", "Card"));
+        ChoiceBox<SpellChoiceType> selectionMethodChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellChoiceType.values()));
+        ChoiceBox<SpellArea> destinationChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellArea.values()));
+        destinationChoiceBox.getItems().removeAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
+        TextField amountTextField = new TextField();
+
+//        selectionMethodChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SpellChoiceType>() {
+//            @Override
+//            public void changed(ObservableValue<? extends SpellChoiceType> observable, SpellChoiceType oldValue, SpellChoiceType newValue) {
+//
+//            }
+//        });
+
+
+        hBoxes.add(new HBox(5, new Label("Type:"), typeChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Target Place:"), targetPlaceChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Target Card Type:"), targetCardTypeChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Selection Method:"), selectionMethodChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Destination:"), destinationChoiceBox));
+        //hBoxes.add(new HBox(5, new Label("Type:"), typeChoiceBox));
+        hBoxes1.add(new HBox(5, new Label("Type:"), typeChoiceBox));
+        hBoxes1.add(new HBox(5, new Label("Target Place:"), targetPlaceChoiceBox));
+        hBoxes1.add(new HBox(5, new Label("Target Card Type:"), targetCardTypeChoiceBox));
+        hBoxes1.add(new HBox(5, new Label("Selection Method:"), selectionMethodChoiceBox));
+        hBoxes1.add(new HBox(5, new Label("Change Amount:"), amountTextField));
+
+        for(HBox hBox : hBoxes){
+            hBox.setAlignment(Pos.CENTER);
+        }
+        VBox vBox = makeVBox(hBoxes);
+        vBox.setAlignment(Pos.TOP_CENTER);
+
+        for(HBox hBox : hBoxes1){
+            hBox.setAlignment(Pos.CENTER);
+        }
+        VBox vBox1 = makeVBox(hBoxes1);
+        vBox1.setAlignment(Pos.TOP_CENTER);
+
+        typeChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                targetPlaceChoiceBox.getItems().removeAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
+                if(newValue.equalsIgnoreCase("move spell")){
+//                    root.getChildren().removeAll(vBox1);
+//                    root.getChildren().addAll(vBox);
+                    vBox1.setManaged(false);
+                    vBox1.setVisible(false);
+                    vBox.setManaged(true);
+                    vBox.setVisible(true);
+                }else{
+                    targetPlaceChoiceBox.getItems().addAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
+//                    root.getChildren().removeAll(vBox);
+//                    root.getChildren().addAll(vBox1);
+                    vBox.setManaged(false);
+                    vBox.setVisible(false);
+                    vBox1.setManaged(true);
+                    vBox1.setVisible(true);
+                }
+            }
+        });
+
+        targetPlaceChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SpellArea>() {
+            @Override
+            public void changed(ObservableValue<? extends SpellArea> observable, SpellArea oldValue, SpellArea newValue) {
+                if(newValue.name().endsWith("PLAYER")){
+                    targetCardTypeChoiceBox.setDisable(true);
+                    selectionMethodChoiceBox.setDisable(true);
+                }else{
+                    targetCardTypeChoiceBox.setDisable(false);
+                    selectionMethodChoiceBox.setDisable(false);
+                }
+            }
+        });
+
+        vBox.setManaged(false);
+        vBox.setVisible(false);
+        root.getChildren().addAll(vBox, vBox1);
     }
 
     public static void setStatusOfReturnButton(Button returnButton, double x, double y){
