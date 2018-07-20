@@ -261,7 +261,7 @@ public class Battle {
                     ConsoleView.wholeWinner();
                     Popup popup = new Popup("Game Over" + "\n\n" + "*** YOU WIN *** " + "\n\n" + "Thank you for playing.");
                     popup.show();
-                    LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
+                    MenuView.showMainMenu();
                 }
                 else
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
@@ -292,7 +292,7 @@ public class Battle {
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 } else {
                     new Popup("You are out of mystic hourglass" + "\n\n" + "Game Over").show();
-                    pStage.close();
+                    MenuView.showMainMenu();
                 }
             }
         }
