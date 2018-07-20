@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -48,15 +49,23 @@ public class MenuView {
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
         Group mainMenuGroup = new Group();
+        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView.setFitWidth(1500);
+        imageView.setFitHeight(800);
+        mainMenuGroup.getChildren().addAll(imageView);
+        //StackPane stackPane = new StackPane();
+        //stackPane.setId("pane");
         Scene scene = new Scene(mainMenuGroup);
-        primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
 
         //scene.getStylesheets().add(MenuView.class.getResource("listStyle.css").toExternalForm());
         //setPrefWidthOfButtons(buttonPrefWidth, cardShopButton, itemShopButton, amuletShopButton);
         VBox vBox = makeVBox(singlePlayerButton, customGameButton, multiPlayerButton, settingsButton, exitButton);
+        //vBox.relocate(300, 300);
 
         mainMenuGroup.getChildren().addAll(vBox);
+        //stackPane.getChildren().addAll(mainMenuGroup);
 
         customGameButton.setOnMouseClicked(event -> {
             CustomGameView.showMainEntrance();
@@ -67,6 +76,10 @@ public class MenuView {
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
         Group shopGroup = new Group();
+        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView.setFitWidth(1500);
+        imageView.setFitHeight(800);
+        shopGroup.getChildren().addAll(imageView);
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
@@ -98,6 +111,10 @@ public class MenuView {
 
     public static void showStuffShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff, String transactionMessage){
         Group cardShopGroup = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        cardShopGroup.getChildren().addAll(imageView1);
         Scene scene = new Scene(cardShopGroup);
         ArrayList<Button> shopButtons = new ArrayList<>();
         ArrayList<Button> playerButtons = new ArrayList<>();
@@ -275,6 +292,10 @@ public class MenuView {
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
         Group shopGroup = new Group();
+        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView.setFitWidth(1500);
+        imageView.setFitHeight(800);
+        shopGroup.getChildren().addAll(imageView);
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
@@ -314,6 +335,10 @@ public class MenuView {
 
     public static void showEditDeck(ArrayList<Card> inventoryCardsMinusDeck, ArrayList<Card> deckCardsWithNull, String transferMessage, boolean nextIsBattle){
         Group editDeckGroup = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        editDeckGroup.getChildren().addAll(imageView1);
         Scene scene = new Scene(editDeckGroup);
         ArrayList<Button> inventoryButtons = new ArrayList<>();
         ArrayList<Button> deckButtons = new ArrayList<>();
@@ -443,6 +468,10 @@ public class MenuView {
 
     public static void showEditAmulet(ArrayList<Amulet> amulets, Amulet equippedAmulet, String transferMessage){
         Group editAmuletGroup = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        editAmuletGroup.getChildren().addAll(imageView1);
         Scene scene = new Scene(editAmuletGroup);
         ArrayList<Button> amuletsButtons = new ArrayList<>();
         ArrayList<Button> equippedAmuletButtons = new ArrayList<>();

@@ -26,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -41,6 +42,10 @@ public class CustomGameView {
 
     public static void showMainEntrance(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene entranceScene = new Scene(root);
         entranceScene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(entranceScene);
