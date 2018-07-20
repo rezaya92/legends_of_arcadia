@@ -95,8 +95,8 @@ public class CustomGameView {
             //load game
             final int ind = i;
             gameButton.setOnMouseClicked(event -> {
-                newCustomGame = (Game)DeepCopy.copy(LegendsOfArcadia.customGames.get(ind));//TODO not nesseccery
-                Game.setCurrentGame(newCustomGame);
+                //newCustomGame = (Game)DeepCopy.copy(LegendsOfArcadia.customGames.get(ind));//TODO not necessary
+                Game.setCurrentGame(LegendsOfArcadia.customGames.get(ind));
                 showEditPart();
             });
 
