@@ -16,72 +16,23 @@ import static Model.Stuff.getStuffByName;
  * Created by msi-pc on 4/27/2018.
  */
 public class Main {
-    public static ArrayList<Game> customGames = new ArrayList<>();
     public static ArrayList<Stuff> allStuff = new ArrayList<>();
     public static Player human = new Player("human", 10000);
     static Player goblinChieftain = new Player("Goblin Chieftain", 10000);
     static Player ogreWarlord = new Player("Ogre Warlord", 10000);
     static Player vampireLord = new Player("Vampire Lord", 10000);
     static Player lucifer = new Player("Lucifer", 10000);
-//    private static String action;
-//    private static Method lastViewMethod;
-//    private static Scanner scanner = new Scanner(System.in);
     static int mysticHourGlass = 3;  //change place?
     public static ArrayList<Player> opponents = new ArrayList<>(Arrays.asList(goblinChieftain,ogreWarlord,vampireLord,lucifer));
-//    private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();//TODO correct?
     public static CellTower cellTower;
 
-    /*public void useContinuousSpellCards(){
-    for (SpellCard continuousSpellCard : human.getSpellFieldCards()) {
-
-    }
-    */
-    //
-    //executing with while improves performance a lot?
-    static void afterMatch() throws Exception{
-        /*ConsoleView.afterMatch();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("afterMatch");
-        helpHandler(lastViewMethod);
-        switch (action){
-            case "1":
-                enterShop();
-                break;
-            case "2":
-                editInventory();
-                break;
-            case "3":
-                editDeck(true);
-                return;
-                default:
-                    ConsoleView.invalidCommand();
-        }
-        afterMatch();*/
+    public static void afterMatch() {
         enterShop();//TODO CHANGE
     }
 
-    public static void enterShop() throws Exception{
-        /*ConsoleView.enterShop();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("enterShop");
-        helpHandler(lastViewMethod);
-        switch (action){
-            case "1":
-                cardShop();
-                break;
-            case "2":
-                itemShop();
-                break;
-            case "3":
-                amuletShop();
-                break;
-            case "4":
-                return;
-                default:
-                    ConsoleView.invalidCommand();
-        }
-        enterShop();*/
+    public static void enterShop() {
         MenuView.showShop();
+        //TODO get onMouseClicked actions in one place
         MenuView.getCardShopButton().setOnMouseClicked(event -> {
             try {
                 cardShop();
@@ -99,142 +50,27 @@ public class Main {
         });
 
         MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
-            try {
-                amuletShop();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            amuletShop();
         });
     }
 
-    private static void cardShop() throws Exception{
-        /*ConsoleView.cardShop();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("cardShop");
-        helpHandler(lastViewMethod);
-        try {
-            if (action.startsWith("Buy ") || action.startsWith("buy "))
-                buyThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
-            else if(action.startsWith("Sell ") || action.startsWith("sell "))
-                sellThingsProcessor(TypeOfStuffToBuyAndSell.CARD, action);
-            else if(action.startsWith("Info ") || action.startsWith("info "))
-                infoProcessor(action);
-            else if(action.equals("4") || action.equalsIgnoreCase("Edit deck"))
-                editDeck(false);
-            else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
-                return;
-            else
-                throw new Exception();
-        } catch (Exception e){
-            ConsoleView.invalidCommand();
-        }
-        cardShop();*/
-        //ArrayList<Pair<Card, Integer>> uniqueCardsWithNumber = getUniqueWithNumber(human.getShop().getCards());
-        //uniqueCardsWithNumber.get(0).getKey();
+    private static void cardShop() {
         MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
     }
 
-    private static void itemShop() throws Exception{
-        /*ConsoleView.itemShop();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("itemShop");
-        helpHandler(lastViewMethod);
-        try {
-            if (action.startsWith("Buy ") || action.startsWith("buy "))
-                buyThingsProcessor(TypeOfStuffToBuyAndSell.ITEM, action);
-            else if(action.startsWith("Sell ") || action.startsWith("sell "))
-                sellThingsProcessor(TypeOfStuffToBuyAndSell.ITEM, action);
-            else if(action.startsWith("Info ") || action.startsWith("info "))
-                infoProcessor(action);
-            else if(action.equals("4") || action.equalsIgnoreCase("Exit"))
-                return;
-            else
-                throw new Exception();
-        } catch (Exception e){
-            ConsoleView.invalidCommand();
-        }
-        itemShop();*/
+    private static void itemShop() {
         MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
     }
 
-    private static void amuletShop() throws Exception{
-        /*ConsoleView.amuletShop();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("amuletShop");
-        helpHandler(lastViewMethod);
-        try {
-            if (action.startsWith("Buy ") || action.startsWith("buy "))
-                buyThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
-            else if(action.startsWith("Sell ") || action.startsWith("sell "))
-                sellThingsProcessor(TypeOfStuffToBuyAndSell.AMULET, action);
-            else if(action.startsWith("Info ") || action.startsWith("info "))
-                infoProcessor(action);
-            else if(action.equals("4") || action.equalsIgnoreCase("Edit Amulets"))
-                editAmulet();
-            else if(action.equals("5") || action.equalsIgnoreCase("Exit"))
-                return;
-            else
-                throw new Exception();
-        } catch (Exception e){
-            ConsoleView.invalidCommand();
-        }
-        amuletShop();*/
+    private static void amuletShop() {
         MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
     }
 
-    public static void editInventory() throws Exception{
-        /*ConsoleView.editInventory();
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editInventory");
-        helpHandler(lastViewMethod);
-        switch (action){
-            case "1":
-                stuffInventory(TypeOfStuffToBuyAndSell.CARD);
-                break;
-            case "2":
-                stuffInventory(TypeOfStuffToBuyAndSell.ITEM);
-                break;
-            case "3":
-                stuffInventory(TypeOfStuffToBuyAndSell.AMULET);
-                break;
-            case "4":
-                editDeck(false);
-                break;
-            case "5":
-                editAmulet();
-                break;
-            case "6":
-                return;
-                default:
-                    ConsoleView.invalidCommand();
-        }
-        editInventory();*/
+    public static void editInventory() {
         MenuView.showInventoryMenu();
     }
 
-    /*public static void stuffInventory(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
-        ConsoleView.stuffInventory(typeOfStuffToBuyAndSell);
-        action = scanner.nextLine();
-        lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("stuffInventory", TypeOfStuffToBuyAndSell.class);
-        helpHandler(lastViewMethod, typeOfStuffToBuyAndSell);
-        if(action.equals("2") || action.equalsIgnoreCase("Exit"))
-            return;
-        try{
-            if(!(action.startsWith("Info ") || action.startsWith("info")))
-                throw new Exception();
-            infoProcessor(action);
-        } catch (Exception e){
-            ConsoleView.invalidCommand();
-        }
-        stuffInventory(typeOfStuffToBuyAndSell);
-    }*/
-
-    public static void editDeck(String action, boolean nextIsBattle) /*throws Exception*/{
-
-        //ConsoleView.editDeck();
-        //action = scanner.nextLine();
-        //lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editDeck");
-        //helpHandler(lastViewMethod, nextIsBattle);
+    public static void editDeck(String action, boolean nextIsBattle) {
         try {
             if (action.startsWith("Add ") || action.startsWith("add ")) {
                 int splitIndex = 0;
@@ -273,11 +109,7 @@ public class Main {
         //editDeck(nextIsBattle);
     }
 
-    public static void editAmulet(String action) /*throws Exception*/{
-        //ConsoleView.editAmulet();
-        //action = scanner.nextLine();
-        //lastViewMethod = Class.forName("View.GameView.ConsoleView").getMethod("editAmulet");
-        //helpHandler(lastViewMethod);
+    public static void editAmulet(String action) {
         try{
             if(action.startsWith("Equip ") || action.startsWith("equip ")){
                 String amuletName = action.substring(6);
@@ -349,44 +181,6 @@ public class Main {
         }
         return false;
     }
-
-    /*private static void helpHandler(Method lastViewMethod) throws Exception{
-        while(true){
-            if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help").invoke(null);
-            else if(action.equalsIgnoreCase("Again"))
-                lastViewMethod.invoke(null);
-            else
-                break;
-            action = scanner.nextLine();
-        }
-    }
-
-    //for stuffInventory(TypeOfStuffToBuyAndSell)
-    private static void helpHandler(Method lastViewMethod, TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell) throws Exception{
-        while(true){
-            if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help", TypeOfStuffToBuyAndSell.class).invoke(null, typeOfStuffToBuyAndSell);
-            else if(action.equalsIgnoreCase("Again"))
-                lastViewMethod.invoke(null);
-            else
-                break;
-            action = scanner.nextLine();
-        }
-    }
-
-    //for editDeck(boolean)
-    private static void helpHandler(Method lastViewMethod, boolean nextIsBattle) throws Exception{
-        while(true){
-            if(action.equalsIgnoreCase("Help"))
-                Class.forName("View.GameView.ConsoleView").getMethod(lastViewMethod.getName() + "Help", boolean.class).invoke(null, nextIsBattle);
-            else if(action.equalsIgnoreCase("Again"))
-                lastViewMethod.invoke(null);
-            else
-                break;
-            action = scanner.nextLine();
-        }
-    }*/
 
     public static <T extends Stuff> ArrayList<Pair<T, Integer>> getUniqueWithNumber(ArrayList<T> stuffs){
         Boolean[] repetitious = new Boolean[stuffs.size()];

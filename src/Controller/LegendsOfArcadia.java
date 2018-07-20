@@ -1,13 +1,14 @@
 package Controller;
 
-import Model.Amulet;
-import Model.Spell.GeneralizedSpell;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import View.MenuView;
 
+import java.util.ArrayList;
+
 public class LegendsOfArcadia extends Application {
+    public static ArrayList<Game> customGames = new ArrayList<>();
     static Stage pStage;
     private static Map map;
 
@@ -25,7 +26,7 @@ public class LegendsOfArcadia extends Application {
 
         Game game = Game.getCopyOfCurrentGame();
         game.setName("Main Game");
-        Main.customGames.add(game);
+        customGames.add(game);
 
 //        System.out.println(game.getMysticHourGlass());
 //        game.getAllStuff().remove(0);
@@ -43,22 +44,18 @@ public class LegendsOfArcadia extends Application {
         primaryStage.getIcons().add(new Image(LegendsOfArcadia.class.getResourceAsStream("icon.png")));
 
         preProcessEventHandling(primaryStage);
-        //MenuView.showMainMenu();
+        MenuView.showMainMenu();
         //Main.editInventory();
         //Main.joinGame("127.0.0.1",656);
-        Main.hostGame(656);
+        //Main.hostGame(656);
         primaryStage.show();
     }
 
     private void preProcessEventHandling(Stage primaryStage){
         MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
-            try {
-                Main.afterMatch();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Game.setCurrentGame(LegendsOfArcadia.customGames.get(0));
+            Main.afterMatch();
             map = new Map(primaryStage, 1);
-
         });
 
         MenuView.getExitButton().setOnMouseClicked(event -> {
@@ -71,4 +68,8 @@ public class LegendsOfArcadia extends Application {
     }
 
     public static Map getMap() {return map;}
+
+    public static void setMap(Map map) {
+        LegendsOfArcadia.map = map;
+    }
 }
