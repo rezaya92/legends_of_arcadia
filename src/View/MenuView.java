@@ -2,6 +2,7 @@ package View;
 
 import Controller.LegendsOfArcadia;
 import Controller.Main;
+import Controller.Popup;
 import Model.Amulet;
 import Model.Card.Card;
 import Model.Stuff;
@@ -26,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -92,7 +94,6 @@ public class MenuView {
         });
 
         returnButton.setOnMouseClicked(event -> {
-            //TODO
             LegendsOfArcadia.getMap().continueMap();
         });
 
@@ -293,7 +294,13 @@ public class MenuView {
         Button returnButton = new Button("Return");
 
         returnButton.setOnMouseClicked(event -> {
-            //TODO
+            if (human.getDeckCards().size() < 25) {
+                Popup popup = new Popup("Deck must contain at least 25 cards!");
+                popup.show();
+            }
+            else {
+                LegendsOfArcadia.getMap().continueMap();
+            }
         });
 
         editDeckButton.setOnMouseClicked(event -> {

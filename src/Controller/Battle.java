@@ -271,17 +271,28 @@ public class Battle {
         human.getOpponent().setItems(opponentItemsBeforeCustomization);
         if (!isMultiplayer){
             if (winner == human) {
-                LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
+                if (opponent == lucifer) {
+                    ConsoleView.wholeWinner();
+                    Popup popup = new Popup("Game Over" + "\n\n" + "*** YOU WIN *** " + "\n\n" + "Thank you for playing.");
+                    popup.show();
+                    MenuView.showMainMenu();
+                }
+                else {
+                    LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 2);
+                }
             } else {
                 if (mysticHourGlass > 0) {
                     human.setItems(humanItemsBeforeCustomization);
                     mysticHourGlass--;
+                    Popup popup = new Popup("You lost the battle" + "\n\n" + "remaining hourglasses: " + mysticHourGlass);
+                    popup.show();
+                    //sleep(2000);
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 } else {
-                    mysticHourGlass = 3;   //todo other restorations ??
+                    new Popup("You are out of mystic hourglass" + "\n\n" + "Game Over").show();
                     MenuView.showMainMenu();
                 }
-            } // todo lucifer
+            }
         }
         else {
             human.setItems(humanItemsBeforeCustomization);
@@ -353,5 +364,14 @@ public class Battle {
             }
             Platform.runLater(GameView::updateFields);
         } catch (NullPointerException ignored){ }
+    }
+
+
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
