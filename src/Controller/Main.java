@@ -194,12 +194,12 @@ public class Main {
         String amuletName = cellTower.receiveText().split(":")[1];
         if (!amuletName.equals("NULL"))
             opponent.setEquippedAmulet((Amulet)getStuffByName(amuletName));
-        Battle.startGameAgainst(opponent,coin,true);
+        Battle.startGameAgainst(opponent, coin, true);
     }
 
     static void joinGame(String ip, int portNumber) throws IOException {
         human.setIsPlaying(true);
-        Socket socket = new Socket(ip,portNumber);
+        Socket socket = new Socket(ip, portNumber);
         cellTower = new CellTower(socket);
         Player opponent = new Player(cellTower.receiveText().split(":")[1],1000);
         String amuletName = cellTower.receiveText().split(":")[1];
@@ -207,6 +207,6 @@ public class Main {
         if (!amuletName.equals("NULL"))
             opponent.setEquippedAmulet((Amulet)getStuffByName(amuletName));
         cellTower.transmitPlayerData(human);
-        Battle.startGameAgainst(opponent,1 - Integer.parseInt(cellTower.receiveText().split(":")[1]),true);
+        Battle.startGameAgainst(opponent, 1 - Integer.parseInt(cellTower.receiveText().split(":")[1]),true);
     }
 }

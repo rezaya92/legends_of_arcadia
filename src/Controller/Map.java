@@ -248,7 +248,7 @@ public class Map {
 
     private void stageProcess() {
         primaryStage.setScene(scene);
-        primaryStage.setHeight(height - 11);
+        primaryStage.setHeight(height - 12);
         primaryStage.setWidth(width - 12);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Legends of Arcadia - World map");

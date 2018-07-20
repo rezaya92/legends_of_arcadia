@@ -17,6 +17,7 @@ public class Game implements Serializable{
     private int mysticHourGlass;// = 3;
     private ArrayList<Player> opponents;// = new ArrayList<>(Arrays.asList(goblinChieftain,ogreWarlord,vampireLord,lucifer));
     private ArrayList<Stuff> allStuff;// = new ArrayList<>();
+    private Map map;
 
 //    public Game(){
 //
