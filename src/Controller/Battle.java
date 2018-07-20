@@ -13,7 +13,6 @@ import View.GameView.ConsoleView;
 import View.GameView.GameView;
 import javafx.application.Platform;
 import View.MenuView;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import static Model.Stuff.getStuffByName;
 import java.util.*;
@@ -286,7 +285,6 @@ public class Battle {
                     mysticHourGlass--;
                     Popup popup = new Popup("You lost the battle" + "\n\n" + "remaining hourglasses: " + mysticHourGlass);
                     popup.show();
-                    //sleep(2000);
                     LegendsOfArcadia.getMap().continueMap(Main.opponents.indexOf(human.getOpponent()) + 1);
                 } else {
                     new Popup("You are out of mystic hourglass" + "\n\n" + "Game Over").show();
@@ -366,12 +364,4 @@ public class Battle {
         } catch (NullPointerException ignored){ }
     }
 
-
-    private static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

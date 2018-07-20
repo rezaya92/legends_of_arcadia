@@ -310,10 +310,7 @@ public class Map {
         actionTime = 0;
         goNorth = goSouth = goEast = goWest = doAction = false;
         durationTime = 30;
-        moveTimeline.play();//
-        //createMoveEvent();
-        //imagesProcess();
-        //levelProcess();
+        moveTimeline.play();
         stageProcess();
     }
 

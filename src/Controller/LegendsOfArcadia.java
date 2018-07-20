@@ -21,9 +21,6 @@ public class LegendsOfArcadia extends Application {
         PreProcess.preProcess();//TODO delete duplicate in Main
 
 
-
-//        System.out.println(Main.mysticHourGlass);
-
         Game game = Game.getCopyOfCurrentGame();
         game.setName("Main Game");
         customGames.add(game);
@@ -54,7 +51,6 @@ public class LegendsOfArcadia extends Application {
     private void preProcessEventHandling(Stage primaryStage){
         MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
             Game.setCurrentGame(LegendsOfArcadia.customGames.get(0));
-            //Main.afterMatch();
             map = new Map(primaryStage, 1);
         });
 
