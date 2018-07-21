@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static Controller.Battle.isMultiplayer;
@@ -77,12 +78,15 @@ public class GameView {
         Group root = new Group();
         informationGroup = new Group();
         playFieldGroup = new Group();
+        ImageView imageView = new ImageView(new Image(GameView.class.getResource("max-frorer-mfrorer-bnart-1024x576.jpg").toExternalForm()));
+        imageView.setFitWidth(1500);
+        imageView.setFitHeight(800);
         menusGroup = new Group();
         root.relocate(0,0);
         preparePlayFieldGroup();
         prepareMenusGroup();
         prepareInformationGroup();
-        root.getChildren().addAll(informationGroup,playFieldGroup,menusGroup);
+        root.getChildren().addAll(imageView,informationGroup,playFieldGroup,menusGroup);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -165,7 +169,7 @@ public class GameView {
         ImageView playerDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
         playerDeck.relocate(400,primaryStage.getHeight() - 160);
         ImageView opponentDeck = new ImageView(new Image(GameView.class.getResource("Deck.png").toExternalForm(),100,110,false,true));
-        opponentDeck.relocate(400,0);
+        opponentDeck.relocate(400,20);
         playerMana = new Text();
         playerMana.textProperty().bind(player.manaProperty().asString());
         playerMana.setId("text");
@@ -191,12 +195,12 @@ public class GameView {
         opponentHP.setId("text");
         opponentHP.relocate(245,68);
         opponentDeckCardCount = new Text("30");
-        opponentDeckCardCount.relocate(455  , 45);
+        opponentDeckCardCount.relocate(430  , 52);
         opponentDeckCardCount.setFont(new Font("Forte",20));
         playerDeckCardCount = new Text("30");
-        playerDeckCardCount.relocate(455  ,primaryStage.getHeight() - 117);
+        playerDeckCardCount.relocate(430  ,primaryStage.getHeight() - 128);
         playerDeckCardCount.setFont(new Font("Forte",20));
-        playFieldGroup.getChildren().addAll(playerDeckCardCount,opponentDeckCardCount,opponentDeck,playerDeck,playerGraveYard,opponentGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText,playerMana,playerMaxMana,opponentMana,opponentMaxMana,playerHP,opponentHP);
+        playFieldGroup.getChildren().addAll(opponentDeck,playerDeck,playerDeckCardCount,opponentDeckCardCount,playerGraveYard,opponentGraveYard,playerMonsterField,opponentSpellField,playerSpellField,opponentMonsterField,playerButton,playerText,opponentButton,opponentText,playerMana,playerMaxMana,opponentMana,opponentMaxMana,playerHP,opponentHP);
     }
 
     private static void prepareMenusGroup(){

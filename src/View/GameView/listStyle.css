@@ -148,7 +148,8 @@
     -fx-border-width: 5;
     -fx-border-color: black;
     -fx-alignment: center;
-    -fx-background-color: white;
+    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-text-fill: white;
 }
 
 .list-cell:selected {
@@ -157,13 +158,33 @@
 }
 
 .list-cell:empty{
-    -fx-text-fill: white;
-    -fx-background-color: white;
+    -fx-text-fill: transparent;
+    -fx-background-color: transparent;
     -fx-border-width: 0;
 }
 .list-view {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+
+
+.text-area {
+    -fx-font: 13 "Comic Sans MS";
+    -fx-text-fill: white;
+    -fx-background-color: rgba(53,89,119,0.4);
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
 }
 
 .scroll-bar:horizontal .track,

@@ -134,7 +134,6 @@ public class MenuView {
         multiplayerMenuGroup.getChildren().addAll(imageView1,nameText,vBox);
         hostGameButton.setOnMouseClicked(event -> {
             if (!textField.getText().equals("")) {
-                System.out.println(nameText.getText());
                 human.setName(textField.getText());
                 showHostGameMenu();
             }
