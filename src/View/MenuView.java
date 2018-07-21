@@ -591,6 +591,10 @@ public class MenuView {
 
     public static void showEditAmulet(ArrayList<Amulet> amulets, Amulet equippedAmulet, String transferMessage){
         Group editAmuletGroup = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        editAmuletGroup.getChildren().addAll(imageView1);
         Scene scene = new Scene(editAmuletGroup);
         ArrayList<Button> amuletsButtons = new ArrayList<>();
         ArrayList<Button> equippedAmuletButtons = new ArrayList<>();
