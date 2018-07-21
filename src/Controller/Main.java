@@ -6,6 +6,8 @@ import View.GameView.ConsoleView;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -183,9 +185,13 @@ public class Main {
         return output;
     }
 
-    static void hostGame(int portNumber) throws IOException {
+    public static void hostGame(int portNumber) throws IOException, InterruptedException {
         human.setIsPlaying(true);
+        String ipAddresses = "";
         ServerSocket serverSocket = new ServerSocket(portNumber);
+        System.out.print(ipAddresses);
+        //Popup popup = new Popup("waiting for guest to connect to one of the addressed below:\n" + ipAddresses);
+        //popup.show();
         Socket socket = serverSocket.accept();
         int coin = new Random().nextInt(2);
         cellTower = new CellTower(socket,serverSocket);
@@ -197,7 +203,7 @@ public class Main {
         Battle.startGameAgainst(opponent, coin, true);
     }
 
-    static void joinGame(String ip, int portNumber) throws IOException {
+    public static void joinGame(String ip, int portNumber) throws IOException {
         human.setIsPlaying(true);
         Socket socket = new Socket(ip, portNumber);
         cellTower = new CellTower(socket);

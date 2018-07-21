@@ -9,12 +9,14 @@ import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,21 +25,25 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import static Controller.Main.human;
 
 public class MenuView {
     private static Stage primaryStage = LegendsOfArcadia.getPrimaryStage();
-    private static final double buttonPrefWidth = 300;
+    private static final double buttonPrefWidth = 500;
     private static Button singlePlayerButton = new Button("Single Player");
     private static Button customGameButton = new Button("Custom Game");
-    private static Button multiPlayerButton = new Button("Multi Player");
+    private static Button multiPlayerButton = new Button("Multiplayer");
     private static Button settingsButton = new Button("Settings");
     private static Button exitButton = new Button("Exit");
-
     private static Button cardShopButton = new Button("Card Shop");
     private static Button itemShopButton = new Button("Item Shop");
     private static Button amuletShopButton = new Button("Amulet Shop");
@@ -46,13 +52,16 @@ public class MenuView {
     private static Button editAmuletButton = new Button("Edit Amulet");
 
     public static void showMainMenu(){
+        Text title = new Text("Legends of Arcadia");
+        title.setId("title");
+        title.relocate(400,100);
         primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
         Group mainMenuGroup = new Group();
-        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        ImageView imageView = new ImageView(new Image(new File("epic-north-arcadia-redux.jpg").toURI().toString()));
         imageView.setFitWidth(1500);
         imageView.setFitHeight(800);
-        mainMenuGroup.getChildren().addAll(imageView);
+        mainMenuGroup.getChildren().addAll(imageView,title);
         //StackPane stackPane = new StackPane();
         //stackPane.setId("pane");
         Scene scene = new Scene(mainMenuGroup);
@@ -103,6 +112,121 @@ public class MenuView {
 
         VBox vBox = makeVBox(cardShopButton, itemShopButton, amuletShopButton, returnButton);
         shopGroup.getChildren().add(vBox);
+    }
+
+    public static void showMultiplayerMenu(){
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        Group multiplayerMenuGroup = new Group();
+        Scene scene = new Scene(multiplayerMenuGroup);
+        primaryStage.setScene(scene);
+        TextField textField = new TextField();
+        textField.resize(100,50);
+        Text nameText = new Text("Name:");
+        nameText.setId("text");
+        nameText.relocate(primaryStage.getWidth()/2 - 305,150);
+        Button returnButton = new Button("Return");
+        Button hostGameButton = new Button("Host Game");
+        Button joinGameButton = new Button("Join Game");
+        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        VBox vBox = makeVBox(textField,hostGameButton,joinGameButton,returnButton);
+        multiplayerMenuGroup.getChildren().addAll(imageView1,nameText,vBox);
+        hostGameButton.setOnMouseClicked(event -> {
+            if (!textField.getText().equals("")) {
+                System.out.println(nameText.getText());
+                human.setName(textField.getText());
+                showHostGameMenu();
+            }
+        });
+        joinGameButton.setOnMouseClicked(event -> {
+            if (!textField.getText().equals("")) {
+                human.setName(textField.getText());
+                showJoinGameMenu();
+            }
+        });
+        returnButton.setOnMouseClicked(event -> showMainMenu());
+    }
+
+    private static void showHostGameMenu(){
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        Group hostGameMenuGroup = new Group();
+        Scene scene = new Scene(hostGameMenuGroup);
+        primaryStage.setScene(scene);
+        Button returnButton = new Button("Return");
+        Button hostGameButton = new Button("Host Game");
+        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        TextField textField = new TextField();
+        textField.resize(100,50);
+        Text portText = new Text("Port Number:");
+        portText.setId("text");
+        Text waitingText = new Text("waiting for guest to connect to one of the ip addresses below:\n");
+        portText.relocate(primaryStage.getWidth()/2 - 340,150);
+        waitingText.relocate(primaryStage.getWidth()/2 - 100,800);
+        Iterator<NetworkInterface> iterator = null;
+        try {
+            iterator = NetworkInterface.getNetworkInterfaces().asIterator();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        while (iterator.hasNext()) {
+            Iterator<InetAddress> iterator1 = iterator.next().getInetAddresses().asIterator();
+            while (iterator1.hasNext()) {
+                InetAddress inetAddress = iterator1.next();
+                if (inetAddress.getHostAddress().contains("."))
+                    waitingText.setText(waitingText.getText().concat(inetAddress.getHostAddress() + "\n"));
+            }
+        }
+        VBox vBox = makeVBox(textField,hostGameButton,returnButton);
+        hostGameMenuGroup.getChildren().addAll(imageView1,portText,vBox);
+        returnButton.setOnMouseClicked(event -> showMultiplayerMenu());
+        hostGameButton.setOnMouseClicked(event -> {
+            if (!textField.getText().equals("")) {
+                //new Popup(waitingText.getText()).show();
+                hostGameMenuGroup.getChildren().add(waitingText);
+                try {
+                    Main.hostGame(Integer.parseInt(textField.getText()));
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private static void showJoinGameMenu(){
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        Group joinGameMenuGroup = new Group();
+        Scene scene = new Scene(joinGameMenuGroup);
+        primaryStage.setScene(scene);
+        Button returnButton = new Button("Return");
+        Button joinGameButton = new Button("Join Game");
+        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        TextField portTextField = new TextField();
+        portTextField.resize(100,50);
+        TextField ipTextField = new TextField();
+        ipTextField.resize(100,50);
+        Text portText = new Text("Port Number:");
+        portText.setId("text");
+        Text ipText = new Text("IP Address:");
+        ipText.setId("text");
+        portText.relocate(primaryStage.getWidth()/2 - 340,205);
+        ipText.relocate(primaryStage.getWidth()/2 - 330,150);
+        VBox vBox = makeVBox(ipTextField,portTextField,joinGameButton,returnButton);
+        joinGameMenuGroup.getChildren().addAll(imageView1,ipText,portText,vBox);
+        returnButton.setOnMouseClicked(event -> showMultiplayerMenu());
+        joinGameButton.setOnMouseClicked(event -> {
+            if (!portTextField.getText().equals("") && !ipTextField.getText().equals("")) {
+                try {
+                    Main.joinGame(ipTextField.getText(),Integer.parseInt(portTextField.getText()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void showStuffShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> shopStuff, List<? extends Stuff> playerStuff){
@@ -468,10 +592,6 @@ public class MenuView {
 
     public static void showEditAmulet(ArrayList<Amulet> amulets, Amulet equippedAmulet, String transferMessage){
         Group editAmuletGroup = new Group();
-        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
-        imageView1.setFitWidth(1500);
-        imageView1.setFitHeight(800);
-        editAmuletGroup.getChildren().addAll(imageView1);
         Scene scene = new Scene(editAmuletGroup);
         ArrayList<Button> amuletsButtons = new ArrayList<>();
         ArrayList<Button> equippedAmuletButtons = new ArrayList<>();

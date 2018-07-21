@@ -15,10 +15,10 @@ public class LegendsOfArcadia extends Application {
     private static Map map;
 
     public static void main(String[] args) {
-        String path = LegendsOfArcadia.class.getResource("/music.mp3").toString();
-        Media media = new Media(path);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+//        String path = LegendsOfArcadia.class.getResource("/music.mp3").toString();
+  //      Media media = new Media(path);
+    //    MediaPlayer mediaPlayer = new MediaPlayer(media);
+    //    mediaPlayer.play();
         launch(args);
     }
 
@@ -59,6 +59,8 @@ public class LegendsOfArcadia extends Application {
             Game.setCurrentGame(LegendsOfArcadia.customGames.get(0));
             map = new Map(primaryStage, 1);
         });
+
+        MenuView.getMultiPlayerButton().setOnMouseClicked(event -> MenuView.showMultiplayerMenu());
 
         MenuView.getExitButton().setOnMouseClicked(event -> {
             primaryStage.close();//correct? (can change to system.exit(0))
