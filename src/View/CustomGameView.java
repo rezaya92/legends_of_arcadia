@@ -1,14 +1,14 @@
 package View;
 
 import Controller.*;
+import Model.Card.Card;
+import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
-import Model.Spell.GeneralizedSpell;
-import Model.Spell.Spell;
+import Model.PlayerHero;
+import Model.Spell.*;
 import Model.Stuff;
 import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
-import Model.Spell.SpellArea;
-import Model.Spell.SpellChoiceType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 
 import static Controller.Main.human;
 import static View.MenuView.makeVBox;
@@ -174,7 +175,6 @@ public class CustomGameView {
         primaryStage.setTitle("Create Spell");
 
         ArrayList<HBox> hBoxes = new ArrayList<>();
-        ArrayList<HBox> hBoxes1 = new ArrayList<>();
 
         ChoiceBox<String> typeChoiceBox = new ChoiceBox(FXCollections.observableArrayList("move spell", "hp spell", "ap spell"));
         ChoiceBox<SpellArea> targetPlaceChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellArea.values()));
@@ -184,25 +184,14 @@ public class CustomGameView {
         destinationChoiceBox.getItems().removeAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
         TextField amountTextField = new TextField();
 
-//        selectionMethodChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SpellChoiceType>() {
-//            @Override
-//            public void changed(ObservableValue<? extends SpellChoiceType> observable, SpellChoiceType oldValue, SpellChoiceType newValue) {
-//
-//            }
-//        });
-
-
         hBoxes.add(new HBox(5, new Label("Type:"), typeChoiceBox));
         hBoxes.add(new HBox(5, new Label("Target Place:"), targetPlaceChoiceBox));
         hBoxes.add(new HBox(5, new Label("Target Card Type:"), targetCardTypeChoiceBox));
         hBoxes.add(new HBox(5, new Label("Selection Method:"), selectionMethodChoiceBox));
-        hBoxes.add(new HBox(5, new Label("Destination:"), destinationChoiceBox));
-        //hBoxes.add(new HBox(5, new Label("Type:"), typeChoiceBox));
-        hBoxes1.add(new HBox(5, new Label("Type:"), typeChoiceBox));
-        hBoxes1.add(new HBox(5, new Label("Target Place:"), targetPlaceChoiceBox));
-        hBoxes1.add(new HBox(5, new Label("Target Card Type:"), targetCardTypeChoiceBox));
-        hBoxes1.add(new HBox(5, new Label("Selection Method:"), selectionMethodChoiceBox));
-        hBoxes1.add(new HBox(5, new Label("Change Amount:"), amountTextField));
+        HBox desHBox = new HBox(5, new Label("Destination:"), destinationChoiceBox);
+        hBoxes.add(desHBox);
+        HBox amountHBox = new HBox(5, new Label("Change Amount:"), amountTextField);
+        amountHBox.setAlignment(Pos.CENTER);
 
         for(HBox hBox : hBoxes){
             hBox.setAlignment(Pos.CENTER);
@@ -210,31 +199,15 @@ public class CustomGameView {
         VBox vBox = makeVBox(hBoxes);
         vBox.setAlignment(Pos.TOP_CENTER);
 
-        for(HBox hBox : hBoxes1){
-            hBox.setAlignment(Pos.CENTER);
-        }
-        VBox vBox1 = makeVBox(hBoxes1);
-        vBox1.setAlignment(Pos.TOP_CENTER);
-
         typeChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 targetPlaceChoiceBox.getItems().removeAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
                 if(newValue.equalsIgnoreCase("move spell")){
-//                    root.getChildren().removeAll(vBox1);
-//                    root.getChildren().addAll(vBox);
-                    vBox1.setManaged(false);
-                    vBox1.setVisible(false);
-                    vBox.setManaged(true);
-                    vBox.setVisible(true);
+                    vBox.getChildren().set(4, desHBox);
                 }else{
                     targetPlaceChoiceBox.getItems().addAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
-//                    root.getChildren().removeAll(vBox);
-//                    root.getChildren().addAll(vBox1);
-                    vBox.setManaged(false);
-                    vBox.setVisible(false);
-                    vBox1.setManaged(true);
-                    vBox1.setVisible(true);
+                    vBox.getChildren().set(4, amountHBox);
                 }
             }
         });
@@ -244,6 +217,7 @@ public class CustomGameView {
             public void changed(ObservableValue<? extends SpellArea> observable, SpellArea oldValue, SpellArea newValue) {
                 if(newValue.name().endsWith("PLAYER")){
                     targetCardTypeChoiceBox.setDisable(true);
+                    selectionMethodChoiceBox.setValue(SpellChoiceType.ALL);
                     selectionMethodChoiceBox.setDisable(true);
                 }else{
                     targetCardTypeChoiceBox.setDisable(false);
@@ -252,9 +226,57 @@ public class CustomGameView {
             }
         });
 
-        vBox.setManaged(false);
-        vBox.setVisible(false);
-        root.getChildren().addAll(vBox, vBox1);
+
+        //--------------submit button----------------
+        Button submitButton = new Button("Craft Spell");
+        submitButton.setOnMouseClicked(event -> {
+            if(!areValidChoiceBoxes(typeChoiceBox, targetPlaceChoiceBox, targetCardTypeChoiceBox, selectionMethodChoiceBox)){
+                new Popup("you must specify the spell's details").show();
+                return;
+            }
+            Class[] targetClasses = new Class[]{getClassByName(targetCardTypeChoiceBox.getValue())};
+            if(targetPlaceChoiceBox.getValue().name().endsWith("PLAYER")){
+                targetClasses[0] = PlayerHero.class;
+            }
+
+            if(typeChoiceBox.getValue().equalsIgnoreCase("move spell")){
+                if(!areValidChoiceBoxes(destinationChoiceBox)){
+                    new Popup("you must specify the spell's details").show();
+                    return;
+                }
+                customGameSpells.add(new MoveSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), destinationChoiceBox.getValue()));
+            }else{
+                if(amountTextField.getText() == null || amountTextField.getText().equalsIgnoreCase("")){
+                    new Popup("you must specify the spell's details").show();
+                    return;
+                }
+                if(typeChoiceBox.getValue().equalsIgnoreCase("hp spell")){
+                    customGameSpells.add(new HPSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText())));
+                }else if(typeChoiceBox.getValue().equalsIgnoreCase("ap spell")){
+                    customGameSpells.add(new APSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText())));
+                }
+            }
+                new Popup("Spell Created!").show();
+        });
+        submitButton.relocate(600, 530);
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
+
+        root.getChildren().addAll(vBox, submitButton, returnButton);
+    }
+
+    public static Class getClassByName(String name){
+        if(name.equalsIgnoreCase("Monster Card"))
+            return MonsterCard.class;
+        if(name.equalsIgnoreCase("Spell Card"))
+            return SpellCard.class;
+        if(name.equalsIgnoreCase("Card"))
+            return Card.class;
+        return Exception.class;
     }
 
     public static void setStatusOfReturnButton(Button returnButton, double x, double y){
@@ -265,6 +287,15 @@ public class CustomGameView {
         returnButton.setMaxWidth(50);
         //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
         returnButton.relocate(x, y);
+    }
+
+    public static boolean areValidChoiceBoxes(ChoiceBox... choiceBoxes){
+        for(ChoiceBox choiceBox : choiceBoxes){
+            if(!choiceBox.isDisable() && choiceBox.getValue() == null){
+                return false;
+            }
+        }
+        return true;
     }
 
 
