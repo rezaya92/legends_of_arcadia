@@ -24,11 +24,15 @@ public class SpellCard extends Card implements Cloneable, Serializable{
     }
 
     public SpellCard(GeneralizedSpell spell, int defaultManaCost, SpellCardType spellCardType){
+        this(spell, defaultManaCost, spellCardType, 700*defaultManaCost, spell.getName());
+    }
+
+    public SpellCard(GeneralizedSpell spell, int defaultManaCost, SpellCardType spellCardType, int price, String name){
         this.manaCost = this.defaultManaCost = defaultManaCost;
         this.spell = spell;
         this.spellCardType = spellCardType;
-        this.name = spell.getName();
-        this.price = 700*defaultManaCost;
+        this.name = name;
+        this.price = price;
         Main.allStuff.add(this);
     }
 

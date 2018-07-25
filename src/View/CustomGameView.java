@@ -4,6 +4,7 @@ import Controller.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
+import Model.Card.SpellCardType;
 import Model.PlayerHero;
 import Model.Spell.*;
 import Model.Stuff;
@@ -40,6 +41,18 @@ public class CustomGameView {
     private static ArrayList<Spell> customGameSpells = new ArrayList<>();
     private static ArrayList<Spell> playerCustomGameSpells = new ArrayList<>();
     private static ArrayList<GeneralizedSpell> generalizedGameSpells = new ArrayList<>();
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void showMainEntrance(){
         Group root = new Group();
@@ -104,6 +117,24 @@ public class CustomGameView {
         root.getChildren().addAll(listView, returnButton);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void showNewGameTemplate(){
         Group root = new Group();
         Scene entranceScene = new Scene(root);
@@ -140,32 +171,79 @@ public class CustomGameView {
         root.getChildren().addAll(listView, returnButton);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void showEditPart(){
         Group root = new Group();
         Scene editPartScene = new Scene(root);
-        editPartScene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());//TODO css
+        editPartScene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());//TODO css
         primaryStage.setScene(editPartScene);
         primaryStage.setTitle("Customize Game");
 
         Button createSpellButton = new Button("Create Spell");
+        Button createGeneralizedSpellButton = new Button("Create Generalized Spell");
+        Button newCardsButton = new Button("Create New Cards");
+        Button newItemsButton = new Button("Create New Items");//TODO create or edit?
+        Button newAmuletsButton = new Button("Create New Amulets");
+        Button editShopButton = new Button("Edit Shop");
+        Button editDecksButton = new Button("Edit Decks");
+
         createSpellButton.setOnMouseClicked(event -> {
             showCreateSpell();
         });
-        Button createGeneralizedSpellButton = new Button("Create Generalized Spell");
-        Button editCardsButton = new Button("Edit Cards");
-        Button editItemsButton = new Button("Edit Items");//TODO create or edit?
-        Button editAmuletsButton = new Button("Edit Amulets");
-        Button editShopButton = new Button("Edit Shop");
-        Button editDecksButton = new Button("Edit Decks");
 
         createGeneralizedSpellButton.setOnMouseClicked(event -> {
             showGeneralizedSpellMakingMenu();
         });
 
-        VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, editCardsButton, editItemsButton, editAmuletsButton, editShopButton, editDecksButton);
+        newCardsButton.setOnMouseClicked(event -> {
+            showNewCardMakingMenu();
+        });
 
-        root.getChildren().addAll(vBox);
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showNewGameTemplate();
+        });
+
+        VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, newCardsButton, newItemsButton, newAmuletsButton, editShopButton, editDecksButton);
+
+        root.getChildren().addAll(vBox, returnButton);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void showCreateSpell(){
         Group root = new Group();
@@ -176,11 +254,11 @@ public class CustomGameView {
 
         ArrayList<HBox> hBoxes = new ArrayList<>();
 
-        ChoiceBox<String> typeChoiceBox = new ChoiceBox(FXCollections.observableArrayList("move spell", "hp spell", "ap spell"));
-        ChoiceBox<SpellArea> targetPlaceChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellArea.values()));
-        ChoiceBox<String> targetCardTypeChoiceBox = new ChoiceBox(FXCollections.observableArrayList("Monster Card", "Spell Card", "Card"));
-        ChoiceBox<SpellChoiceType> selectionMethodChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellChoiceType.values()));
-        ChoiceBox<SpellArea> destinationChoiceBox = new ChoiceBox(FXCollections.observableArrayList(SpellArea.values()));
+        ChoiceBox<String> typeChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList("move spell", "hp spell", "ap spell"));
+        ChoiceBox<SpellArea> targetPlaceChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(SpellArea.values()));
+        ChoiceBox<String> targetCardTypeChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList("Monster Card", "Spell Card", "Card"));
+        ChoiceBox<SpellChoiceType> selectionMethodChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(SpellChoiceType.values()));
+        ChoiceBox<SpellArea> destinationChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(SpellArea.values()));
         destinationChoiceBox.getItems().removeAll(SpellArea.FRIENDLY_PLAYER, SpellArea.ENEMY_PLAYER);
         TextField amountTextField = new TextField();
 
@@ -234,29 +312,40 @@ public class CustomGameView {
                 new Popup("you must specify the spell's details").show();
                 return;
             }
-            Class[] targetClasses = new Class[]{getClassByName(targetCardTypeChoiceBox.getValue())};
+            Class[] targetClasses = new Class[1];//{getClassByName(targetCardTypeChoiceBox.getValue())};
             if(targetPlaceChoiceBox.getValue().name().endsWith("PLAYER")){
                 targetClasses[0] = PlayerHero.class;
+            }else{
+                targetClasses[0] = getClassByName(targetCardTypeChoiceBox.getValue());
             }
+
+            Spell spell = null;
 
             if(typeChoiceBox.getValue().equalsIgnoreCase("move spell")){
                 if(!areValidChoiceBoxes(destinationChoiceBox)){
                     new Popup("you must specify the spell's details").show();
                     return;
                 }
-                customGameSpells.add(new MoveSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), destinationChoiceBox.getValue()));
+                spell = new MoveSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), destinationChoiceBox.getValue());
             }else{
-                if(amountTextField.getText() == null || amountTextField.getText().equalsIgnoreCase("")){
+                if(!areValidTextFields(amountTextField)){
                     new Popup("you must specify the spell's details").show();
                     return;
                 }
-                if(typeChoiceBox.getValue().equalsIgnoreCase("hp spell")){
-                    customGameSpells.add(new HPSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText())));
-                }else if(typeChoiceBox.getValue().equalsIgnoreCase("ap spell")){
-                    customGameSpells.add(new APSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText())));
+                try {
+                    if (typeChoiceBox.getValue().equalsIgnoreCase("hp spell")) {
+                        spell = new HPSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText()));
+                    } else if (typeChoiceBox.getValue().equalsIgnoreCase("ap spell")) {
+                        spell = new APSpell(EnumSet.of(targetPlaceChoiceBox.getValue()), targetClasses, selectionMethodChoiceBox.getValue(), Integer.parseInt(amountTextField.getText()));
+                    }
+                }catch (Exception e){
+                    new Popup("Invalid input").show();
+                    return;
                 }
             }
-                new Popup("Spell Created!").show();
+            spell.setName("Spell " + (customGameSpells.size()+playerCustomGameSpells.size()+1));
+            customGameSpells.add(spell);
+            new Popup("Spell Created!").show();
         });
         submitButton.relocate(600, 530);
 
@@ -268,6 +357,21 @@ public class CustomGameView {
 
         root.getChildren().addAll(vBox, submitButton, returnButton);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static Class getClassByName(String name){
         if(name.equalsIgnoreCase("Monster Card"))
@@ -297,6 +401,26 @@ public class CustomGameView {
         }
         return true;
     }
+
+    public static boolean areValidTextFields(TextField... textFields){
+        for(TextField textField : textFields){
+            if(textField.getText() == null || textField.getText().equalsIgnoreCase("")){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -359,7 +483,7 @@ public class CustomGameView {
             for (int i = 0; i < playerCustomGameSpells.size(); i++) {
                 spells[i] = playerCustomGameSpells.get(i);
             }
-            GeneralizedSpell generalizedSpell = new GeneralizedSpell(spells, "Custom Spell", "Custom Spell"); //todo consider name
+            GeneralizedSpell generalizedSpell = new GeneralizedSpell(spells, "Custom Spell", "Custom Spell " + (generalizedGameSpells.size() + 1)); //todo consider name
             generalizedGameSpells.add(generalizedSpell);
         });
 
@@ -428,5 +552,168 @@ public class CustomGameView {
 
         cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
         //cardShopGroup.getChildren().addAll(vBox, scrollBar);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showNewCardMakingMenu(){
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Create New Card");
+
+        Button spellCardMakingMenuButton = new Button("New Spell Card");
+        Button monsterCardMakingMenuButton = new Button("New Monster Card");
+
+        spellCardMakingMenuButton.setOnMouseClicked(event -> {
+            showSpellCardMakingMenu();
+        });
+
+        monsterCardMakingMenuButton.setOnMouseClicked(event -> {
+            showMonsterCardMakingMenu();
+        });
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
+
+        VBox vBox = makeVBox(spellCardMakingMenuButton, monsterCardMakingMenuButton);
+
+        root.getChildren().addAll(vBox, returnButton);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showSpellCardMakingMenu(){
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Create New Spell Card");
+
+        ArrayList<HBox> hBoxes = new ArrayList<>();
+
+        TextArea textArea = new TextArea();
+        ChoiceBox<GeneralizedSpell> generalizedSpellChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
+        ChoiceBox<SpellCardType> spellCardTypeChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(SpellCardType.values()));
+        //new ChoiceBox<>()
+        TextField manaTextField = new TextField();
+        TextField priceTextField = new TextField();
+        TextField nameTextField = new TextField();
+
+        hBoxes.add(new HBox(5, new Label("Generalized Spell:"), generalizedSpellChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Spell Card Type:"), spellCardTypeChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Mana Cost:"), manaTextField));
+        hBoxes.add(new HBox(5, new Label("Price:"), priceTextField));
+        hBoxes.add(new HBox(5, new Label("Name:"), nameTextField));
+
+        for(HBox hBox : hBoxes){
+            hBox.setAlignment(Pos.CENTER);
+        }
+        VBox vBox = makeVBox(hBoxes);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.relocate(150, 200);
+
+        generalizedSpellChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GeneralizedSpell>() {
+            @Override
+            public void changed(ObservableValue<? extends GeneralizedSpell> observable, GeneralizedSpell oldValue, GeneralizedSpell newValue) {
+                textArea.setText(newValue.getDetail());
+            }
+        });
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showNewCardMakingMenu();
+        });
+
+        //--------------submit button----------------
+        Button submitButton = new Button("Craft Spell Card");
+        submitButton.setOnMouseClicked(event -> {
+            if(!areValidChoiceBoxes(generalizedSpellChoiceBox, spellCardTypeChoiceBox) || !areValidTextFields(manaTextField, priceTextField, nameTextField)){
+                new Popup("you must specify the card's details").show();
+                return;
+            }
+            try{
+                new SpellCard(generalizedSpellChoiceBox.getValue(), Integer.parseInt(manaTextField.getText()), spellCardTypeChoiceBox.getValue(), Integer.parseInt(priceTextField.getText()), nameTextField.getText());
+            }catch (Exception e){
+                new Popup("Invalid input").show();
+                return;
+            }
+            new Popup("Spell card created!").show();
+        });
+        submitButton.relocate(600, 530);
+
+        //------------------text area----------------------
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        root.getChildren().addAll(vBox, textArea, returnButton, submitButton);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showMonsterCardMakingMenu(){
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Create New Monster Card");
+
+        //TODO
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
     }
 }

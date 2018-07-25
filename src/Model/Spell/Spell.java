@@ -188,6 +188,12 @@ public abstract class Spell implements Cloneable, Serializable{
     }
 
     @Override
+    public String toString(){
+        //TODO
+        return "TODO";
+    }
+
+    @Override
     public Object clone() throws CloneNotSupportedException{
         return super.clone();
     }

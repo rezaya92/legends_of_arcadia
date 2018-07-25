@@ -12,7 +12,7 @@ public class GeneralizedSpell implements Cloneable, Serializable{
     public static ArrayList<GeneralizedSpell> allSpells = new ArrayList<>();
     final private boolean merge;
 
-    public GeneralizedSpell(Spell[] spells, String detail, String name,boolean merge) {
+    public GeneralizedSpell(Spell[] spells, String detail, String name, boolean merge) {
         this.spells = spells;
         this.detail = detail;
         this.name = name;
@@ -91,6 +91,11 @@ public class GeneralizedSpell implements Cloneable, Serializable{
     }
 
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString(){
         return name;
     }
 
