@@ -161,7 +161,7 @@ public class CustomGameView {
         Button returnButton = new Button();
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
-            MenuView.showMainMenu();
+            showMainEntrance();
         });
 
         ListView<HBox> listView = new ListView<>(FXCollections.observableArrayList(hBoxes));
@@ -217,9 +217,26 @@ public class CustomGameView {
             showNewGameTemplate();
         });
 
+        TextField nameOfGameTextField = new TextField();
+        Button saveButton = new Button("Save Game");
+
+        saveButton.setOnMouseClicked(event -> {
+            if(!areValidTextFields(nameOfGameTextField)){
+                new Popup("Please enter the new game's name").show();
+                return;
+            }
+            Game game = Game.getCopyOfCurrentGame();
+            game.setName(nameOfGameTextField.getText());
+            LegendsOfArcadia.customGames.add(game);
+            showMainEntrance();
+            new Popup(nameOfGameTextField.getText() + " created successfully").show();
+        });
+        nameOfGameTextField.relocate(860, 340);
+        saveButton.relocate(805, 380);
+
         VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, newCardsButton, newItemsButton, newAmuletsButton, editShopButton, editDecksButton);
 
-        root.getChildren().addAll(vBox, returnButton);
+        root.getChildren().addAll(vBox, returnButton, nameOfGameTextField, saveButton);
     }
 
 
