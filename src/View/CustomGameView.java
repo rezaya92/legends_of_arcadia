@@ -1,14 +1,12 @@
 package View;
 
 import Controller.*;
+import Model.*;
 import Model.Card.Card;
 import Model.Card.MonsterCard;
 import Model.Card.SpellCard;
 import Model.Card.SpellCardType;
-import Model.PlayerHero;
 import Model.Spell.*;
-import Model.Stuff;
-import Model.TypeOfStuffToBuyAndSell;
 import View.GameView.ConsoleView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -209,6 +207,14 @@ public class CustomGameView {
 
         newCardsButton.setOnMouseClicked(event -> {
             showNewCardMakingMenu();
+        });
+
+        newItemsButton.setOnMouseClicked(event -> {
+            showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell.ITEM);
+        });
+
+        newAmuletsButton.setOnMouseClicked(event -> {
+            showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell.AMULET);
         });
 
         Button returnButton = new Button();
@@ -688,7 +694,7 @@ public class CustomGameView {
                 new Popup("Invalid input").show();
                 return;
             }
-            new Popup("Spell card created!").show();
+            new Popup(nameTextField.getText() + " spell card created!").show();
         });
         submitButton.relocate(600, 530);
 
@@ -732,5 +738,91 @@ public class CustomGameView {
         returnButton.setOnMouseClicked(event -> {
             showEditPart();
         });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Create New " + typeOfStuffToBuyAndSell.name().toLowerCase());
+
+        ArrayList<HBox> hBoxes = new ArrayList<>();
+
+        TextArea textArea = new TextArea();
+        ChoiceBox<GeneralizedSpell> generalizedSpellChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
+        TextField priceTextField = new TextField();
+        TextField nameTextField = new TextField();
+
+        hBoxes.add(new HBox(5, new Label("Generalized Spell:"), generalizedSpellChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Price:"), priceTextField));
+        hBoxes.add(new HBox(5, new Label("Name:"), nameTextField));
+
+        for(HBox hBox : hBoxes){
+            hBox.setAlignment(Pos.CENTER);
+        }
+        VBox vBox = makeVBox(hBoxes);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.relocate(150, 200);
+
+        generalizedSpellChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GeneralizedSpell>() {
+            @Override
+            public void changed(ObservableValue<? extends GeneralizedSpell> observable, GeneralizedSpell oldValue, GeneralizedSpell newValue) {
+                textArea.setText(newValue.getDetail());
+            }
+        });
+
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
+
+        //--------------submit button----------------
+        Button submitButton = new Button("Craft " + typeOfStuffToBuyAndSell.name().toLowerCase());
+        submitButton.setOnMouseClicked(event -> {
+            if(!areValidChoiceBoxes(generalizedSpellChoiceBox) || !areValidTextFields(priceTextField, nameTextField)){
+                new Popup("you must specify the card's details").show();
+                return;
+            }
+            try{
+                if(typeOfStuffToBuyAndSell.equals(TypeOfStuffToBuyAndSell.ITEM))
+                    new Item(generalizedSpellChoiceBox.getValue(), Integer.parseInt(priceTextField.getText()), nameTextField.getText());
+                else if(typeOfStuffToBuyAndSell.equals(TypeOfStuffToBuyAndSell.AMULET))
+                    new Amulet(generalizedSpellChoiceBox.getValue(), Integer.parseInt(priceTextField.getText()), nameTextField.getText());
+            }catch (Exception e){
+                new Popup("Invalid input").show();
+                return;
+            }
+            new Popup(nameTextField.getText() + " " + typeOfStuffToBuyAndSell.name().toLowerCase() + " created!").show();
+        });
+        submitButton.relocate(600, 530);
+
+        //------------------text area----------------------
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        root.getChildren().addAll(vBox, textArea, returnButton, submitButton);
     }
 }

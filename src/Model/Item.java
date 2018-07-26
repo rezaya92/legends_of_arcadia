@@ -14,9 +14,13 @@ public class Item implements Stuff, Cloneable, Serializable{
 
     //TODO set owner for every spell in constructor
     public Item(GeneralizedSpell effect, int price){
+        this(effect, price, effect.getName());
+    }
+
+    public Item(GeneralizedSpell effect, int price, String name){
         this.effect = effect;
         this.price = price;
-        this.name = effect.getName();
+        this.name = name;
         Main.allStuff.add(this);
     }
 

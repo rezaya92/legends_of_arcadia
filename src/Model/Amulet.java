@@ -12,9 +12,13 @@ public class Amulet implements Stuff, Cloneable, Serializable {
 
     //TODO set owner for every spell in constructor
     public Amulet(GeneralizedSpell effect, int price){
+        this(effect, price, effect.getName());
+    }
+
+    public Amulet(GeneralizedSpell effect, int price, String name){
         this.effect = effect;
         this.price = price;
-        this.name = effect.getName();
+        this.name = name;
         Main.allStuff.add(this);
     }
 
