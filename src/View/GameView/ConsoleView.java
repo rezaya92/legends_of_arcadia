@@ -218,8 +218,9 @@ abstract public class ConsoleView {
             console.appendText("\nSlot is full!\n" + "\n");
     }
 
-    public static void noEmptySlot(){
-        console.appendText("\nNo empty slot\n");
+    public static void noEmptySlot(Player player){
+        if (player == human)
+            console.appendText("\nNo empty slot\n");
     }
 
     public static void insufficientMana(Player player){

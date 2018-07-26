@@ -92,7 +92,7 @@ public class SpellCard extends Card implements Cloneable, Serializable{
             if (slot != -1)
                 return play(slot);
             else
-                ConsoleView.noEmptySlot();
+                ConsoleView.noEmptySlot(owner);
         }
         return false;
     }

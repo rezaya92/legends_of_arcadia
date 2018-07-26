@@ -205,7 +205,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
         if (slot != -1)
             return play(slot);
         else {
-            ConsoleView.noEmptySlot();
+            ConsoleView.noEmptySlot(owner);
             return false;
         }
     }

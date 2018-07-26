@@ -68,7 +68,6 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
         primaryStage.setScene(scene);
 
-        //scene.getStylesheets().add(MenuView.class.getResource("listStyle.css").toExternalForm());
         //setPrefWidthOfButtons(buttonPrefWidth, cardShopButton, itemShopButton, amuletShopButton);
         VBox vBox = makeVBox(singlePlayerButton, customGameButton, multiPlayerButton, settingsButton, exitButton);
         //vBox.relocate(300, 300);

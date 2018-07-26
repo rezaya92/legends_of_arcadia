@@ -88,7 +88,7 @@ public class GameView {
         prepareInformationGroup();
         root.getChildren().addAll(imageView,informationGroup,playFieldGroup,menusGroup);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(GameView.class.getResource("listStyle.css").toExternalForm());
+        scene.getStylesheets().add(GameView.class.getResource("GameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
     }
 
