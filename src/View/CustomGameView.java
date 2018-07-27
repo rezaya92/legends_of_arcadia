@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
 
+import static Controller.Main.allStuff;
 import static Controller.Main.human;
 import static View.MenuView.makeVBox;
 
@@ -214,6 +215,10 @@ public class CustomGameView {
             showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell.AMULET);
         });
 
+        editDecksButton.setOnMouseClicked(event -> {
+            showEditDecksMenu();
+        });
+
         Button returnButton = new Button();
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
@@ -237,7 +242,8 @@ public class CustomGameView {
         nameOfGameTextField.relocate(860, 340);
         saveButton.relocate(805, 380);
 
-        VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, newCardsButton, newItemsButton, newAmuletsButton, editShopButton, editDecksButton);
+        VBox vBox = makeVBox(createSpellButton, createGeneralizedSpellButton, newCardsButton, newItemsButton,
+                newAmuletsButton, editShopButton, editDecksButton);
 
         root.getChildren().addAll(vBox, returnButton, nameOfGameTextField, saveButton);
     }
@@ -571,7 +577,6 @@ public class CustomGameView {
 
 
         cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
-        //cardShopGroup.getChildren().addAll(vBox, scrollBar);
     }
 
 
@@ -730,14 +735,14 @@ public class CustomGameView {
         primaryStage.setTitle("Create New Monster Card");
 
         ArrayList<HBox> hBoxes = new ArrayList<>();
-        ArrayList<GeneralizedSpell> generalizedGameSpellsAndNull = new ArrayList<>();
+        ArrayList<GeneralizedSpell> generalizedGameSpellsAndNull = new ArrayList<>();   //todo is correct ?
         generalizedGameSpellsAndNull.add(null);
         generalizedGameSpellsAndNull.addAll(generalizedGameSpells);
 
         TextArea textArea = new TextArea();
-        ChoiceBox<GeneralizedSpell> battleCryChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));//todo
-        ChoiceBox<GeneralizedSpell> spellChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
-        ChoiceBox<GeneralizedSpell> willChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
+        ChoiceBox<GeneralizedSpell> battleCryChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpellsAndNull));
+        ChoiceBox<GeneralizedSpell> spellChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpellsAndNull));
+        ChoiceBox<GeneralizedSpell> willChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpellsAndNull));
         ChoiceBox<Tribe> TribeChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(Tribe.values()));
 
         CheckBox isDefenderCheckBox = new CheckBox("is defender");
@@ -898,5 +903,183 @@ public class CustomGameView {
         textArea.setPrefSize(300, 300);
 
         root.getChildren().addAll(vBox, textArea, returnButton, submitButton);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showEditDecksMenu() {
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Edit Decks");
+
+        ArrayList<Player> opponents = Main.opponents;
+        ArrayList<Button> playerButtons = new ArrayList<>();
+
+        Button humanButton = new Button("RLD");
+        playerButtons.add(humanButton);
+        humanButton.setOnMouseClicked(event -> {
+            showEditPlayerDeck(human);
+        });
+
+        for (Player opponent: opponents) {
+            Button button = new Button(opponent.getName());
+            playerButtons.add(button);
+            button.setOnMouseClicked(event -> {
+                showEditPlayerDeck(opponent);
+            });
+        }
+
+        VBox vBox = makeVBox(playerButtons);
+
+        //----------------return button-------------------
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 950, 530);
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
+
+        root.getChildren().addAll(vBox, returnButton);
+    }
+
+
+
+
+
+    public static void showEditPlayerDeck(Player player) {
+        Group group = new Group();
+        Scene scene = new Scene(group);
+        ArrayList<Button> allCardsButtons = new ArrayList<>();
+        ArrayList<Button> playerDeckCardsButtons = new ArrayList<>();
+        ArrayList<Card> allCards = new ArrayList<>();
+        ArrayList<Card> playerDeckCards = player.getDeckCards();
+        TextArea textArea = new TextArea();
+        TextArea transactionResult = new TextArea("welcome to deck editing!\nhere you can change a player's deck of what you like.");
+
+        for (Stuff stuff: allStuff) {
+            if (stuff instanceof Card)
+                allCards.add((Card)stuff);
+        }
+
+        StackPane stackPane = new StackPane();
+        Rectangle headLineRectangle = new Rectangle(330, 30);
+        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        Text headLineText = new Text("All Cards");
+        stackPane.getChildren().addAll(headLineRectangle, headLineText);
+        stackPane.relocate(150, 60);
+
+        StackPane stackPane1 = new StackPane();
+        Rectangle headLineRectangle1 = new Rectangle(330, 30);
+        headLineRectangle1.setFill(Color.rgb(20, 184, 11));
+        Text headLineText1 = new Text(player.getName() + " deck cards");
+        stackPane1.getChildren().addAll(headLineRectangle1, headLineText1);
+        stackPane1.relocate(1000, 60);
+
+        ConsoleView.setConsole(transactionResult);
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle(player.getName() + " deck edit");
+        scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
+
+        //----------------return button-------------------
+        Button returnButton = new Button();
+        setStatusOfReturnButton(returnButton, 1150, 620);
+        returnButton.setOnMouseClicked(event -> {
+            showEditDecksMenu();
+        });
+
+        //------------------------submit button----------------------
+        Button submitButton = new Button();
+        submitButton.relocate(600, 600);
+        submitButton.setText("Save Deck");
+        submitButton.setOnMouseClicked(event -> {
+            if (player == human && (playerDeckCards.size() < 25 || playerDeckCards.size() > 30)) {
+                new Popup("Deck cards must be between 25 and 30").show();
+                return;
+            }
+            player.setDefaultDeckCards(playerDeckCards);
+            //player.setDeckCards(playerDeckCards);
+        });
+
+        //------------sort customGameSpells and playerStuff by name-----------------//todo correct
+        allCards.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card card1, Card card2) {
+                return card1.getName().compareToIgnoreCase(card2.getName());
+            }
+        });
+
+        playerDeckCards.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card card1, Card card2) {
+                return card1.getName().compareToIgnoreCase(card2.getName());
+            }
+        });
+        //-------------------------------------------------------------------
+
+        for (Card card: allCards) {
+            Button cardButton = new Button(card.getName());
+            cardButton.setOnMouseEntered(event -> {
+                textArea.setText(card.toString());
+            });
+            cardButton.setOnMouseClicked(event -> {     //TODO CORRECT FOR HUMAN (SET NULL/i INSTEAD OF REMOVE/ADD)
+                transactionResult.clear();
+                try {
+                    Card newCard = (Card)card.clone();
+                    playerDeckCards.add(newCard);
+                    newCard.setOwner(player);
+                    newCard.setCardPlace(player.getDeckCards());
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                showEditPlayerDeck(player);
+            });
+            allCardsButtons.add(cardButton);
+        }
+
+        for (Card card: playerDeckCards) {
+            Button playerDeckCardButton = new Button(card.getName());
+            playerDeckCardButton.setOnMouseEntered(event -> {
+                textArea.setText(card.toString());
+            });
+            playerDeckCardButton.setOnMouseClicked(event -> {   //TODO CORRECT FOR HUMAN (SET NULL/i INSTEAD OF REMOVE/ADD)
+                transactionResult.clear();
+                playerDeckCards.remove(card);
+                showEditPlayerDeck(player);
+            });
+            playerDeckCardsButtons.add(playerDeckCardButton);
+        }
+
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        transactionResult.relocate(600, 525);
+        transactionResult.setEditable(false);
+        transactionResult.setPrefSize(300, 50);
+
+        ListView<Button> allCardsListView = new ListView<>(FXCollections.observableArrayList(allCardsButtons));
+        //shopItemsListView.setFixedCellSize(60);
+        allCardsListView.relocate(150, 100);
+        allCardsListView.setPrefSize(330, 500);
+
+        ListView<Button> playerDeckCardsListView = new ListView<>(FXCollections.observableArrayList(playerDeckCardsButtons));
+        playerDeckCardsListView.relocate(1000, 100);
+        playerDeckCardsListView.setPrefSize(330, 500);
+
+
+
+        group.getChildren().addAll(allCardsListView, playerDeckCardsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
     }
 }
