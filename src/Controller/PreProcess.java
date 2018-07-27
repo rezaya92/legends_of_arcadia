@@ -789,7 +789,7 @@ public class PreProcess {
             }else if(stuff instanceof Amulet && !stuff.getName().equalsIgnoreCase("Demon King's Crown")){
                 human.getShop().addAmulet((Amulet)stuff.clone());
             }else if(stuff instanceof Card){
-                ((Card)stuff).setOwner(human);
+                ((Card)stuff).setOwner(human);//TODO tokhmi code
                 if(stuff instanceof SpellCard && !stuff.getName().matches("Blood Feast|Reaper's Scythe|Meteor Shower")){
                     if(((SpellCard) stuff).getDefaultManaCost() < 6)
                         human.getShop().addCard((SpellCard)stuff.clone(), 3);
