@@ -2,10 +2,7 @@ package View;
 
 import Controller.*;
 import Model.*;
-import Model.Card.Card;
-import Model.Card.MonsterCard;
-import Model.Card.SpellCard;
-import Model.Card.SpellCardType;
+import Model.Card.*;
 import Model.Spell.*;
 import View.GameView.ConsoleView;
 import javafx.beans.value.ChangeListener;
@@ -690,6 +687,7 @@ public class CustomGameView {
             }
             try{
                 new SpellCard(generalizedSpellChoiceBox.getValue(), Integer.parseInt(manaTextField.getText()), spellCardTypeChoiceBox.getValue(), Integer.parseInt(priceTextField.getText()), nameTextField.getText());
+                //todo add to shop or deck
             }catch (Exception e){
                 new Popup("Invalid input").show();
                 return;
@@ -731,13 +729,89 @@ public class CustomGameView {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Create New Monster Card");
 
-        //TODO
+        ArrayList<HBox> hBoxes = new ArrayList<>();
+        ArrayList<GeneralizedSpell> generalizedGameSpellsAndNull = new ArrayList<>();
+        generalizedGameSpellsAndNull.add(null);
+        generalizedGameSpellsAndNull.addAll(generalizedGameSpells);
+
+        TextArea textArea = new TextArea();
+        ChoiceBox<GeneralizedSpell> battleCryChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));//todo
+        ChoiceBox<GeneralizedSpell> spellChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
+        ChoiceBox<GeneralizedSpell> willChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(generalizedGameSpells));
+        ChoiceBox<Tribe> TribeChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(Tribe.values()));
+
+        CheckBox isDefenderCheckBox = new CheckBox("is defender");
+        CheckBox isNimbleCheckBox = new CheckBox("is nimble");
+
+        TextField hpTextField = new TextField();
+        TextField apTextField = new TextField();
+        TextField manaTextField = new TextField();
+        TextField priceTextField = new TextField();
+        TextField nameTextField = new TextField();
+
+        hBoxes.add(new HBox(5, new Label("Battle Cry:"), battleCryChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Spell:"), spellChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Will:"), willChoiceBox));
+        hBoxes.add(new HBox(5, new Label("Tribe:"), TribeChoiceBox));
+
+        hBoxes.add(new HBox(5, isDefenderCheckBox));
+        hBoxes.add(new HBox(5, isNimbleCheckBox));
+
+        hBoxes.add(new HBox(5, new Label("HP:"), hpTextField));
+        hBoxes.add(new HBox(5, new Label("AP:"), apTextField));
+        hBoxes.add(new HBox(5, new Label("Mana Cost:"), manaTextField));
+        hBoxes.add(new HBox(5, new Label("Price:"), priceTextField));
+        hBoxes.add(new HBox(5, new Label("Name:"), nameTextField));
+
+        for(HBox hBox : hBoxes){
+            hBox.setAlignment(Pos.CENTER);
+        }
+        VBox vBox = makeVBox(hBoxes);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.relocate(150, 100);
+
+        /*generalizedSpellChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GeneralizedSpell>() {
+            @Override
+            public void changed(ObservableValue<? extends GeneralizedSpell> observable, GeneralizedSpell oldValue, GeneralizedSpell newValue) {
+                textArea.setText(newValue.getDetail());
+            }
+        });*/
 
         Button returnButton = new Button();
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
-            showEditPart();
+            showNewCardMakingMenu();
         });
+
+        //--------------submit button----------------
+        Button submitButton = new Button("Craft Monster Card");
+        submitButton.setOnMouseClicked(event -> {
+            if(!areValidChoiceBoxes(TribeChoiceBox) || !areValidTextFields(hpTextField, apTextField, manaTextField, priceTextField, nameTextField)){
+                new Popup("you must specify the card's details").show();
+                return;
+            }
+            try{
+                MonsterCard monsterCard = new MonsterCard(TribeChoiceBox.getValue(), nameTextField.getText(),
+                        Integer.parseInt(hpTextField.getText()), Integer.parseInt(apTextField.getText()),
+                        Integer.parseInt(manaTextField.getText()),
+                        isDefenderCheckBox.isSelected(), isNimbleCheckBox.isSelected(),
+                        battleCryChoiceBox.getValue(), spellChoiceBox.getValue(), willChoiceBox.getValue());
+                monsterCard.setPrice(Integer.parseInt(priceTextField.getText()));
+                //todo add to shop or deck
+            }catch (Exception e){
+                new Popup("Invalid input").show();
+                return;
+            }
+            new Popup(nameTextField.getText() + " monster card created!").show();
+        });
+        submitButton.relocate(600, 530);
+
+        //------------------text area----------------------
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        root.getChildren().addAll(vBox, textArea, returnButton, submitButton);
     }
 
 

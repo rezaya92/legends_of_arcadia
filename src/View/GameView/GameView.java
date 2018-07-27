@@ -26,7 +26,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static Controller.Battle.isMultiplayer;
@@ -207,7 +206,7 @@ public class GameView {
         menusGroup.relocate(primaryStage.getWidth()/3 * 2,0);
         listView = new ListView<>(FXCollections.observableArrayList(new NormalCard(Tribe.ELVEN,"Elven Ranger",100,100,1,false,false)));
         listView.setPrefSize(primaryStage.getWidth() / 3 - 200, primaryStage.getHeight() / 3 * 2 - 35);
-        listView.setCellFactory(lv -> new ListCell<ListShowable>() {
+        listView.setCellFactory(lv -> new ListCell<>() {
             @Override
             public void updateItem(ListShowable item, boolean empty) {
                 super.updateItem(item, empty);
