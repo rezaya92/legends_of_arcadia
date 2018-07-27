@@ -26,9 +26,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.List;
 
 import static Controller.Main.allStuff;
 import static Controller.Main.human;
+import static Model.Stuff.getSpecificStuffInAllStuff;
 import static View.MenuView.makeVBox;
 
 public class CustomGameView {
@@ -213,6 +215,10 @@ public class CustomGameView {
 
         newAmuletsButton.setOnMouseClicked(event -> {
             showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell.AMULET);
+        });
+
+        editShopButton.setOnMouseClicked(event -> {
+            showEditShop();
         });
 
         editDecksButton.setOnMouseClicked(event -> {
@@ -903,6 +909,237 @@ public class CustomGameView {
         textArea.setPrefSize(300, 300);
 
         root.getChildren().addAll(vBox, textArea, returnButton, submitButton);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void showEditShop(){
+        Group shopGroup = new Group();
+        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView.setFitWidth(1500);
+        imageView.setFitHeight(800);
+        shopGroup.getChildren().addAll(imageView);
+        Scene scene = new Scene(shopGroup);
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        Button returnButton = new Button("Return");
+        Button editCardShop = new Button("Edit Card Shop");
+        Button editItemShop = new Button("Edit Item Shop");
+        Button editAmuletShop = new Button("Edit Amulet Shop");
+
+        editCardShop.setOnMouseClicked(event -> {
+            showTransferStuffToShop(TypeOfStuffToBuyAndSell.CARD, getSpecificStuffInAllStuff(TypeOfStuffToBuyAndSell.CARD), human.getShop().getCards());
+        });
+
+        editItemShop.setOnMouseClicked(event -> {
+            showTransferStuffToShop(TypeOfStuffToBuyAndSell.ITEM, getSpecificStuffInAllStuff(TypeOfStuffToBuyAndSell.ITEM), human.getShop().getItems());
+        });
+
+        editAmuletShop.setOnMouseClicked(event -> {
+            showTransferStuffToShop(TypeOfStuffToBuyAndSell.AMULET, getSpecificStuffInAllStuff(TypeOfStuffToBuyAndSell.AMULET), human.getShop().getAmulets());
+        });
+
+        returnButton.setOnMouseClicked(event -> {
+            showEditPart();
+        });
+
+        VBox vBox = makeVBox(editCardShop, editItemShop, editAmuletShop, returnButton);
+        shopGroup.getChildren().add(vBox);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public static void showTransferStuffToShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, ArrayList<? extends Stuff> allSpecificStuff, ArrayList<? extends Stuff> shopSpecificStuff){
+        showTransferStuffToShop(typeOfStuffToBuyAndSell, allSpecificStuff, shopSpecificStuff, null);
+    }
+
+    public static void showTransferStuffToShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> allSpecificStuff, List<? extends Stuff> shopSpecificStuff, String transactionMessage){
+        Group cardShopGroup = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        cardShopGroup.getChildren().addAll(imageView1);
+        Scene scene = new Scene(cardShopGroup);
+        ArrayList<Button> shopButtons = new ArrayList<>();
+        ArrayList<Button> playerButtons = new ArrayList<>();
+        TextArea textArea = new TextArea();
+        if(transactionMessage == null) {
+            textArea.setText("welcome to the edit shop!\nhere you can add the stuff you want to the shop and remove the stuff that you don't need.");
+        }
+        TextArea transactionResult = new TextArea(transactionMessage);
+        Button returnButton = new Button();
+
+        StackPane stackPane = new StackPane();
+        Rectangle headLineRectangle = new Rectangle(330, 30);
+        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        Text headLineText = new Text("All " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s");
+        stackPane.getChildren().addAll(headLineRectangle, headLineText);
+        stackPane.relocate(150, 60);
+
+        StackPane stackPane1 = new StackPane();
+        Rectangle headLineRectangle1 = new Rectangle(330, 30);
+        headLineRectangle1.setFill(Color.rgb(20, 184, 11));
+        Text headLineText1 = new Text("Shop " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s");
+        stackPane1.getChildren().addAll(headLineRectangle1, headLineText1);
+        stackPane1.relocate(1000, 60);
+        //headLine.setText
+
+        ConsoleView.setConsole(transactionResult);
+
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
+
+        //------------------------return button----------------------
+        ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        returnButton.setGraphic(imageView);
+        returnButton.setMaxWidth(50);
+        //returnButton.setStyle("-fx-background-color: rgba(20, 100, 40, 0.7);");
+        returnButton.relocate(1150, 620);
+        returnButton.setOnMouseClicked(event -> {
+            showEditShop();
+        });
+
+        //------------sort allSpecificStuff and shopSpecificStuff by name-----------------
+        allSpecificStuff.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+
+        shopSpecificStuff.sort(new Comparator<Stuff>() {
+            @Override
+            public int compare(Stuff o1, Stuff o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        //-------------------------------------------------------------------
+
+        for(Stuff stuff : allSpecificStuff){
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setMinHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+                textArea.appendText("\nPrice: " + stuff.getPrice() + " gil");
+            });
+            itemButton.setOnMouseClicked(event -> {
+                try {
+                    transactionResult.setText(stuff.getName() + " successfully added to the shop");
+                    switch (typeOfStuffToBuyAndSell){
+                        case CARD:
+                            Card newCardShop = (Card)stuff.clone();
+                            newCardShop.setOwner(human);
+                            human.getShop().addCard(newCardShop);
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.CARD, allSpecificStuff, human.getShop().getCards(), transactionResult.getText());
+                            break;
+                        case ITEM:
+                            human.getShop().addItem((Item)stuff);
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.ITEM, allSpecificStuff, human.getShop().getItems(), transactionResult.getText());
+                            break;
+                        case AMULET:
+                            if(Stuff.numberOfStuffInList(stuff, human.getShop().getAmulets()) == 0)
+                                human.getShop().addAmulet((Amulet)stuff);
+                            else
+                                transactionResult.setText(stuff.getName() + " already exists in shop");
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.AMULET, allSpecificStuff, human.getShop().getAmulets(), transactionResult.getText());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            shopButtons.add(itemButton);
+        }
+
+        for(Stuff stuff : shopSpecificStuff){
+            Button itemButton = new Button(stuff.getName());
+            //itemButton.setPrefHeight(50);
+            itemButton.setOnMouseEntered(event -> {
+                textArea.setText(stuff.toString());
+                textArea.appendText("\nPrice: " + stuff.getPrice() + " gil");
+                if(typeOfStuffToBuyAndSell == TypeOfStuffToBuyAndSell.CARD) {
+                    textArea.appendText("\n\n**number in deck: " + Stuff.numberOfStuffInList(stuff, human.getDeckCards()));
+                }
+            });
+            itemButton.setOnMouseClicked(event -> {
+                try {
+                    transactionResult.setText(stuff.getName() + " successfully removed from shop");
+                    switch (typeOfStuffToBuyAndSell){
+                        case CARD:
+                            human.getShop().removeCard((Card)stuff);
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.CARD, allSpecificStuff, human.getShop().getCards(), transactionResult.getText());
+                            break;
+                        case ITEM:
+                            human.getShop().removeItem((Item)stuff);
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.ITEM, allSpecificStuff, human.getShop().getItems(), transactionResult.getText());
+                            break;
+                        case AMULET:
+                            human.getShop().removeAmulet((Amulet)stuff);
+                            showTransferStuffToShop(TypeOfStuffToBuyAndSell.AMULET, allSpecificStuff, human.getShop().getAmulets(), transactionResult.getText());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            playerButtons.add(itemButton);
+        }
+
+        textArea.relocate(600, 180);
+        textArea.setEditable(false);
+        textArea.setPrefSize(300, 300);
+
+        transactionResult.relocate(600, 525);
+        transactionResult.setEditable(false);
+        transactionResult.setPrefSize(300, 50);
+
+        ListView<Button> shopItemsListView = new ListView<>(FXCollections.observableArrayList(shopButtons));
+        shopItemsListView.relocate(150, 100);
+        shopItemsListView.setPrefSize(330, 500);
+
+        ListView<Button> playerItemsListView = new ListView<>(FXCollections.observableArrayList(playerButtons));
+        playerItemsListView.relocate(1000, 100);
+        playerItemsListView.setPrefSize(330, 500);
+
+        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transactionResult, returnButton, stackPane, stackPane1);
     }
 
 
