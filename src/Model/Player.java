@@ -158,6 +158,7 @@ public class Player implements Cloneable, Serializable{
     }
     public void setShop(Shop shop) {
         this.shop = shop;
+        //for()
     }
 
     public int getGil() {

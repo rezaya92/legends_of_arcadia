@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Shop;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -8,6 +9,8 @@ import javafx.stage.Stage;
 import View.MenuView;
 
 import java.util.ArrayList;
+
+import static Controller.Main.human;
 
 public class LegendsOfArcadia extends Application {
     public static ArrayList<Game> customGames = new ArrayList<>();
@@ -58,6 +61,7 @@ public class LegendsOfArcadia extends Application {
     private void preProcessEventHandling(Stage primaryStage){
         MenuView.getSinglePlayerButton().setOnMouseClicked(event -> {
             Game.setCurrentGame(LegendsOfArcadia.customGames.get(0));
+            beforeStartNewAdventurePreProcess();
             map = new Map(primaryStage, 1);
         });
 
@@ -66,6 +70,19 @@ public class LegendsOfArcadia extends Application {
         MenuView.getExitButton().setOnMouseClicked(event -> {
             primaryStage.close();//correct? (can change to system.exit(0))
         });
+    }
+
+    public static void beforeStartNewAdventurePreProcess(){
+        Battle.humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
+        Battle.humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+        Battle.humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
+        try {
+            Battle.shopBeforeCustomization = (Shop) human.getShop().clone();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Battle.humanInventoryBeforeCustomization = new ArrayList<>(human.getInventoryCards());
+        Battle.humanGilBeforeCustomization = human.getGil();
     }
 
     public static Stage getPrimaryStage() {

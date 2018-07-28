@@ -35,12 +35,13 @@ public class PreProcess {
         instantiatePlayerInventory(ogreWarlord, "database/Inventories/OgreWarlordInventory.txt");
         instantiatePlayerInventory(vampireLord, "database/Inventories/VampireLordInventory.txt");
         instantiatePlayerInventory(lucifer, "database/Inventories/LuciferInventory.txt");
-        Battle.humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
-        Battle.humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
-        Battle.humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
-        Battle.shopBeforeCustomization = (Shop) human.getShop().clone();
-        Battle.humanInventoryBeforeCustomization = new ArrayList<>(human.getInventoryCards());
-        Battle.humanGilBeforeCustomization = human.getGil();
+//        Battle.humanDefaultDeckCardBeforeCustomization = new ArrayList<>(human.getDefaultDeckCards());
+//        Battle.humanDeckCardBeforeCustomization = new ArrayList<>(human.getDeckCards());
+//        Battle.humanItemsBeforeCustomization = new ArrayList<>(human.getItems());
+//        Battle.shopBeforeCustomization = (Shop) human.getShop().clone();
+//        Battle.humanInventoryBeforeCustomization = new ArrayList<>(human.getInventoryCards());
+//        Battle.humanGilBeforeCustomization = human.getGil();
+        LegendsOfArcadia.beforeStartNewAdventurePreProcess();
     }
 
     private static void instantiateSpells(){

@@ -80,6 +80,7 @@ public class CustomGameView {
             gameButton.setOnMouseClicked(event -> {
                 Game.setCurrentGame(LegendsOfArcadia.customGames.get(ind));
                 //Main.afterMatch();
+                LegendsOfArcadia.beforeStartNewAdventurePreProcess();
                 LegendsOfArcadia.setMap(new Map(primaryStage, 1));
             });
 
@@ -1265,6 +1266,12 @@ public class CustomGameView {
                 return;
             }
             player.setDefaultDeckCards(new ArrayList<>(playerDeckCards));
+            player.setInventoryCards(new ArrayList<>(deleteNulls(playerDeckCards)));
+            player.setDeckCards(new ArrayList<>(playerDeckCards));
+            for(Card card : player.getDeckCards()){
+                card.setOwner(player);
+                card.setCardPlace(player.getDeckCards());
+            }
             new Popup("new deck saved for " + player.getName()).show();
         });
 
