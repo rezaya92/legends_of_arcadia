@@ -18,6 +18,7 @@ public class LegendsOfArcadia extends Application {
         String path = LegendsOfArcadia.class.getResource("Suspicion.mp3").toString();
         Media media = new Media(path);
         MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
         launch(args);
     }

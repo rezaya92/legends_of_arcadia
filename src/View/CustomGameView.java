@@ -1069,7 +1069,10 @@ public class CustomGameView {
                             showTransferStuffToShop(TypeOfStuffToBuyAndSell.CARD, allSpecificStuff, human.getShop().getCards(), transactionResult.getText());
                             break;
                         case ITEM:
-                            human.getShop().addItem((Item)stuff);
+                            if(Stuff.numberOfStuffInList(stuff, human.getShop().getItems()) == 0)
+                                human.getShop().addItem((Item)stuff);
+                            else
+                                transactionResult.setText(stuff.getName() + " already exists in shop");
                             showTransferStuffToShop(TypeOfStuffToBuyAndSell.ITEM, allSpecificStuff, human.getShop().getItems(), transactionResult.getText());
                             break;
                         case AMULET:
