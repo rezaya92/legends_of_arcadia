@@ -113,23 +113,22 @@ public class Player implements Cloneable, Serializable{
         return defaultDeckCards;
     }
     public void setDefaultDeckCards(ArrayList<Card> defaultDeckCards) {
-        this.defaultDeckCards = defaultDeckCards;
+        this.defaultDeckCards = new ArrayList<>(defaultDeckCards);
     }
 
     public ArrayList<Card> getDeckCards() {
         return deckCards;
     }
     public void setDeckCards(ArrayList<Card> deckCards) {
-        this.deckCards = deckCards;
-//        while(deckCards.size()>0)
-//            deckCards.get(0).transfer(this.deckCards);
-        for(Card card : deckCards)
+        this.deckCards = new ArrayList<>(deckCards);
+        for(Card card : this.deckCards) {
+            card.setOwner(this);
             card.setCardPlace(this.deckCards);
+        }
         setMonsterFieldCards(new PlayAreaArrayList<>(5));
         setSpellFieldCards(new PlayAreaArrayList<>(3));
         setGraveyardCards(new ArrayList<>());
         setHandCards(new ArrayList<>());
-
     }
 
     public ArrayList<Card> getMonsterFieldCards() {

@@ -297,6 +297,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
         manaCost = defaultManaCost;
         isAwake = false;
         damageReceivementRatio = 1;
+        hasUsedSpell = false;
     }
 
     public void changeDamageReceivementRatio(double coefficentofVariation) {
