@@ -15,10 +15,10 @@ public class LegendsOfArcadia extends Application {
     private static Map map;
 
     public static void main(String[] args) {
-//        String path = LegendsOfArcadia.class.getResource("/music.mp3").toString();
-//        Media media = new Media(path);
-//        MediaPlayer mediaPlayer = new MediaPlayer(media);
-//        mediaPlayer.play();
+        String path = LegendsOfArcadia.class.getResource("Suspicion.mp3").toString();
+        Media media = new Media(path);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
         launch(args);
     }
 
