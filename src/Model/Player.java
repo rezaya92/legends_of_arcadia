@@ -332,7 +332,7 @@ public class Player implements Cloneable, Serializable{
                 if(availableNumberOfThatCard < numberToSell)
                     return false;
                 for(int i=0; i<inventoryCards.size(); i++){
-                    if(inventoryCards.get(i).getName().equalsIgnoreCase(name) && !defaultDeckCards.contains(inventoryCards.get(i)) && numberToSellCounter > 0){
+                    if(inventoryCards.get(i).getName().equalsIgnoreCase(name) && !defaultDeckCards.contains(inventoryCards.get(i)) && numberToSellCounter > 0){ //todo wrong?
                         shop.addCard(inventoryCards.get(i));//card.transfer(shop)?
                         inventoryCards.remove(i);
                         i--;

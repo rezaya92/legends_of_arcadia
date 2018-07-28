@@ -250,7 +250,7 @@ public class MenuView {
 
         StackPane stackPane = new StackPane();
         Rectangle headLineRectangle = new Rectangle(330, 30);
-        headLineRectangle.setFill(Color.rgb(23, 187, 237));
+        headLineRectangle.setFill(Color.rgb(23, 187, 237,0.6));
         Text headLineText = new Text("Shop " + typeOfStuffToBuyAndSell.name().toLowerCase() + "s");
         stackPane.getChildren().addAll(headLineRectangle, headLineText);
         stackPane.relocate(150, 60);
@@ -266,10 +266,9 @@ public class MenuView {
         ConsoleView.setConsole(transactionResult);
 
         gilText.relocate(100, 20);
-
         primaryStage.setScene(scene);
         scene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());
-
+        gilText.setId("text");
         //------------------------return button----------------------
         ImageView imageView = new ImageView(new Image("file:return-icon3.png"));
         imageView.setFitWidth(30);
@@ -393,7 +392,8 @@ public class MenuView {
         ListView<Button> playerItemsListView = new ListView<>(FXCollections.observableArrayList(playerButtons));
         playerItemsListView.relocate(1000, 100);
         playerItemsListView.setPrefSize(330, 500);
-
+        gilText.setId("text");
+        gilText.setFill(Color.rgb(255,255,255));
 
 
         cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, gilText, transactionResult, returnButton, stackPane, stackPane1);

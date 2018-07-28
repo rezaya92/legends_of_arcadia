@@ -103,6 +103,7 @@ public class CustomGameView {
         hBoxes.add(new HBox(newGameButton));
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             MenuView.showMainMenu();
@@ -157,6 +158,7 @@ public class CustomGameView {
         }
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showMainEntrance();
@@ -226,6 +228,7 @@ public class CustomGameView {
         });
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showNewGameTemplate();
@@ -382,6 +385,7 @@ public class CustomGameView {
         submitButton.relocate(600, 530);
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showEditPart();
@@ -466,6 +470,7 @@ public class CustomGameView {
         //Text gilText = new Text("Remaining Gil: " + human.getGil());
         TextArea transactionResult = new TextArea("welcome to spell making!\nhere you can craft a custom spell of what you like.");
         Button returnButton = new Button();
+        returnButton.setId("return");
         Button submitButton = new Button();
 
         StackPane stackPane = new StackPane();
@@ -621,6 +626,7 @@ public class CustomGameView {
         });
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showEditPart();
@@ -684,6 +690,7 @@ public class CustomGameView {
         });
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showNewCardMakingMenu();
@@ -789,6 +796,7 @@ public class CustomGameView {
         });*/
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showNewCardMakingMenu();
@@ -878,6 +886,7 @@ public class CustomGameView {
         });
 
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showEditPart();
@@ -1006,7 +1015,7 @@ public class CustomGameView {
         }
         TextArea transactionResult = new TextArea(transactionMessage);
         Button returnButton = new Button();
-
+        returnButton.setId("return");
         StackPane stackPane = new StackPane();
         Rectangle headLineRectangle = new Rectangle(330, 30);
         headLineRectangle.setFill(Color.rgb(23, 187, 237));
@@ -1185,6 +1194,7 @@ public class CustomGameView {
 
         //----------------return button-------------------
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 950, 530);
         returnButton.setOnMouseClicked(event -> {
             showEditPart();
@@ -1234,6 +1244,7 @@ public class CustomGameView {
 
         //----------------return button-------------------
         Button returnButton = new Button();
+        returnButton.setId("return");
         setStatusOfReturnButton(returnButton, 1150, 620);
         returnButton.setOnMouseClicked(event -> {
             player.setDeckCards(deleteNulls(new ArrayList<>(player.getDefaultDeckCards())));
