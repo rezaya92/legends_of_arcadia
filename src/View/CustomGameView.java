@@ -1236,6 +1236,11 @@ public class CustomGameView {
         Button returnButton = new Button();
         setStatusOfReturnButton(returnButton, 1150, 620);
         returnButton.setOnMouseClicked(event -> {
+            player.setDeckCards(deleteNulls(new ArrayList<>(player.getDefaultDeckCards())));
+            if (player == human) {
+                addNullsHumanDefaultDeck();
+                deleteNullsHumanDeck();      //extra
+            }
             showEditDecksMenu();
         });
 
@@ -1248,8 +1253,8 @@ public class CustomGameView {
                 new Popup("Deck cards must be between 25 and 30").show();
                 return;
             }
-            player.setDefaultDeckCards(playerDeckCards);
-            //player.setDeckCards(playerDeckCards);
+            player.setDefaultDeckCards(new ArrayList<>(playerDeckCards));
+            new Popup("new deck saved for " + player.getName()).show();
         });
 
         //------------sort customGameSpells and playerStuff by name-----------------//todo correct
@@ -1273,7 +1278,7 @@ public class CustomGameView {
             cardButton.setOnMouseEntered(event -> {
                 textArea.setText(card.toString());
             });
-            cardButton.setOnMouseClicked(event -> {     //TODO CORRECT FOR HUMAN (SET NULL/i INSTEAD OF REMOVE/ADD)
+            cardButton.setOnMouseClicked(event -> {
                 transactionResult.clear();
                 try {
                     Card newCard = (Card)card.clone();
@@ -1293,7 +1298,7 @@ public class CustomGameView {
             playerDeckCardButton.setOnMouseEntered(event -> {
                 textArea.setText(card.toString());
             });
-            playerDeckCardButton.setOnMouseClicked(event -> {   //TODO CORRECT FOR HUMAN (SET NULL/i INSTEAD OF REMOVE/ADD)
+            playerDeckCardButton.setOnMouseClicked(event -> {
                 transactionResult.clear();
                 playerDeckCards.remove(card);
                 showEditPlayerDeck(player);
@@ -1321,5 +1326,35 @@ public class CustomGameView {
 
 
         group.getChildren().addAll(allCardsListView, playerDeckCardsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
+    }
+
+    private static void deleteNullsHumanDeck() {    //todo efficient
+        ArrayList<Card> humanDeckCards = human.getDeckCards();
+        for (int i = 0; i < humanDeckCards.size(); i++) {
+            if (humanDeckCards.get(i) == null) {
+                humanDeckCards.remove(i);
+                i--;
+            }
+        }
+    }
+
+    private static ArrayList<Card> deleteNulls(ArrayList<Card> cards) {
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i) == null) {
+                cards.remove(i);
+                i--;
+            }
+        }
+        return cards;
+    }
+
+    private static void addNullsHumanDefaultDeck() {
+        /*ArrayList<Card> humanDeckCards = human.getDeckCards();
+        for (int i = humanDeckCards.size(); i < 30; i++) {
+            humanDeckCards.add(null);
+        }*/
+        for (int i = human.getDefaultDeckCards().size(); i < 30; i++) {
+            human.getDefaultDeckCards().add(null);
+        }
     }
 }
