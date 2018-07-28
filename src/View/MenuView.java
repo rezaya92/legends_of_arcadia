@@ -93,15 +93,15 @@ public class MenuView {
         scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
         Button returnButton = new Button("Return");
 
-        MenuView.getCardShopButton().setOnMouseClicked(event -> {
+        cardShopButton.setOnMouseClicked(event -> {
             MenuView.showStuffShop(TypeOfStuffToBuyAndSell.CARD, human.getShop().getCards(), human.getInventoryCards());
         });
 
-        MenuView.getItemShopButton().setOnMouseClicked(event -> {
+        itemShopButton.setOnMouseClicked(event -> {
             MenuView.showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems());
         });
 
-        MenuView.getAmuletShopButton().setOnMouseClicked(event -> {
+        amuletShopButton.setOnMouseClicked(event -> {
             MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets());
         });
 
@@ -317,7 +317,7 @@ public class MenuView {
                             showStuffShop(TypeOfStuffToBuyAndSell.ITEM, human.getShop().getItems(), human.getItems(), transactionResult.getText());
                             break;
                         case AMULET:
-                            MenuView.showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets(), transactionResult.getText());
+                            showStuffShop(TypeOfStuffToBuyAndSell.AMULET, human.getShop().getAmulets(), human.getAmulets(), transactionResult.getText());
                     }
                 }catch (Exception e){
                     e.printStackTrace();
