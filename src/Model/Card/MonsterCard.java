@@ -31,7 +31,6 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
     transient SimpleIntegerProperty ap = new SimpleIntegerProperty();
     transient SimpleIntegerProperty hp = new SimpleIntegerProperty();
     Tribe tribe;
-    boolean defaultHasGotSpell = false;
     boolean hasGotSpell = false;
     boolean hasUsedSpell = false;
     boolean hasAttacked = false;
@@ -73,7 +72,7 @@ public class MonsterCard extends Card implements HasHP, Cloneable, Serializable 
         this.spellCasterSpell = spellCasterSpell;
         this.will = will;
         if (spellCasterSpell != null)
-            hasGotSpell = defaultHasGotSpell = true;
+            hasGotSpell = true;
         this.isNimble = isNimble;
         this.isDefender = isDefender;
         Main.allStuff.add(this);
