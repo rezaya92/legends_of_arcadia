@@ -366,7 +366,9 @@ public class Battle {
                 command = cellTower.receiveText();
             }
             Platform.runLater(GameView::updateFields);
-        } catch (NullPointerException ignored){ }
+        } catch (NullPointerException ignored){
+            //ignored.printStackTrace();//TODO this was empty(why?)
+        }
     }
 
 }
