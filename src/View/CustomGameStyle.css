@@ -222,20 +222,20 @@
 #return:hover {
     -fx-background-color: rgba(221, 221, 225, 0.78);
 }
-
+*/
 .list-cell {
     -fx-font: 25 "Freestyle Script";
     -fx-padding: 5;
     -fx-border-radius: 5;
-    !*-fx-border-width: 5;*!
-    !*-fx-border-color: black;*!
+    /*!*-fx-border-width: 5;*!*/
+    /*!*-fx-border-color: black;*!*/
     -fx-alignment: center;
     -fx-background-color: transparent;
 }
 
 .list-cell:selected {
     -fx-text-fill: black;
-    !*-fx-background-color: cyan;*!
+    /*!*-fx-background-color: cyan;*!*/
 }
 
 .list-cell:empty{
@@ -243,11 +243,12 @@
     -fx-background-color: transparent;
     -fx-border-width: 0;
 }
+
 .list-view {
     -fx-background-color: rgba(119, 117, 115, 0.4);
     -fx-background-insets: 0;
 }
-
+/*
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
     -fx-background-color :transparent;

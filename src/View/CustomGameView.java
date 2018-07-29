@@ -54,7 +54,7 @@ public class CustomGameView {
 
     public static void showMainEntrance(){
         Group root = new Group();
-        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves-1.jpg").toURI().toString()));
         imageView1.setFitWidth(1500);
         imageView1.setFitHeight(800);
         root.getChildren().addAll(imageView1);
@@ -137,6 +137,10 @@ public class CustomGameView {
 
     public static void showNewGameTemplate(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene entranceScene = new Scene(root);
         entranceScene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(entranceScene);
@@ -187,6 +191,10 @@ public class CustomGameView {
 
     public static void showEditPart(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene editPartScene = new Scene(root);
         editPartScene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());//TODO css
         primaryStage.setScene(editPartScene);
@@ -283,6 +291,10 @@ public class CustomGameView {
 
     public static void showCreateSpell(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene createSpellScene = new Scene(root);
         createSpellScene.getStylesheets().add(MenuView.class.getResource("ShopStyle.css").toExternalForm());//TODO css
         primaryStage.setScene(createSpellScene);
@@ -463,8 +475,12 @@ public class CustomGameView {
 
 
     public static void showGeneralizedSpellMakingMenu(){
-        Group cardShopGroup = new Group();
-        Scene scene = new Scene(cardShopGroup);
+        Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
+        Scene scene = new Scene(root);
         ArrayList<Button> shopButtons = new ArrayList<>();  //todo refactor rename
         ArrayList<Button> playerButtons = new ArrayList<>();
         TextArea textArea = new TextArea();
@@ -588,7 +604,7 @@ public class CustomGameView {
 
 
 
-        cardShopGroup.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
+        root.getChildren().addAll(shopItemsListView, playerItemsListView, textArea, transactionResult, returnButton, submitButton, stackPane, stackPane1);
     }
 
 
@@ -610,6 +626,10 @@ public class CustomGameView {
 
     public static void showNewCardMakingMenu(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -655,6 +675,10 @@ public class CustomGameView {
 
     public static void showSpellCardMakingMenu(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -743,6 +767,10 @@ public class CustomGameView {
 
     public static void showMonsterCardMakingMenu(){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -856,6 +884,10 @@ public class CustomGameView {
 
     public static void showItemAmuletMakingMenu(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell){
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -955,13 +987,13 @@ public class CustomGameView {
 
     public static void showEditShop(){
         Group shopGroup = new Group();
-        ImageView imageView = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        ImageView imageView = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
         imageView.setFitWidth(1500);
         imageView.setFitHeight(800);
         shopGroup.getChildren().addAll(imageView);
         Scene scene = new Scene(shopGroup);
         primaryStage.setScene(scene);
-        scene.getStylesheets().add(MenuView.class.getResource("MenuStyle.css").toExternalForm());
+        scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         Button returnButton = new Button("Return");
         Button editCardShop = new Button("Edit Card Shop");
         Button editItemShop = new Button("Edit Item Shop");
@@ -1003,7 +1035,7 @@ public class CustomGameView {
 
     public static void showTransferStuffToShop(TypeOfStuffToBuyAndSell typeOfStuffToBuyAndSell, List<? extends Stuff> allSpecificStuff, List<? extends Stuff> shopSpecificStuff, String transactionMessage){
         Group cardShopGroup = new Group();
-        ImageView imageView1 = new ImageView(new Image(new File("brown-background-waves.jpg").toURI().toString()));
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
         imageView1.setFitWidth(1500);
         imageView1.setFitHeight(800);
         cardShopGroup.getChildren().addAll(imageView1);
@@ -1169,6 +1201,10 @@ public class CustomGameView {
 
     public static void showEditDecksMenu() {
         Group root = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        root.getChildren().addAll(imageView1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(MenuView.class.getResource("CustomGameStyle.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -1210,6 +1246,10 @@ public class CustomGameView {
 
     public static void showEditPlayerDeck(Player player) {
         Group group = new Group();
+        ImageView imageView1 = new ImageView(new Image(new File("white-background-waves-1.jpg").toURI().toString()));
+        imageView1.setFitWidth(1500);
+        imageView1.setFitHeight(800);
+        group.getChildren().addAll(imageView1);
         Scene scene = new Scene(group);
         ArrayList<Button> allCardsButtons = new ArrayList<>();
         ArrayList<Button> playerDeckCardsButtons = new ArrayList<>();
